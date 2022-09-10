@@ -1,0 +1,31 @@
+.button {
+	border: none;
+	outline: none;
+	color: $color-light;
+	background-color: $color-main-first;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.4rem;
+	line-height: 22px;
+	text-align: center;
+	letter-spacing: 0.02em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 90%;
+	height: 37px;
+	border-radius: 8px;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&_confirm {
+		background-color: $color-main-first;
+	}
+
+	&_redirect {
+		background-color: $color-light;
+		color: $color-main-first;
+	}
+}

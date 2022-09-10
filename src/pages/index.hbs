@@ -1,20 +1,32 @@
+---
+login-input:  {
+    type: 'text',
+    text: 'Login'
 
+}
+password-input:  {
+    type: 'password',
+    text: 'Password'
+
+}
+
+---
 
 {{!< desktop}}
 
 <main class="main">
-    <form class="form">
-        <div>
-                {{> 'textInput/textInput' input-text='Login'}}
+    <form class="login-form">
+        <div class="login-form__group">
+           {{> 'textInput/textInput' input-type=login-input.type input-text=login-input.text}}
+            {{> 'textInput/textInput' input-type=password-input.type input-text=password-input.text}}
         </div>
-
-        <div>
-                {{> 'textInput/textInput' input-text='Password'}}
-        </div>
-           
        
-        <button class="button button_confirm">{{confirm-text}}</button>
-        <button class="button button_redirect">{{redirect-text}}</button>
+        <div class="login-form__group">
+            {{> 'button/button' button-title='Login' btn-class='button button_confirm'}}
+            {{> 'button/button' button-title='Create account' btn-class='button button_redirect'}}
+        </div>
+       
+        
     </form>
    
 </main>
