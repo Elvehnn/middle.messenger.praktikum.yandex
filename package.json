@@ -4,6 +4,8 @@
   "description": "chatting app by JS",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel src/pages/index.hbs --open",
+    "build": "parcel build src/pages/index.hbs && node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/Elvehnn/middle.messenger.praktikum.yandex/issues"
   },
-  "homepage": "https://github.com/Elvehnn/middle.messenger.praktikum.yandex#readme"
+  "homepage": "https://github.com/Elvehnn/middle.messenger.praktikum.yandex#readme",
+  "devDependencies": {
+    "@anikin/parcel-transformer-handlebars": "^1.0.9",
+    "@parcel/transformer-sass": "^2.7.0",
+    "parcel": "^2.7.0"
+  },
+  "dependencies": {
+    "sass": "^1.54.9"
+  }
 }
