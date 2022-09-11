@@ -2,7 +2,7 @@
   "name": "middle.messenger.praktikum.yandex",
   "version": "1.0.0",
   "description": "chatting app by JS",
-  "main": "index.js",
+
   "scripts": {
     "dev": "parcel src/pages/index.hbs ",
     "start": "parcel build src/pages/index.hbs && node ./server.js",
