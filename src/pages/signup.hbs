@@ -1,17 +1,3 @@
----
-login-input:  {
-    type: 'text',
-    text: 'Login'
-
-}
-password-input:  {
-    type: 'password',
-    text: 'Password'
-
-}
-
----
-
 {{!< desktop}}
 
 <main class="main">
@@ -22,8 +8,8 @@ password-input:  {
         </div>
        
         <div class="login-form__group">
-            <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Login' btn-class='button button_confirm'}}</a>
-            <a class="login-form__link" href="./signup.hbs">Create account</a>
+            <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Sign up' btn-class='button button_confirm'}}</a>
+            <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Sign in' btn-class='button button_redirect'}}</a>
         </div>
        
         
