@@ -15,25 +15,24 @@
 		outline: none;
 		height: 3rem;
 	}
+
+	& label {
+		color: $color-text-dark;
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding-left: 1rem;
+		padding-top: 2.5rem;
+		padding-bottom: 0.2rem;
+		cursor: text;
+		transition: all 0.5s;
+		pointer-events: none;
+		text-transform: capitalize;
+		font-size: 1.4rem;
+	}
 }
 
-.input-field label {
-	color: $color-text-dark;
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding-left: 1rem;
-	padding-top: 2.5rem;
-	padding-bottom: 0.2rem;
-	cursor: text;
-	transition: all 0.5s;
-	pointer-events: none;
-	text-transform: capitalize;
-	font-size: 1.4rem;
-}
-
-.input-field input:focus ~ label,
-input:not(:placeholder-shown) ~ label {
+.input-field input:focus ~ label {
 	padding: 0;
 	color: $color-main-first;
 	transform: translateY(0.7rem) scale(0.7);
