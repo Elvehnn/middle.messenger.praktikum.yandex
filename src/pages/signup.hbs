@@ -2,15 +2,13 @@
 
 <main class="main">
     <form class="login-form" action="./main.html">
-    <h3>Sign up</h3>
-        <ul class="login-form__group">
-            {{#each signup-inputs}}
-                <li>
-                {{> 'textInput/textInput' type=type text=text}}
-                </li>
+        <div class="login-form__group">
+            <h3>Sign up</h3>
+
+            {{#each inputs}}
+                {{> 'input/input' this}} 
             {{/each}}
-        </ul>
- 
+        </div>
        
         <div class="login-form__group">
             <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Sign up' btn-class='button button_confirm'}}</a>
