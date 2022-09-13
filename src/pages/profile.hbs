@@ -1,7 +1,50 @@
 {{!< desktop}}
 
 <main class='main'>
+	<div class='profile'>
+		<aside class='profile__back'>
+			<a href='./main.hbs' class='back-link'>
+				<img
+					src='../assets/back-btn.svg'
+					alt='back-button'
+					class='back-button'
+				/>
+			</a>
+		</aside>
+		<section class='profile__container'>
+			<div class='user'>
+				<div class='user__avatar'>
+					<img
+						src='../assets/avatar_template.png'
+						alt='avatar'
+						class='user__image'
+					/>
+					<h3>Name</h3>
+				</div>
 
-	<h2>Profile</h2>
+				<div class='user__data'>
+					<div class='data-item'>
+						<div class='data-item__title'>E-mail</div>
+						<div class='data-item__content'>pochta@yandex.ru</div>
+					</div>
+				</div>
+
+				<div class='user__actions'>
+					<div class='action-item'>
+						<a class='action-item__title' href='#'>Change user data</a>
+					</div>
+					<div class='action-item'>
+						<a class='action-item__title' href='#'>Change password</a>
+					</div>
+					<div class='action-item'>
+						<a
+							class='action-item__title action-item__title_warning'
+							href='./main.hbs'
+						>Back to chat</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 
 </main>

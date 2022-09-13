@@ -1,0 +1,105 @@
+.profile {
+	display: flex;
+	align-items: flex-start;
+	width: 100%;
+	height: 100%;
+
+	&__back {
+		width: 5%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: $color-text-light;
+		border-right: 1px solid $color-text-dark;
+
+		.back-link {
+			display: block;
+			width: 75%;
+			height: 0;
+			padding-bottom: 75%;
+			border-radius: 50%;
+		}
+
+		.back-button {
+			display: block;
+			width: 100%;
+			background: url('../assets/back-btn.svg') no-repeat center center;
+			background-size: cover;
+			border-radius: 50%;
+		}
+	}
+
+	&__container {
+		width: 95%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.user {
+		width: 510px;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-evenly;
+		row-gap: 6rem;
+
+		&__avatar {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			row-gap: 2rem;
+		}
+
+		&__data,
+		&__actions {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+		}
+
+		.data-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			height: 35px;
+			border-bottom: 1px solid $color-text-dark;
+
+			&__title {
+				font-size: 1.4rem;
+				color: $color-black;
+				font-weight: 500;
+			}
+
+			&__content {
+				font-size: 1.4rem;
+				color: $color-text-dark;
+				font-weight: 500;
+			}
+		}
+
+		.action-item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			height: 35px;
+			border-bottom: 1px solid $color-text-dark;
+
+			&__title {
+				font-size: 1.4rem;
+				color: $color-main-first;
+				font-weight: 500;
+
+				&_warning {
+					color: $color-warning;
+				}
+			}
+		}
+	}
+}
