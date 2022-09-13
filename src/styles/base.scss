@@ -51,9 +51,16 @@ h2 {
 h3 {
 	font-style: normal;
 	font-weight: 500;
-	font-size: 20px;
-	line-height: 30px;
+	font-size: 2rem;
 	text-align: center;
+	letter-spacing: 0.02em;
+	color: $color-black;
+}
+
+h4 {
+	font-style: normal;
+	font-weight: 600;
+	font-size: 1.4rem;
 	letter-spacing: 0.02em;
 	color: $color-black;
 }
