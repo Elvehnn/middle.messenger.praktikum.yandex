@@ -1,0 +1,37 @@
+{{!< desktop}}
+
+<main class='main'>
+	<div class='profile'>
+		<aside class='profile__back'>
+			<a href='./profile.hbs' class='back-link'>
+				<img
+					src='../assets/back-btn.svg'
+					alt='back-button'
+					class='back-button'
+				/>
+			</a>
+		</aside>
+		<section class='profile__container'>
+			<form class='user' action="./profile.html">
+				<div class='user__avatar'>
+					<img
+						src='../assets/avatar_template.png'
+						alt='avatar'
+						class='user__image'
+					/>
+				</div>
+
+				<div class='user__data'>
+					{{#each userData}}
+                		{{> 'dataInput/dataInput' this}} 
+            		{{/each}}
+				</div>
+
+				 <div class="login-form__group">
+                    <a class="login-form__link" href="./profile.hbs">{{> 'button/button' button-title='Save changes' btn-class='button button_confirm'}}</a>
+                </div>
+			</form>
+		</section>
+	</div>
+
+</main>
