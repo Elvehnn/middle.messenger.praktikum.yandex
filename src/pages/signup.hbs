@@ -3,16 +3,16 @@
 <main class="main">
     <form class="login-form" action="./main.html">
         <div class="login-form__group">
-           {{> 'textInput/textInput' input-type=login-input.type input-text=login-input.text}}
-            {{> 'textInput/textInput' input-type=password-input.type input-text=password-input.text}}
+            <h3>Sign up</h3>
+
+            {{#each inputs}}
+                {{> 'input/input' this}} 
+            {{/each}}
         </div>
        
         <div class="login-form__group">
             <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Sign up' btn-class='button button_confirm'}}</a>
-            <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Sign in' btn-class='button button_redirect'}}</a>
+            <a class="login-form__link" href="./index.hbs">Sign in</a>
         </div>
-       
-        
     </form>
-   
 </main>

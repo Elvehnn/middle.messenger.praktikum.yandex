@@ -28,18 +28,7 @@ body {
 	width: 100%;
 	height: 100%;
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	padding-bottom: 10%;
-}
-
-.wrapper {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	padding: 0 9%;
-	height: 100%;
 }
 
 h1 {
@@ -49,7 +38,7 @@ h1 {
 h2 {
 	font-style: normal;
 	font-weight: 300;
-	font-size: 3vw;
+	font-size: 2rem;
 	line-height: 4.5vw;
 	text-align: left;
 	color: $color-text-dark;
@@ -62,9 +51,16 @@ h2 {
 h3 {
 	font-style: normal;
 	font-weight: 500;
-	font-size: 30px;
-	line-height: 30px;
+	font-size: 1.6rem;
 	text-align: center;
 	letter-spacing: 0.02em;
-	color: $color-text-dark;
+	color: $color-black;
+}
+
+h4 {
+	font-style: normal;
+	font-weight: 600;
+	font-size: 1.4rem;
+	letter-spacing: 0.02em;
+	color: $color-black;
 }
