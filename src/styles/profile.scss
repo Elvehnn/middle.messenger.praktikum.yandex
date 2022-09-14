@@ -40,7 +40,7 @@
 
 	.user {
 		width: 510px;
-		height: 100%;
+		height: 80%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -60,27 +60,6 @@
 			flex-direction: column;
 			align-items: center;
 			width: 100%;
-		}
-
-		.data-item {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 100%;
-			height: 35px;
-			border-bottom: 1px solid $color-text-dark;
-
-			&__title {
-				font-size: 1.4rem;
-				color: $color-black;
-				font-weight: 500;
-			}
-
-			&__content {
-				font-size: 1.4rem;
-				color: $color-text-dark;
-				font-weight: 500;
-			}
 		}
 
 		.action-item {

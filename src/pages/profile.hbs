@@ -23,15 +23,14 @@
 				</div>
 
 				<div class='user__data'>
-					<div class='data-item'>
-						<div class='data-item__title'>E-mail</div>
-						<div class='data-item__content'>pochta@yandex.ru</div>
-					</div>
+					{{#each userData}}
+                		{{> 'dataItem/dataItem' this}} 
+            		{{/each}}
 				</div>
 
 				<div class='user__actions'>
 					<div class='action-item'>
-						<a class='action-item__title' href='#'>Change user data</a>
+						<a class='action-item__title' href='./changeUserData.hbs'>Change user data</a>
 					</div>
 					<div class='action-item'>
 						<a class='action-item__title' href='#'>Change password</a>
