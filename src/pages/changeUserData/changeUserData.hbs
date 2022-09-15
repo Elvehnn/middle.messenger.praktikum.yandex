@@ -1,0 +1,30 @@
+{{!< desktop}}
+
+<main class='main'>
+	<div class='profile'>
+		{{> profileBackButton/profileBackButton path="./profile.hbs"}}
+				
+		<section class='profile__container'>
+			<form class='user' action="../profile/profile.html">
+				<div class='user__avatar'>
+					<img
+						src='../../assets/avatar_template.png'
+						alt='avatar'
+						class='user__image'
+					/>
+				</div>
+
+				<div class='user__data'>
+					{{#each userData}}
+                		{{> 'dataInput/dataInput' this}} 
+            		{{/each}}
+				</div>
+
+				 <div class="login-form__group">
+                    <a class="login-form__link" href="../profile/profile.hbs">{{> 'button/button' button-title='Save changes' btn-class='button button_confirm'}}</a>
+                </div>
+			</form>
+		</section>
+	</div>
+
+</main>

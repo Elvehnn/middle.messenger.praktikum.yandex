@@ -3,16 +3,17 @@
 <main class='main'>
 	<div class='profile'>
 		{{> profileBackButton/profileBackButton path="./main.hbs"}}
-			
+		
 		<section class='profile__container'>
 			<div class='user'>
 				<div class='user__avatar'>
-					<a class='user__change' href='./changeUserAvatar.hbs'>Поменять аватар</a>
+					<a class='user__change' href='../changeUserAvatar/changeUserAvatar.hbs'>Поменять аватар</a>
 					<img
-						src='../assets/avatar_template.png'
+						src='../../assets/avatar_template.png'
 						alt='avatar'
 						class='user__image'
 					/>
+
 					<h3>Name</h3>
 				</div>
 
@@ -24,10 +25,10 @@
 
 				<div class='user__actions'>
 					<div class='action-item'>
-						<a class='action-item__title' href='./changeUserData.hbs'>Change user data</a>
+						<a class='action-item__title' href='../changeUserData/changeUserData.hbs'>Change user data</a>
 					</div>
 					<div class='action-item'>
-						<a class='action-item__title' href='./changeUserPassword.hbs'>Change password</a>
+						<a class='action-item__title' href='../changeUserPassword/changeUserPassword.hbs'>Change password</a>
 					</div>
 					<div class='action-item'>
 						<a
