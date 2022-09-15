@@ -2,7 +2,7 @@
 
 Реализовать приложение, с похожим функционалом, как, например, Telegram, Yandex.Messenger или WhatsApp.
 
-Используемый образец UI: [https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1](макет).
+Используемый образец UI: https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1.
 
 ## Используемые технологии
 
@@ -27,8 +27,9 @@
   - добавить/удалить пользователей в чат;
 - просмотр/редактирование страницы профиля.
 
-## Деплой 
-[https://sprint-1-elvehnn.netlify.app](sprint-1-elvehnn.netlify.app)
+## Деплой
+
+[https://sprint-1-elvehnn.netlify.app](https://sprint-1-elvehnn.netlify.app)
 
 ## Как установаить
 
