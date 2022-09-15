@@ -2,10 +2,10 @@
 @import './variables.scss';
 @import './fonts.scss';
 
-@import '../pages/index/index.scss';
-@import '../pages/main/main.scss';
-@import '../pages/profile/profile.scss';
-@import '../pages/changeUserAvatar/changeUserAvatar.scss';
+@import './pages/index.scss';
+@import './pages/main.scss';
+@import './pages/profile.scss';
+@import './pages/changeUserAvatar.scss';
 
 @import '../partials/input/input.scss';
 @import '../partials/button/button.scss';

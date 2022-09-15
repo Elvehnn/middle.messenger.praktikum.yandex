@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "chatting app by JS",
   "scripts": {
-    "dev": "parcel src/pages/index/index.hbs --no-cache",
-    "start": "parcel build src/pages/index/index.hbs && node ./server.js",
-    "build": "parcel build src/pages/index/index.hbs",
+    "dev": "parcel src/pages/index.hbs --no-cache",
+    "start": "parcel build src/pages/index.hbs && node ./server.js",
+    "build": "parcel build src/pages/index.hbs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
