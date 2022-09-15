@@ -1,10 +1,11 @@
 @import './base.scss';
 @import './variables.scss';
 @import './fonts.scss';
-@import './index.scss';
-@import './main.scss';
-@import './profile.scss';
-@import './changeUserAvatar.scss';
+
+@import '../pages/index/index.scss';
+@import '../pages/main/main.scss';
+@import '../pages/profile/profile.scss';
+@import '../pages/changeUserAvatar/changeUserAvatar.scss';
 
 @import '../partials/input/input.scss';
 @import '../partials/button/button.scss';

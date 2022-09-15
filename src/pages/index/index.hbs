@@ -17,14 +17,15 @@ login-inputs: [
     <form class="login-form" action="./main.html">
         <div class="login-form__group">
             <h3>Sign in</h3>
+            
             {{#each login-inputs}}
                 {{> 'input/input' this}} 
             {{/each}}
         </div>
        
         <div class="login-form__group">
-            <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Login' btn-class='button button_confirm'}}</a>
-            <a class="login-form__link" href="./signup.hbs">Create account</a>
+            <a class="login-form__link" href="../main/main.hbs">{{> 'button/button' button-title='Login' btn-class='button button_confirm'}}</a>
+            <a class="login-form__link" href="../signup/signup.hbs">Create account</a>
         </div>
     </form>
 </main>
