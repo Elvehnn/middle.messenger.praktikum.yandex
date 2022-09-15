@@ -2,16 +2,8 @@
 
 <main class='main'>
 	<div class='profile'>
-		<aside class='profile__back'>
-			<a href='./profile.hbs' class='back-link'>
-				<img
-					src='../assets/back-btn.svg'
-					alt='back-button'
-					class='back-button'
-				/>
-			</a>
-		</aside>
-		
+		{{> profileBackButton/profileBackButton path="./profile.hbs"}}
+				
 		<section class='profile__container'>
 			<form class='user' action="./profile.html">
 				<div class='user__avatar'>
