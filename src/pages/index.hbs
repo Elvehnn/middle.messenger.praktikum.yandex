@@ -1,30 +1,18 @@
----
-login-inputs: [ 
-    {
-        type: 'text',
-        text: 'Login'
-    }, 
-    {
-        type: 'password',
-        text: 'Password'
-    }
-]
----
-
 {{!< desktop}}
 
 <main class="main">
+    <h1>Chatterbox</h1>
     <form class="login-form" action="./main.html">
         <div class="login-form__group">
             <h3>Sign in</h3>
             
-            {{#each login-inputs}}
+            {{#each loginInputs}}
                 {{> 'input/input' this}} 
             {{/each}}
         </div>
        
-        <div class="login-form__group">
-            <a class="login-form__link" href="./main.hbs">{{> 'button/button' button-title='Log in' btn-class='button button_confirm'}}</a>
+        <div class="login-form__bottom">
+            {{> 'button/button' button-title='Log in' btn-class='button button_confirm'}}
             <a class="login-form__link" href="./signup.hbs">Create account</a>
         </div>
     </form>

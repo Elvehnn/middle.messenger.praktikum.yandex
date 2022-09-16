@@ -21,7 +21,7 @@
 		}
 
 		&:focus {
-			outline: none;
+			outline: transparent;
 			border: 1px solid $color-main-first;
 			opacity: 1;
 		}
