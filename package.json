@@ -1,0 +1,34 @@
+{
+  "name": "middle.messenger.praktikum.yandex",
+  "version": "1.0.0",
+  "description": "chatting app by JS",
+  "scripts": {
+    "dev": "parcel src/pages/index.hbs --no-cache",
+    "start": "parcel build src/pages/index.hbs && node ./server.js",
+    "build": "npm run build src/pages/index.hbs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elvehnn/middle.messenger.praktikum.yandex.git"
+  },
+  "author": "Elena Shashina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Elvehnn/middle.messenger.praktikum.yandex/issues"
+  },
+  "homepage": "https://github.com/Elvehnn/middle.messenger.praktikum.yandex#readme",
+  "devDependencies": {
+    "@anikin/parcel-transformer-handlebars": "1.0.9",
+    "@parcel/transformer-sass": "2.7.0",
+    "parcel": "2.7.0",
+    "sass": "1.54.9"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "4.18.1"
+  }
+}

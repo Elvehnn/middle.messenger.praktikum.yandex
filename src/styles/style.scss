@@ -1,0 +1,18 @@
+@import './base.scss';
+@import './variables.scss';
+@import './fonts.scss';
+
+@import './pages/index.scss';
+@import './pages/main.scss';
+@import './pages/profile.scss';
+@import './pages/changeUserAvatar.scss';
+
+@import '../partials/input/input.scss';
+@import '../partials/button/button.scss';
+@import '../partials/searchBar/searchBar.scss';
+@import '../partials/chatItem/chatItem.scss';
+@import '../partials/dataItem/dataItem.scss';
+@import '../partials/dataInput/dataInput.scss';
+@import '../partials/popup/popup.scss';
+@import '../partials/profileBackButton/profileBackButton.scss';
+@import '../partials/user/user.scss';

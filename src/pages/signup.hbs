@@ -1,0 +1,18 @@
+{{!< desktop}}
+
+<main class="main">
+    <form class="login-form" action="./main.html">
+        <div class="login-form__group">
+            <h3>Sign up</h3>
+
+            {{#each inputs}}
+                {{> 'input/input' this}} 
+            {{/each}}
+        </div>
+       
+        <div class="login-form__bottom">
+            {{> 'button/button' button-title='Sign up' btn-class='button button_confirm'}}
+            <a class="login-form__link" href="/">Sign in</a>
+        </div>
+    </form>
+</main>
