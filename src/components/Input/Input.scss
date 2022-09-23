@@ -1,0 +1,51 @@
+@import '../../styles/variables.scss';
+
+.input-field {
+	display: flex;
+	flex-direction: column-reverse;
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+
+	& input {
+		border: none;
+		padding-left: 1rem;
+		padding-top: 1rem;
+		margin-top: 2rem;
+		font-size: 1.4rem;
+		border-bottom: 0.1rem solid $color-text-dark;
+		outline: transparent;
+		height: 3rem;
+	}
+}
+
+.input-field label {
+	color: $color-text-dark;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding-left: 1rem;
+	padding-top: 2.5rem;
+	padding-bottom: 0.2rem;
+	cursor: text;
+	transition: all 0.5s;
+	pointer-events: none;
+	text-transform: capitalize;
+	font-size: 1.4rem;
+}
+
+.input-field input:focus ~ label,
+input:not(:placeholder-shown) ~ label {
+	padding: 0;
+	color: $color-main-first;
+	transform: translateY(0.7rem) scale(0.7);
+}
+
+input:-internal-autofill-selected {
+	background-color: $color-light;
+}
+
+input:focus,
+input:not(:placeholder-shown) {
+	border-bottom: 0.1rem solid $color-text-dark;
+}
