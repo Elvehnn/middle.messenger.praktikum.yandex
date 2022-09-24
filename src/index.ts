@@ -11,6 +11,7 @@ import User from './components/User/User';
 import UserDataItem from './components/UserDataItem/UserDataItem';
 import ProfileBackButton from './components/ProfileBackButton/ProfileBackButton';
 import UserDataInput from './components/UserDataInput/UserDataInput';
+import Popup from './components/Popup/Popup';
 
 import StartPage from './pages/start/start';
 import SignupPage from './pages/signup/signup';
@@ -21,6 +22,7 @@ import { userData } from './data/userData';
 import Profile from './pages/profile/profile';
 import changeUserData from './pages/changeUserData/changeUserData';
 import changeUserPassword from './pages/changeUserPassword/changeUserPassword';
+import changeUserAvatar from './pages/changeUserAvatar/changeUserAvatar';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -31,6 +33,7 @@ registerComponent(User);
 registerComponent(UserDataItem);
 registerComponent(ProfileBackButton);
 registerComponent(UserDataInput);
+registerComponent(Popup);
 
 document.addEventListener('DOMContentLoaded', () => {
 	// renderDOM(new StartPage());
@@ -38,5 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	//renderDOM(new Main({ chats }));
 	// renderDOM(new Profile({ userData }));
 	// renderDOM(new changeUserData({ userData }));
-	renderDOM(new changeUserPassword({ userData }));
+	// renderDOM(new changeUserPassword({ userData }));
+	renderDOM(new changeUserAvatar());
 });
