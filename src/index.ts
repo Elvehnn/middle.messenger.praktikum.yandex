@@ -20,6 +20,7 @@ import { chats } from './data/chats';
 import { userData } from './data/userData';
 import Profile from './pages/profile/profile';
 import changeUserData from './pages/changeUserData/changeUserData';
+import changeUserPassword from './pages/changeUserPassword/changeUserPassword';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -36,5 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	// renderDOM(new SignupPage({ inputs }));
 	//renderDOM(new Main({ chats }));
 	// renderDOM(new Profile({ userData }));
-	renderDOM(new changeUserData({ userData }));
+	// renderDOM(new changeUserData({ userData }));
+	renderDOM(new changeUserPassword({ userData }));
 });
