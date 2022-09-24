@@ -6,6 +6,7 @@ import Button from './components/Button/Button';
 import Link from './components/Link/Link';
 import Input from './components/Input/Input';
 import ChatItem from './components/ChatItem/ChatItem';
+import SearchBar from './components/SearchBar/SearchBar';
 
 import StartPage from './pages/start/start';
 import SignupPage from './pages/signup/signup';
@@ -17,6 +18,7 @@ registerComponent(Button);
 registerComponent(Link);
 registerComponent(Input);
 registerComponent(ChatItem);
+registerComponent(SearchBar);
 
 document.addEventListener('DOMContentLoaded', () => {
 	// renderDOM(new StartPage());

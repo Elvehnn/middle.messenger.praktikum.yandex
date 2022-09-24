@@ -21,7 +21,7 @@ export default class MainPage extends Block {
             <section class='left'>
             <div class='top-list'>
                 {{{Link class='top-list__goto-profile' path='./profile.hbs' text='Profile >'}}} 
-                
+                {{{SearchBar}}}
             </div>
             
             <div class='chat-list'>
