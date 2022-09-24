@@ -30,7 +30,7 @@ export default class SignupPage extends Block {
 
                 <div class="login-form__bottom">
                     {{{Button title="Sign up" onClick=buttonOnClick}}}
-                    {{{Link text="Sign in" path="/"}}}
+                    {{{Link class="link" text="Sign in" path="/"}}}
                 </div>
             </form>
         </main>

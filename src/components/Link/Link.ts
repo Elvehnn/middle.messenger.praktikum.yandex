@@ -19,6 +19,6 @@ export default class Link extends Block {
 
 	render() {
 		// language=hbs
-		return `<a class="link" href="{{path}}">{{text}}</a>`;
+		return `<a class="{{class}}" href="{{path}}">{{text}}</a>`;
 	}
 }

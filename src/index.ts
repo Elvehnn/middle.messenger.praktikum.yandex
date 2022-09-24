@@ -8,6 +8,7 @@ import Input from './components/Input/Input';
 import ChatItem from './components/ChatItem/ChatItem';
 import SearchBar from './components/SearchBar/SearchBar';
 import User from './components/User/User';
+import UserDataItem from './components/UserDataItem/UserDataItem';
 
 import StartPage from './pages/start/start';
 import SignupPage from './pages/signup/signup';
@@ -23,6 +24,7 @@ registerComponent(Input);
 registerComponent(ChatItem);
 registerComponent(SearchBar);
 registerComponent(User);
+registerComponent(UserDataItem);
 
 document.addEventListener('DOMContentLoaded', () => {
 	// renderDOM(new StartPage());

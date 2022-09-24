@@ -32,7 +32,7 @@ export default class StartPage extends Block {
 
                 <div class="login-form__bottom">
                     {{{Button title="Log in" onClick=buttonOnClick}}}
-                    {{{Link text="Create account" path="/signup"}}}
+                    {{{Link class="link" text="Create account" path="/signup"}}}
                 </div>
             </form>
         </main>

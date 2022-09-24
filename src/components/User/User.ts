@@ -1,20 +1,20 @@
 import Block from '../../core/Block';
-import { ProfileProps, UserProps } from '../../pages/profile/profile';
+import { ProfileProps } from '../../pages/profile/profile';
 import './User.scss';
 
 export default class User extends Block {
 	constructor({ userData }: ProfileProps) {
-		super(userData);
-		console.log(userData);
+		super({ userData });
 	}
+
 	render() {
 		// language=hbs
 		return `
         <div class='user'>
 				<div class='user__avatar'>
-					<a class='user__change' href='./changeUserAvatar.hbs'>Поменять аватар</a>
+					{{{Link class='user__change' path='./changeUserAvatar.hbs' text='Change avatar'}}}
 					<img
-						src='../assets/avatar_template.png'
+						src='./avatar_template.png'
 						alt='avatar'
 						class='user__image'
 					/>
@@ -24,23 +24,20 @@ export default class User extends Block {
                 <div class='user__data'>
 					{{#each userData}}
                         {{#with this}}
-                            {{{DataItem}}}
+                            {{{UserDataItem title="{{title}}" data="{{data}}"}}}
                         {{/with}}
             		{{/each}}
 				</div>
 
 				<div class='user__actions'>
 					<div class='action-item'>
-						<a class='action-item__title' href='./changeUserData.hbs'>Change user data</a>
+						{{{Link class='action-item__title' path='./changeUserData' text='Change user data'}}} 
 					</div>
 					<div class='action-item'>
-						<a class='action-item__title' href='./changeUserPassword.hbs'>Change password</a>
+                        {{{Link class='action-item__title' path='./changeUserPassword' text='Change password'}}} 
 					</div>
 					<div class='action-item'>
-						<a
-							class='action-item__title action-item__title_warning'
-							href='/'
-						>Log out</a>
+                        {{{Link class='action-item__title action-item__title_warning' path='/' text='Log out'}}} 
 					</div>
 				</div>
 
