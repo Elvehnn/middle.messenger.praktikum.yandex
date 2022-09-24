@@ -40,8 +40,6 @@ export default class User extends Block {
                         {{{Link class='action-item__title action-item__title_warning' path='/' text='Log out'}}} 
 					</div>
 				</div>
-
-				
 			</div>
 
         `;

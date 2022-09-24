@@ -9,6 +9,7 @@ import ChatItem from './components/ChatItem/ChatItem';
 import SearchBar from './components/SearchBar/SearchBar';
 import User from './components/User/User';
 import UserDataItem from './components/UserDataItem/UserDataItem';
+import ProfileBackButton from './components/ProfileBackButton/ProfileBackButton';
 
 import StartPage from './pages/start/start';
 import SignupPage from './pages/signup/signup';
@@ -25,6 +26,7 @@ registerComponent(ChatItem);
 registerComponent(SearchBar);
 registerComponent(User);
 registerComponent(UserDataItem);
+registerComponent(ProfileBackButton);
 
 document.addEventListener('DOMContentLoaded', () => {
 	// renderDOM(new StartPage());

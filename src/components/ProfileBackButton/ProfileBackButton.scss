@@ -1,0 +1,22 @@
+@import '../../styles/variables.scss';
+
+.back {
+	width: 5%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: $color-text-light;
+	border-right: 1px solid $color-text-dark;
+
+	&__link {
+		display: block;
+		width: 75%;
+		height: 0;
+		padding-bottom: 75%;
+		border-radius: 50%;
+		background: url('../../assets/back-btn.svg') no-repeat center center;
+		background-size: cover;
+		border-radius: 50%;
+	}
+}

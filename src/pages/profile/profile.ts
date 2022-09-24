@@ -27,6 +27,7 @@ export default class Profile extends Block {
 		return `
         <main class="main">
             <div class='profile'>
+             {{{ ProfileBackButton path="./main.hbs"}}}
                 <section class='profile__container'>
                     {{{ User userData=this.props }}}
                 </section>
@@ -35,5 +36,3 @@ export default class Profile extends Block {
         `;
 	}
 }
-
-// {{> profileBackButton/profileBackButton path="./main.hbs"}}
