@@ -1,14 +1,14 @@
 import Block from '../../core/Block';
-
-type StartPageProps = {
-	links?: Array<{ text: string; to: string }>;
-};
-
-const buttonOnclick = () => {
-	console.log('click!');
-};
+import './start.scss';
 
 export default class StartPage extends Block {
+	constructor() {
+		super();
+
+		this.setProps({
+			buttonOnClick: () => console.log('Clicked!'),
+		});
+	}
 	render() {
 		// language=hbs
 		return `
@@ -31,8 +31,8 @@ export default class StartPage extends Block {
                 </div>
 
                 <div class="login-form__bottom">
-                    {{{Button title="Log in"}}}
-                    {{{Link text="Create account" path="./signup"}}}
+                    {{{Button title="Log in" onClick=buttonOnClick}}}
+                    {{{Link text="Create account" path="/signup"}}}
                 </div>
             </form>
         </main>

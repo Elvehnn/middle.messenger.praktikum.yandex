@@ -16,7 +16,7 @@ export default class Input extends Block {
 		onChange = () => {},
 		type = 'text',
 		name,
-		placeholder,
+		placeholder = '',
 		value,
 		id,
 		error,

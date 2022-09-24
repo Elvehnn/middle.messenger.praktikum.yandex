@@ -14,7 +14,7 @@ export default class Button extends Block {
 	protected render(): string {
 		// language=hbs
 		return `
-        <button class="button button_confirm" type="button">{{title}}</button>
+        <button class="button button_confirm" type="button" onClick={{onClick}}>{{title}}</button>
     `;
 	}
 }
