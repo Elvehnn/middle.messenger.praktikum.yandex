@@ -1,10 +1,10 @@
 import Block from '../../core/Block';
-import { ProfileProps, UserProps } from '../../pages/profile/profile';
 import './UserDataItem.scss';
 
-interface DataItem {
+export interface DataItem {
 	title: string;
 	data: string;
+	type: string;
 }
 
 export default class UserDataItem extends Block {

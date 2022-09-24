@@ -10,6 +10,7 @@ import SearchBar from './components/SearchBar/SearchBar';
 import User from './components/User/User';
 import UserDataItem from './components/UserDataItem/UserDataItem';
 import ProfileBackButton from './components/ProfileBackButton/ProfileBackButton';
+import UserDataInput from './components/UserDataInput/UserDataInput';
 
 import StartPage from './pages/start/start';
 import SignupPage from './pages/signup/signup';
@@ -18,6 +19,7 @@ import Main from './pages/main/main';
 import { chats } from './data/chats';
 import { userData } from './data/userData';
 import Profile from './pages/profile/profile';
+import changeUserData from './pages/changeUserData/changeUserData';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -27,10 +29,12 @@ registerComponent(SearchBar);
 registerComponent(User);
 registerComponent(UserDataItem);
 registerComponent(ProfileBackButton);
+registerComponent(UserDataInput);
 
 document.addEventListener('DOMContentLoaded', () => {
 	// renderDOM(new StartPage());
 	// renderDOM(new SignupPage({ inputs }));
 	//renderDOM(new Main({ chats }));
-	renderDOM(new Profile({ userData }));
+	// renderDOM(new Profile({ userData }));
+	renderDOM(new changeUserData({ userData }));
 });
