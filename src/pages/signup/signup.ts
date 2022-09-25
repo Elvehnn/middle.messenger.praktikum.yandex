@@ -1,5 +1,5 @@
-import Block from '../../core/Block';
-import '../start/start.scss';
+import Block from 'core/Block';
+import 'pages/start/start.scss';
 
 type SignupPageProps = {
   inputs: Array<{ text: string; type: string }>;

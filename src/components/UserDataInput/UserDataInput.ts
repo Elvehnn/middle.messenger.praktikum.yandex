@@ -1,5 +1,5 @@
-import Block from '../../core/Block';
-import { DataItem } from '../UserDataItem/UserDataItem';
+import Block from 'core/Block';
+import { DataItem } from 'components/UserDataItem/UserDataItem';
 import './UserDataInput.scss';
 
 export default class UserDataInput extends Block {

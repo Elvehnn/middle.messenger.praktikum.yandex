@@ -5,11 +5,16 @@
   "scripts": {
     "dev": "parcel src/index.html --no-cache",
     "start": "npm run build && node ./server.js",
-    "build": "parcel build src/pages/index.hbs",
+    "build": "parcel build src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write \"src/**/*.{js,jsx,ts}\"",
     "stylelint": "stylelint \"src/**/*.{css,.scss}\"",
     "stylelint:fix": "stylelint \"src/**/*.{css,.scss}\" --fix"
+  },
+  "alias": {
+    "core": ".src/core",
+    "components": ".src/components",
+    "pages": ".src/pages"
   },
   "repository": {
     "type": "git",

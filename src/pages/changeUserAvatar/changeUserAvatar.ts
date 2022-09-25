@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from 'core/Block';
 import './changeUserAvatar.scss';
 
 export default class changeUserAvatar extends Block {

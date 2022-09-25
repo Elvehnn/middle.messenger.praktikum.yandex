@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from 'core/Block';
 import './SearchBar.scss';
 
 export default class SearchBar extends Block {

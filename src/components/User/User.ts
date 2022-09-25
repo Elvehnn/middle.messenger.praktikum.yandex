@@ -1,5 +1,5 @@
-import Block from '../../core/Block';
-import { ProfileProps } from '../../pages/profile/profile';
+import Block from 'core/Block';
+import { ProfileProps } from 'pages/profile/profile';
 import './User.scss';
 
 export default class User extends Block {

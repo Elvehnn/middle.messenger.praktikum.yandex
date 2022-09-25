@@ -1,7 +1,7 @@
-import Block from '../../core/Block';
-import '../../components/User/User.scss';
-import '../profile/profile.scss';
-import '../start/start.scss';
+import Block from 'core/Block';
+import 'components/User/User.scss';
+import 'pages/profile/profile.scss';
+import 'pages/start/start.scss';
 import { ProfileProps } from '../profile/profile';
 
 export default class changeUserPassword extends Block {

@@ -1,5 +1,5 @@
 import { ChatItemPreview } from '../../constants/interfaces';
-import Block from '../../core/Block';
+import Block from 'core/Block';
 import './ChatItem.scss';
 
 export default class ChatItem extends Block {

@@ -1,4 +1,4 @@
-import Block from '../../core/Block';
+import Block from 'core/Block';
 import './Popup.scss';
 
 export default class Popup extends Block {
