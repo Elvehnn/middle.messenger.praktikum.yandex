@@ -1,43 +1,43 @@
 @import '../../styles/variables.scss';
 
 .left {
-	width: 25%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: space-between;
-	background-color: #fbfbfb;
-	border-right: 1px solid $color-text-dark;
-	padding: 1rem;
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: #fbfbfb;
+  border-right: 1px solid $color-text-dark;
+  padding: 1rem;
 
-	.top-list {
-		width: 100%;
-		height: 120px;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
-		justify-content: space-between;
-		padding: 1rem;
+  .top-list {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 1rem;
 
-		&__goto-profile {
-			font-size: 1.4rem;
-			color: $color-text-dark;
-		}
-	}
+    &__goto-profile {
+      font-size: 1.4rem;
+      color: $color-text-dark;
+    }
+  }
 
-	.chat-list {
-		width: 100%;
-		height: 100%;
-		padding: 1rem 0;
-	}
+  .chat-list {
+    width: 100%;
+    height: 100%;
+    padding: 1rem 0;
+  }
 }
 
 .right {
-	width: 75%;
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,5 +1,4 @@
-require('babel-core/register');
-import { Block, renderDOM, registerComponent } from './core';
+import { renderDOM, registerComponent } from './core';
 import './styles/style.scss';
 
 import Button from './components/Button/Button';
@@ -24,6 +23,8 @@ import changeUserData from './pages/changeUserData/changeUserData';
 import changeUserPassword from './pages/changeUserPassword/changeUserPassword';
 import changeUserAvatar from './pages/changeUserAvatar/changeUserAvatar';
 
+require('babel-core/register');
+
 registerComponent(Button);
 registerComponent(Link);
 registerComponent(Input);
@@ -36,11 +37,11 @@ registerComponent(UserDataInput);
 registerComponent(Popup);
 
 document.addEventListener('DOMContentLoaded', () => {
-	// renderDOM(new StartPage());
-	// renderDOM(new SignupPage({ inputs }));
-	//renderDOM(new Main({ chats }));
-	// renderDOM(new Profile({ userData }));
-	// renderDOM(new changeUserData({ userData }));
-	// renderDOM(new changeUserPassword({ userData }));
-	renderDOM(new changeUserAvatar());
+  renderDOM(new StartPage());
+  // renderDOM(new SignupPage({ inputs }));
+  // renderDOM(new Main({ chats }));
+  // renderDOM(new Profile({ userData }));
+  // renderDOM(new changeUserData({ userData }));
+  // renderDOM(new changeUserPassword({ userData }));
+  // renderDOM(new changeUserAvatar());
 });

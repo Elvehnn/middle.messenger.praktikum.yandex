@@ -2,9 +2,9 @@ import Block from '../../core/Block';
 import './SearchBar.scss';
 
 export default class SearchBar extends Block {
-	render() {
-		// language=hbs
-		return `
+  render() {
+    // language=hbs
+    return `
         <form class='search'>
             <input name='search' placeholder='Search...' class='search__input' />
         
@@ -22,5 +22,5 @@ export default class SearchBar extends Block {
         
             </button>
         </form>`;
-	}
+  }
 }

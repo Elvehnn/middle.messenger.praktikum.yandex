@@ -2,29 +2,29 @@ import Block from '../../core/Block';
 import './profile.scss';
 
 export interface UserProps {
-	title: string;
-	data: string;
-	type: string;
+  title: string;
+  data: string;
+  type: string;
 }
 
 export interface ProfileProps {
-	userData: UserProps[];
+  userData: UserProps[];
 }
 
 export default class Profile extends Block {
-	constructor({ userData }: ProfileProps) {
-		super();
-		this.setProps({
-			props: userData,
-		});
+  constructor({ userData }: ProfileProps) {
+    super();
+    this.setProps({
+      props: userData,
+    });
 
-		// this.setProps({
-		// 	buttonOnClick: () => console.log('sign up!'),
-		// });
-	}
-	render() {
-		// language=hbs
-		return `
+    // this.setProps({
+    // 	buttonOnClick: () => console.log('sign up!'),
+    // });
+  }
+  render() {
+    // language=hbs
+    return `
         <main class="main">
             <div class='profile'>
              {{{ ProfileBackButton path="./main.hbs"}}}
@@ -34,5 +34,5 @@ export default class Profile extends Block {
             </div>
         </main>
         `;
-	}
+  }
 }

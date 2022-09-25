@@ -2,20 +2,20 @@ import Block from '../../core/Block';
 import '../start/start.scss';
 
 type SignupPageProps = {
-	inputs: Array<{ text: string; type: string }>;
+  inputs: Array<{ text: string; type: string }>;
 };
 
 export default class SignupPage extends Block {
-	constructor({ inputs }: SignupPageProps) {
-		super({ inputs });
+  constructor({ inputs }: SignupPageProps) {
+    super({ inputs });
 
-		this.setProps({
-			buttonOnClick: () => console.log('sign up!'),
-		});
-	}
-	render() {
-		// language=hbs
-		return `
+    this.setProps({
+      buttonOnClick: () => console.log('sign up!'),
+    });
+  }
+  render() {
+    // language=hbs
+    return `
         <main class="main">
             <h1>Chatterbox</h1>
             <form class="login-form" action="./main.html">
@@ -35,5 +35,5 @@ export default class SignupPage extends Block {
             </form>
         </main>
         `;
-	}
+  }
 }

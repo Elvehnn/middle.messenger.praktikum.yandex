@@ -5,17 +5,17 @@ import '../start/start.scss';
 import { ProfileProps } from '../profile/profile';
 
 export default class changeUserPassword extends Block {
-	constructor({ userData }: ProfileProps) {
-		super({ userData });
+  constructor({ userData }: ProfileProps) {
+    super({ userData });
 
-		this.setProps({
-			saveChanges: () => console.log('save changes'),
-		});
-	}
+    this.setProps({
+      saveChanges: () => console.log('save changes'),
+    });
+  }
 
-	render() {
-		// language=hbs
-		return `
+  render() {
+    // language=hbs
+    return `
         <main class='main'>
             <div class='profile'>
                 {{{ProfileBackButton path="./profile.hbs"}}}
@@ -44,5 +44,5 @@ export default class changeUserPassword extends Block {
             </div>
         </main>
         `;
-	}
+  }
 }

@@ -3,12 +3,12 @@ import { DataItem } from '../UserDataItem/UserDataItem';
 import './UserDataInput.scss';
 
 export default class UserDataInput extends Block {
-	constructor({ title, data, type }: DataItem) {
-		super({ title, data, type });
-	}
-	render() {
-		// language=hbs
-		return `
+  constructor({ title, data, type }: DataItem) {
+    super({ title, data, type });
+  }
+  render() {
+    // language=hbs
+    return `
             <div class='data-item'>
                 <div class='data-item__title'>{{title}}</div>
                 <input
@@ -20,5 +20,5 @@ export default class UserDataInput extends Block {
                 />
             </div>
         `;
-	}
+  }
 }

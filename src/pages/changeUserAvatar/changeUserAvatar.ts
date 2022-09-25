@@ -2,9 +2,9 @@ import Block from '../../core/Block';
 import './changeUserAvatar.scss';
 
 export default class changeUserAvatar extends Block {
-	render() {
-		// language=hbs
-		return `
+  render() {
+    // language=hbs
+    return `
         <main class='main'>
             <div class='popup-container'>
                 <div class='overlay'></div>
@@ -12,5 +12,5 @@ export default class changeUserAvatar extends Block {
             </div>
         </main>
         `;
-	}
+  }
 }

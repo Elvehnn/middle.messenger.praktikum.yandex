@@ -2,9 +2,9 @@ import Block from '../../core/Block';
 import './Popup.scss';
 
 export default class Popup extends Block {
-	render() {
-		// language=hbs
-		return `
+  render() {
+    // language=hbs
+    return `
             <form class='popup' action='./profile.html'>
                 <a class='popup__close' href='./profile.hbs'>
                     <svg
@@ -31,5 +31,5 @@ export default class Popup extends Block {
                 </div>
             </form>
         `;
-	}
+  }
 }

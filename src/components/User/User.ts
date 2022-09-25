@@ -3,13 +3,13 @@ import { ProfileProps } from '../../pages/profile/profile';
 import './User.scss';
 
 export default class User extends Block {
-	constructor({ userData }: ProfileProps) {
-		super({ userData });
-	}
+  constructor({ userData }: ProfileProps) {
+    super({ userData });
+  }
 
-	render() {
-		// language=hbs
-		return `
+  render() {
+    // language=hbs
+    return `
         <div class='user'>
 				<div class='user__avatar'>
 					{{{Link class='user__change' path='./changeUserAvatar.hbs' text='Change avatar'}}}
@@ -43,5 +43,5 @@ export default class User extends Block {
 			</div>
 
         `;
-	}
+  }
 }

@@ -2,16 +2,16 @@ import Block from '../../core/Block';
 import './start.scss';
 
 export default class StartPage extends Block {
-	constructor() {
-		super();
+  constructor() {
+    super();
 
-		this.setProps({
-			buttonOnClick: () => console.log('Clicked!'),
-		});
-	}
-	render() {
-		// language=hbs
-		return `
+    this.setProps({
+      buttonOnClick: () => console.log('Clicked!'),
+    });
+  }
+  render() {
+    // language=hbs
+    return `
         <main class="main">
             <h1>Chatterbox</h1>
             <form class="login-form" action="./main.html">
@@ -37,5 +37,5 @@ export default class StartPage extends Block {
             </form>
         </main>
         `;
-	}
+  }
 }

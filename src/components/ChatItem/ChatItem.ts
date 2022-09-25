@@ -3,15 +3,15 @@ import Block from '../../core/Block';
 import './ChatItem.scss';
 
 export default class ChatItem extends Block {
-	constructor({ name, message, time, unread }: ChatItemPreview) {
-		const onChatItemClick = () => console.log('chat click!');
+  constructor({ name, message, time, unread }: ChatItemPreview) {
+    const onChatItemClick = () => console.log('chat click!');
 
-		super({ name, message, time, unread, events: { click: onChatItemClick } });
-	}
+    super({ name, message, time, unread, events: { click: onChatItemClick } });
+  }
 
-	protected render(): string {
-		// language=hbs
-		return `
+  protected render(): string {
+    // language=hbs
+    return `
         <div class='border'>
             <div class='chat-item' >
                 <div class='chat-item__avatar'>
@@ -33,5 +33,5 @@ export default class ChatItem extends Block {
             </div>
         </div>
     `;
-	}
+  }
 }

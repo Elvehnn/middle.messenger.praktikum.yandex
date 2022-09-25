@@ -3,20 +3,20 @@ import Block from '../../core/Block';
 import './main.scss';
 
 type MainPageProps = {
-	chats: ChatItemPreview[];
+  chats: ChatItemPreview[];
 };
 
 export default class MainPage extends Block {
-	constructor({ chats }: MainPageProps) {
-		super({ chats });
+  constructor({ chats }: MainPageProps) {
+    super({ chats });
 
-		this.setProps({
-			buttonOnClick: () => console.log('sign up!'),
-		});
-	}
-	render() {
-		// language=hbs
-		return `
+    this.setProps({
+      buttonOnClick: () => console.log('sign up!'),
+    });
+  }
+  render() {
+    // language=hbs
+    return `
         <main class="main">
             <section class='left'>
             <div class='top-list'>
@@ -38,5 +38,5 @@ export default class MainPage extends Block {
             </section>
         </main>
         `;
-	}
+  }
 }
