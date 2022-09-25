@@ -1,5 +1,4 @@
 import Block from '../../core/Block';
-import { ProfileProps } from '../../pages/profile/profile';
 import './ProfileBackButton.scss';
 
 interface ProfileBackButtonProps {
