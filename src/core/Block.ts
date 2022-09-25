@@ -23,13 +23,13 @@ export default class Block<P = any> {
   protected readonly props: P;
   protected children: { [id: string]: Block } = {};
 
-  eventBus: () => EventBus<Events>;
+  eventBus: EventBus<Events>;
 
   protected state: any = {};
   protected refs: { [key: string]: HTMLElement } = {};
 
   public constructor(props?: P) {
-    const eventBus = new EventBus<Events>();
+    // const eventBus = new EventBus<Events>();
 
     this._meta = {
       props,
@@ -40,11 +40,11 @@ export default class Block<P = any> {
     this.props = this._makePropsProxy(props || ({} as P));
     this.state = this._makePropsProxy(this.state);
 
-    this.eventBus = () => eventBus;
+    this.eventBus = new EventBus<Events>();
 
-    this._registerEvents(eventBus);
+    this._registerEvents(this.eventBus);
 
-    eventBus.emit(Block.EVENTS.INIT, this.props);
+    this.eventBus.emit(Block.EVENTS.INIT, this.props);
   }
 
   _registerEvents(eventBus: EventBus<Events>) {
@@ -64,7 +64,7 @@ export default class Block<P = any> {
 
   init() {
     this._createResources();
-    this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props);
+    this.eventBus.emit(Block.EVENTS.FLOW_RENDER, this.props);
   }
 
   _componentDidMount(props: P) {
@@ -90,7 +90,7 @@ export default class Block<P = any> {
       return;
     }
 
-    Object.assign(this.props, nextProps);
+    Object.assign(this.props as Object, nextProps);
   };
 
   setState = (nextState: any) => {
@@ -126,7 +126,7 @@ export default class Block<P = any> {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
-          this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+          this.eventBus.emit(Block.EVENTS.FLOW_CDM);
         }
       }, 100);
     }
@@ -149,7 +149,7 @@ export default class Block<P = any> {
 
         // Запускаем обновление компоненты
         // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
+        self.eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
         return true;
       },
       deleteProperty() {

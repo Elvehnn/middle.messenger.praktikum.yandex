@@ -12,9 +12,9 @@
     "stylelint:fix": "stylelint \"src/**/*.{css,.scss}\" --fix"
   },
   "alias": {
-    "core": ".src/core",
-    "components": ".src/components",
-    "pages": ".src/pages"
+    "core": "./src/core",
+    "components": "./src/components",
+    "pages": "./src/pages"
   },
   "repository": {
     "type": "git",

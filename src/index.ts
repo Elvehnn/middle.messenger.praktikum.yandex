@@ -1,6 +1,6 @@
 require('babel-core/register');
 
-import { renderDOM, registerComponent } from 'core';
+import { renderDOM, registerComponent } from './core';
 import './styles/style.scss';
 import Button from 'components/Button/Button';
 import Link from 'components/Link/Link';
@@ -15,7 +15,7 @@ import Popup from 'components/Popup/Popup';
 
 import StartPage from 'pages/start/start';
 import SignupPage from 'pages/signup/signup';
-import { inputs } from './constants/inputs';
+import { inputs } from 'constants/inputs';
 import Main from 'pages/main/main';
 import { chats } from './data/chats';
 import { userData } from './data/userData';
