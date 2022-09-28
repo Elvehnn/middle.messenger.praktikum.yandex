@@ -6,7 +6,13 @@ export default class StartPage extends Block {
     super();
 
     this.setProps({
-      buttonOnClick: () => console.log('Clicked!'),
+      onSubmit: () => {
+        const inputLogin = this.refs.inputLogin;
+        console.log(inputLogin);
+      },
+      onInput: () => console.log('Input!'),
+      onFocus: () => console.log('Focus!'),
+      // onBlur: () => console.log('Blur!'),
     });
   }
   render() {
@@ -14,24 +20,29 @@ export default class StartPage extends Block {
     return `
         <main class="main">
             <h1>Chatterbox</h1>
-            <form class="login-form" action="./main.html">
+          <form class="login-form" action="./main.html">
                 <div class="login-form__group">
                     <h3>Sign in</h3>
-                    {{{Input
-                        id="login"
+                    {{{ControlledInput
+                        onInput=onInput 
+                        onFocus=onFocus 
                         type="text"
-                        name="Login"
+                        inputName="Login"
+                        ref="inputLogin"
                     }}}
-                    {{{Input
-                        id="password"
+
+                    {{{ControlledInput
+                        onInput=onInput 
+                        onFocus=onFocus 
+                        onBlur=onBlur
                         type="password"
-                        name="Password"
+                        inputName="Password"
                     }}}
-                     
+                    
                 </div>
 
                 <div class="login-form__bottom">
-                    {{{Button title="Log in" onClick=buttonOnClick}}}
+                    {{{Button title="Log in" onClick=onSubmit}}}
                     {{{Link class="link" text="Create account" path="/signup"}}}
                 </div>
             </form>
@@ -39,3 +50,9 @@ export default class StartPage extends Block {
         `;
   }
 }
+
+// {{{Input
+//   id="password"
+//   type="password"
+//   name="Password"
+// }}}

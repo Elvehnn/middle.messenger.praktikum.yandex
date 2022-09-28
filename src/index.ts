@@ -12,6 +12,9 @@ import UserDataItem from 'components/UserDataItem/UserDataItem';
 import ProfileBackButton from 'components/ProfileBackButton/ProfileBackButton';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
 import Popup from 'components/Popup/Popup';
+import ControlledInput from 'components/ControlledInput/ControlledInput';
+import Label from 'components/Label/Label';
+import ErrorMessage from 'components/Error/Error';
 
 import StartPage from 'pages/start/start';
 import SignupPage from 'pages/signup/signup';
@@ -34,6 +37,9 @@ registerComponent(UserDataItem);
 registerComponent(ProfileBackButton);
 registerComponent(UserDataInput);
 registerComponent(Popup);
+registerComponent(ControlledInput);
+registerComponent(Label);
+registerComponent(ErrorMessage);
 
 document.addEventListener('DOMContentLoaded', () => {
   renderDOM(new StartPage());

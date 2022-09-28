@@ -23,10 +23,10 @@ export default class Block<P = any> {
   protected readonly props: P;
   protected children: { [id: string]: Block } = {};
 
-  eventBus: EventBus<Events>;
+  _eventBus: EventBus<Events>;
 
   protected state: any = {};
-  protected refs: { [key: string]: HTMLElement } = {};
+  protected refs: { [key: string]: Block } = {};
 
   public constructor(props?: P) {
     // const eventBus = new EventBus<Events>();
@@ -40,11 +40,11 @@ export default class Block<P = any> {
     this.props = this._makePropsProxy(props || ({} as P));
     this.state = this._makePropsProxy(this.state);
 
-    this.eventBus = new EventBus<Events>();
+    this._eventBus = new EventBus<Events>();
 
-    this._registerEvents(this.eventBus);
+    this._registerEvents(this._eventBus);
 
-    this.eventBus.emit(Block.EVENTS.INIT, this.props);
+    this._eventBus.emit(Block.EVENTS.INIT, this.props);
   }
 
   _registerEvents(eventBus: EventBus<Events>) {
@@ -54,17 +54,12 @@ export default class Block<P = any> {
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _createResources() {
-    this._element = this._createDocumentElement('div');
-  }
-
   protected getStateFromProps(props: any): void {
     this.state = {};
   }
 
   init() {
-    this._createResources();
-    this.eventBus.emit(Block.EVENTS.FLOW_RENDER, this.props);
+    this._eventBus.emit(Block.EVENTS.FLOW_RENDER, this.props);
   }
 
   _componentDidMount(props: P) {
@@ -72,6 +67,10 @@ export default class Block<P = any> {
   }
 
   componentDidMount(props: P) {}
+
+  dispatchComponentDidMount() {
+    this._eventBus.emit(Block.EVENTS.FLOW_CDM);
+  }
 
   _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps);
@@ -107,11 +106,12 @@ export default class Block<P = any> {
 
   _render() {
     const fragment = this._compile();
-
-    this._removeEvents();
     const newElement = fragment.firstElementChild!;
 
-    this._element!.replaceWith(newElement);
+    if (this._element) {
+      this._removeEvents();
+      this._element!.replaceWith(newElement);
+    }
 
     this._element = newElement as HTMLElement;
     this._addEvents();
@@ -126,7 +126,7 @@ export default class Block<P = any> {
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
-          this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+          this._eventBus.emit(Block.EVENTS.FLOW_CDM);
         }
       }, 100);
     }
@@ -144,22 +144,20 @@ export default class Block<P = any> {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
+
       set(target: Record<string, unknown>, prop: string, value: unknown) {
         target[prop] = value;
 
         // Запускаем обновление компоненты
         // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
-        self.eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
+        self._eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
         return true;
       },
+
       deleteProperty() {
         throw new Error('Нет доступа');
       },
     }) as unknown as P;
-  }
-
-  _createDocumentElement(tagName: string) {
-    return document.createElement(tagName);
   }
 
   _removeEvents() {
@@ -193,6 +191,7 @@ export default class Block<P = any> {
      * Рендерим шаблон
      */
     const template = Handlebars.compile(this.render());
+
     fragment.innerHTML = template({
       ...this.state,
       ...this.props,

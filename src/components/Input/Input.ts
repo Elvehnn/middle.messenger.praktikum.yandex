@@ -3,49 +3,36 @@ import './Input.scss';
 
 interface InputProps {
   type: 'text' | 'password' | 'email';
-  name: string;
-  id: string;
+  inputName: string;
   placeholder?: string;
   value?: string;
-  error?: string;
-  onChange?: () => void;
+  onInput?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 export default class Input extends Block {
-  constructor({
-    onChange = () => {},
-    type = 'text',
-    name,
-    placeholder = '',
-    value,
-    id,
-    error,
-  }: InputProps) {
+  constructor({ onInput, onFocus, onBlur, ...props }: InputProps) {
     super({
-      type,
-      name,
-      placeholder,
-      value,
-      id,
-      error,
-      events: { input: onChange },
+      ...props,
+      events: {
+        input: onInput,
+        focus: onFocus,
+        blur: onBlur,
+      },
     });
   }
 
   protected render(): string {
     // language=hbs
     return `
-        <div class='input-field'>
-            <input
-                id='{{id}}'
-                type='{{type}}'
-                placeholder='{{placeholder}}'
-                value='{{value}}'
-                required
-                name='{{name}}'
-            />
-            <label for='{{id}}'>{{name}}</label>
-        </div>
-    `;
+      <input
+        type='{{type}}'
+        placeholder='{{placeholder}}'
+        value='{{value}}' 
+        inputName='{{inputName}}'
+        class='input'
+      />
+     `;
   }
 }
