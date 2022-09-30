@@ -18,7 +18,7 @@ import ErrorMessage from 'components/Error/Error';
 
 import StartPage from 'pages/start/start';
 import SignupPage from 'pages/signup/signup';
-import { inputs } from 'constants/inputs';
+
 import Main from 'pages/main/main';
 import { chats } from './data/chats';
 import { userData } from './data/userData';
@@ -42,8 +42,8 @@ registerComponent(Label);
 registerComponent(ErrorMessage);
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderDOM(new StartPage());
-  // renderDOM(new SignupPage({ inputs }));
+  // renderDOM(new StartPage());
+  renderDOM(new SignupPage());
   // renderDOM(new Main({ chats }));
   // renderDOM(new Profile({ userData }));
   // renderDOM(new changeUserData({ userData }));

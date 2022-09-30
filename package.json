@@ -15,7 +15,8 @@
         "core": "./src/core",
         "components": "./src/components",
         "pages": "./src/pages",
-        "utils": "./src/utils"
+        "utils": "./src/utils",
+        "constants": "./src/constants"
     },
     "repository": {
         "type": "git",

@@ -12,6 +12,8 @@ export enum ValidateType {
   Password = 'password',
   Email = 'email',
   Phone = 'phone',
+  FirstName = 'first_name',
+  SecondName = 'second_name',
 }
 
 export type ValidateRule = {
@@ -24,6 +26,8 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
   rulesArray.forEach((rule) => {
     const { type, value } = rule;
+
+    console.log(type);
 
     switch (type) {
       case ValidateType.Login:
@@ -83,13 +87,21 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
         break;
 
       case ValidateType.Email:
-        console.log('Перебор');
+        if (!value.length) {
+          errors[type] = 'Email can not be empty';
+          return;
+        }
+
         break;
       case ValidateType.Phone:
-        console.log('Перебор');
+        if (!value.length) {
+          errors[type] = 'Phone can not be empty';
+          return;
+        }
+
         break;
       default:
-        console.log('Нет таких значений');
+        errors[type] = type;
     }
   });
 
