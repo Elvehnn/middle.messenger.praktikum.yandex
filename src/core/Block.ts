@@ -66,7 +66,9 @@ export default class Block<P = any> {
     this.componentDidMount(props);
   }
 
-  componentDidMount(props: P) {}
+  componentDidMount(props: P) {
+    return true;
+  }
 
   dispatchComponentDidMount() {
     this._eventBus.emit(Block.EVENTS.FLOW_CDM);

@@ -33,7 +33,7 @@ export default class ControlledInput extends Block {
     // language=hbs
     return `
         <div class='controlled-input'>
-          {{{Input inputName=inputName type=type onInput=onInput onFocus=onFocus onBlur=onBlur ref=childInputRef}}}
+          {{{Input inputName=inputName type=type onInput=onInput onFocus=onFocus onBlur=onBlur ref=childInputRef placeholder=placeholder}}}
           {{{Label label=inputName}}}
           {{{ErrorMessage ref="errorRef"}}}
         </div>

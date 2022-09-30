@@ -37,12 +37,16 @@ export default class StartPage extends Block {
       },
       onInput: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
-
         const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
 
         this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name] });
       },
-      onFocus: () => console.log('Focus!'),
+      onFocus: (event: FocusEvent) => {
+        const target = event.target as HTMLInputElement;
+        const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
+
+        this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name] });
+      },
     });
   }
   render() {
@@ -63,6 +67,7 @@ export default class StartPage extends Block {
                         childInputRef="login"
                         error=error
                         value=''
+                        placeholder="login"
                     }}}
 
                     {{{ControlledInput
@@ -75,6 +80,7 @@ export default class StartPage extends Block {
                         value=''
                         ref="password"
                         childInputRef="password"
+                        placeholder="password"
                     }}}
                     
                 </div>
