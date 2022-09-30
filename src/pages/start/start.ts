@@ -1,4 +1,5 @@
 import Block from 'core/Block';
+import { validateForm, ValidateType } from 'utils/validateForm';
 import './start.scss';
 
 export default class StartPage extends Block {
@@ -7,15 +8,45 @@ export default class StartPage extends Block {
 
     this.setProps({
       onSubmit: () => {
-        const inputLogin = this.refs.inputLogin;
-        console.log(inputLogin);
+        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
+          acc[key] = value.refs[key].getContent() as HTMLInputElement;
+          return acc;
+        }, {} as { [key: string]: HTMLInputElement });
+
+        const { login, password } = refs;
+
+        const errors = validateForm([
+          { type: ValidateType.Login, value: login.value },
+          { type: ValidateType.Password, value: password.value },
+        ]);
+
+        if (Object.keys(errors).length !== 0) {
+          for (let key in errors) {
+            this.refs[key].refs.errorRef.setProps({ error: errors[key] });
+          }
+        } else {
+          console.log({
+            login: login.value,
+            password: password.value,
+          });
+
+          for (let key in errors) {
+            this.refs[key].refs.errorRef.setProps({ error: '' });
+          }
+        }
       },
-      onInput: () => console.log('Input!'),
+      onInput: (event: FocusEvent) => {
+        const target = event.target as HTMLInputElement;
+
+        const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
+
+        this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name] });
+      },
       onFocus: () => console.log('Focus!'),
-      // onBlur: () => console.log('Blur!'),
     });
   }
   render() {
+    console.log();
     // language=hbs
     return `
         <main class="main">
@@ -27,8 +58,11 @@ export default class StartPage extends Block {
                         onInput=onInput 
                         onFocus=onFocus 
                         type="text"
-                        inputName="Login"
-                        ref="inputLogin"
+                        inputName="login"
+                        ref="login"
+                        childInputRef="login"
+                        error=error
+                        value=''
                     }}}
 
                     {{{ControlledInput
@@ -36,7 +70,11 @@ export default class StartPage extends Block {
                         onFocus=onFocus 
                         onBlur=onBlur
                         type="password"
-                        inputName="Password"
+                        inputName="password"
+                        error=error
+                        value=''
+                        ref="password"
+                        childInputRef="password"
                     }}}
                     
                 </div>

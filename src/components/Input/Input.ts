@@ -30,7 +30,7 @@ export default class Input extends Block {
         type='{{type}}'
         placeholder='{{placeholder}}'
         value='{{value}}' 
-        inputName='{{inputName}}'
+        name='{{inputName}}'
         class='input'
       />
      `;

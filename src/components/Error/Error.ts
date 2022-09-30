@@ -9,7 +9,7 @@ export default class ErrorMessage extends Block<ErrorMessageProps> {
   protected render(): string {
     // language=hbs
     return `
-      <div class='error'>{{#if error}}{{error}}{{/if}}</div>
+      <div class='error'>{{error}}</div>
      `;
   }
 }
