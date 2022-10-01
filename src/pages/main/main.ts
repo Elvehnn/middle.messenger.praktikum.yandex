@@ -33,8 +33,19 @@ export default class MainPage extends Block {
             </div>
             </section>
 
-            <section class='right'>
-                <h2>Select chat</h2>
+            <section class='chat'>
+                <header class='chat__header'>
+                  <div class='chat-info'>
+                    <div class='chat-info__avatar'>
+                      <img class='avatar' src='../assets/avatar.jpg' alt='avatar' />
+                    </div>
+                      <h4 class='chat-info__name'>Vadim</h4>
+                  </div>
+
+                  <div class='header-menu'>
+                  ...
+                  </div
+                </header>
             </section>
         </main>
         `;
