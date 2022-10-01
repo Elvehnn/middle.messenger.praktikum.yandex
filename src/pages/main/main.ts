@@ -1,4 +1,4 @@
-import { ChatItemPreview } from '../../constants/interfaces';
+import { ChatItemPreview } from 'components/ChatItem/ChatItem';
 import Block from 'core/Block';
 import './main.scss';
 
@@ -9,10 +9,6 @@ type MainPageProps = {
 export default class MainPage extends Block {
   constructor({ chats }: MainPageProps) {
     super({ chats });
-
-    this.setProps({
-      buttonOnClick: () => console.log('sign up!'),
-    });
   }
   render() {
     // language=hbs
@@ -44,7 +40,7 @@ export default class MainPage extends Block {
                   </div>
 
                   <div class='header-menu'>
-                    <p>Menu</p>
+                    <div class="dots"></div>
                   </div>
                 </header>
                   
@@ -59,15 +55,17 @@ export default class MainPage extends Block {
                 </div>
                   
                 <footer class='chat__footer'>
-                  <div class="button-container">
-                    {{{Button class="button button_attach"}}}
-                  </div>
-                
-                  <textarea class='message' name='message' placeholder='Write a message'></textarea>
-                  <div class="button-container">
-                    {{{ ArrowRoundButton path="./main.hbs" class="arrow arrow_reverse"}}}
-                  </div>
+                  <form class='message-form' action='./main.html'>
+                    <div class="button-container">
+                      {{{Button class="button button_attach"}}}
+                    </div>
                   
+                    <textarea class='message' name='message' placeholder='Write a message'></textarea>
+
+                    <div class="button-container">
+                      {{{ ArrowRoundButton path="./main.hbs" class="arrow arrow_reverse" type='submit'}}}
+                    </div>
+                  </form>
                 </footer>
             </section>
         </main>

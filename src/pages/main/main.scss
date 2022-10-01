@@ -52,6 +52,13 @@
         border-bottom: none;
         border-top: 0.1rem solid $color-text-dark;
         padding: 2rem 1rem;
+        .message-form {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
         .button-container {
             width: 5%;
             height: 100%;
@@ -93,4 +100,15 @@
     flex-direction: column;
     align-items: center;
     row-gap: 2rem;
+}
+
+.dots {
+    &:after {
+        content: '\2807';
+        font-size: 30px;
+    }
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+    }
 }

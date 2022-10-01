@@ -1,6 +1,13 @@
-import { ChatItemPreview } from '../../constants/interfaces';
 import Block from 'core/Block';
 import './ChatItem.scss';
+
+export interface ChatItemPreview {
+  name: string;
+  message: string;
+  time: string;
+  unread: string;
+  onChatItemClick?: () => void;
+}
 
 export default class ChatItem extends Block {
   constructor({ name, message, time, unread }: ChatItemPreview) {
