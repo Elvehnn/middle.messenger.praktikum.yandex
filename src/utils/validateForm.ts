@@ -1,9 +1,14 @@
 import {
   ALL_DIGITS,
+  EMAIL_CHARACTERS,
+  FIRST_CAPITAL_LETTER,
   LATIN_LETTERS,
+  NO_DIGITS,
   ONE_CAPITAL_LETTER,
   ONE_DIGIT,
   ONE_SPACE_SYMBOL,
+  ONLY_LETTERS_AND_DASH,
+  PHONE_SYMBOLS,
   SPECIAL_CHARACTERS,
 } from '../constants/validateRegExpressions';
 
@@ -26,8 +31,6 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
   rulesArray.forEach((rule) => {
     const { type, value } = rule;
-
-    console.log(type);
 
     switch (type) {
       case ValidateType.Login:
@@ -92,16 +95,69 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
           return;
         }
 
+        if (!value.match(EMAIL_CHARACTERS)) {
+          errors[type] = 'Invalid e-mail address';
+          return;
+        }
+
         break;
+
       case ValidateType.Phone:
         if (!value.length) {
           errors[type] = 'Phone can not be empty';
           return;
         }
 
+        if (!value.match(NO_DIGITS)) {
+          errors[type] = 'Phone number must not contain letters';
+          return;
+        }
+
+        if (!value.match(PHONE_SYMBOLS)) {
+          errors[type] = 'Invalid phone number';
+          return;
+        }
+
         break;
+
+      case ValidateType.FirstName:
+        if (!value.length) {
+          errors[type] = 'Name can not be empty';
+          return;
+        }
+
+        if (!value.match(ONLY_LETTERS_AND_DASH)) {
+          errors[type] = 'Name must contain only letters and dash';
+          return;
+        }
+
+        if (!value.match(FIRST_CAPITAL_LETTER)) {
+          errors[type] = 'Name should begin with a capital letter';
+          return;
+        }
+
+        break;
+
+      case ValidateType.SecondName:
+        if (!value.length) {
+          errors[type] = 'Name can not be empty';
+          return;
+        }
+
+        if (!value.match(ONLY_LETTERS_AND_DASH)) {
+          errors[type] = 'Name must contain only letters and dash';
+          return;
+        }
+
+        if (!value.match(FIRST_CAPITAL_LETTER)) {
+          errors[type] = 'Name should begin with a capital letter';
+          return;
+        }
+
+        break;
+
       default:
-        errors[type] = type;
+        errors[type] = 'Unknown error';
     }
   });
 

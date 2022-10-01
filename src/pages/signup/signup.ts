@@ -1,14 +1,13 @@
 import Block from 'core/Block';
 import 'pages/start/start.scss';
 import { validateForm, ValidateType } from 'utils/validateForm';
-import { inputs } from 'constants/inputs';
 
 type SignupPageProps = {
   inputs: Array<{ text: string; type: string }>;
 };
 
 export default class SignupPage extends Block {
-  constructor() {
+  constructor({ inputs }: SignupPageProps) {
     super({ inputs });
 
     this.setProps({
@@ -18,10 +17,7 @@ export default class SignupPage extends Block {
           return acc;
         }, {} as { [key: string]: HTMLInputElement });
 
-        console.log(this.refs);
-
         const { login, password, email, first_name, second_name, phone } = refs;
-        // console.log(login, password, email, first_name, second_name, phone);
 
         const errors = validateForm([
           { type: ValidateType.Login, value: login.value },
@@ -63,7 +59,6 @@ export default class SignupPage extends Block {
         this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name.toLowerCase()] });
       },
       onFocus: (event: FocusEvent) => {
-        console.log('onFocus!');
         const target = event.target as HTMLInputElement;
         const errors = validateForm([
           { type: target.name.toLowerCase() as ValidateType, value: target.value },
@@ -74,7 +69,6 @@ export default class SignupPage extends Block {
     });
   }
   render() {
-    // console.log(this.props);
     // language=hbs
     return `
         <main class="main">

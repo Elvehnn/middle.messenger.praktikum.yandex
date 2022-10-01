@@ -15,10 +15,10 @@ import Popup from 'components/Popup/Popup';
 import ControlledInput from 'components/ControlledInput/ControlledInput';
 import Label from 'components/Label/Label';
 import ErrorMessage from 'components/Error/Error';
+import { inputs } from 'constants/inputs';
 
 import StartPage from 'pages/start/start';
 import SignupPage from 'pages/signup/signup';
-
 import Main from 'pages/main/main';
 import { chats } from './data/chats';
 import { userData } from './data/userData';
@@ -43,7 +43,7 @@ registerComponent(ErrorMessage);
 
 document.addEventListener('DOMContentLoaded', () => {
   // renderDOM(new StartPage());
-  renderDOM(new SignupPage());
+  renderDOM(new SignupPage({ inputs }));
   // renderDOM(new Main({ chats }));
   // renderDOM(new Profile({ userData }));
   // renderDOM(new changeUserData({ userData }));
