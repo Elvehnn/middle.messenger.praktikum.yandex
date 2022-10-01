@@ -49,6 +49,13 @@ export default class MainPage extends Block {
                 </header>
                   
                 <div class='chat__content'>
+                  <div class='conversation'>
+                    <div class='conversation__day'>
+                      <h4>Date</h4>
+                      {{{ChatMessage class="chat-message chat-message_mate"}}}
+                      {{{ChatMessage class="chat-message chat-message_owner"}}}
+                    </div>
+                  </div>
                 </div>
                   
                 <footer class='chat__footer'>
