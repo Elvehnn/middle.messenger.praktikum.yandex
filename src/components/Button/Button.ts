@@ -3,18 +3,19 @@ import './Button.scss';
 
 interface ButtonProps {
   title: string;
+  class: string;
   onClick?: () => void;
 }
 
 export default class Button extends Block {
-  constructor({ title, onClick }: ButtonProps) {
-    super({ title, events: { click: onClick } });
+  constructor({ title = '', class: string = 'button button_confirm', onClick }: ButtonProps) {
+    super({ title, class: string, events: { click: onClick } });
   }
 
   protected render(): string {
     // language=hbs
     return `
-        <button class="button button_confirm" type="button" onClick={{onClick}}>{{title}}</button>
+        <button class="{{class}}" type="button" onClick={{onClick}}>{{title}}</button>
     `;
   }
 }

@@ -1,33 +1,36 @@
 @import '../../styles/variables.scss';
-
 .button {
-  border: none;
-  color: $color-light;
-  background-color: $color-main-first;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 22px;
-  text-align: center;
-  letter-spacing: 0.02em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 37px;
-  border-radius: 8px;
-  outline: transparent;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &_confirm {
+    border: none;
+    color: $color-light;
     background-color: $color-main-first;
-  }
-
-  &_redirect {
-    background-color: $color-light;
-    color: $color-main-first;
-  }
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: 0.02em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 37px;
+    border-radius: 8px;
+    outline: transparent;
+    &:hover {
+        cursor: pointer;
+    }
+    &_confirm {
+        background-color: $color-main-first;
+    }
+    &_redirect {
+        background-color: $color-light;
+        color: $color-main-first;
+    }
+    &_attach {
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+        background: url('../../assets/attach.svg') no-repeat center center;
+        background-size: cover;
+    }
 }

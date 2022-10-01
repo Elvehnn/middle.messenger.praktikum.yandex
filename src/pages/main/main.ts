@@ -52,9 +52,12 @@ export default class MainPage extends Block {
                 </div>
                   
                 <footer class='chat__footer'>
-                  <button>Include</button>
+                  <div class="button-container">
+                    {{{Button class="button button_attach"}}}
+                  </div>
+                
                   <textarea class='message' name='message' placeholder='Write a message'></textarea>
-                  <div class="send-button">
+                  <div class="button-container">
                     {{{ ArrowRoundButton path="./main.hbs" class="arrow arrow_reverse"}}}
                   </div>
                   
