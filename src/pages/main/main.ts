@@ -34,18 +34,31 @@ export default class MainPage extends Block {
             </section>
 
             <section class='chat'>
-                <header class='chat__header'>
+                <header class='chat__header'> 
                   <div class='chat-info'>
                     <div class='chat-info__avatar'>
                       <img class='avatar' src='../assets/avatar.jpg' alt='avatar' />
                     </div>
-                      <h4 class='chat-info__name'>Vadim</h4>
+                      
+                    <h4 class='chat-info__name'>Vadim</h4>
                   </div>
 
                   <div class='header-menu'>
-                  ...
-                  </div
+                    <p>Menu</p>
+                  </div>
                 </header>
+                  
+                <div class='chat__content'>
+                </div>
+                  
+                <footer class='chat__footer'>
+                  <button>Include</button>
+                  <textarea class='message' name='message' placeholder='Write a message'></textarea>
+                  <div class="send-button">
+                    {{{ ArrowRoundButton path="./main.hbs" class="arrow arrow_reverse"}}}
+                  </div>
+                  
+                </footer>
             </section>
         </main>
         `;

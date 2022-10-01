@@ -6,14 +6,16 @@ interface InputProps {
   inputName: string;
   placeholder?: string;
   value?: string;
+  class?: string;
   onInput?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
 }
 
 export default class Input extends Block {
-  constructor({ onInput, onFocus, onBlur, ...props }: InputProps) {
+  constructor({ onInput, onFocus, onBlur, class: string = 'input', ...props }: InputProps) {
     super({
+      class: string,
       ...props,
       events: {
         input: onInput,
@@ -31,7 +33,7 @@ export default class Input extends Block {
         placeholder='{{placeholder}}'
         value='{{value}}' 
         name='{{inputName}}'
-        class='input'
+        class='{{class}}'
       />
      `;
   }

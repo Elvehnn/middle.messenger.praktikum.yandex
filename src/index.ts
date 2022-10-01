@@ -15,6 +15,8 @@ import Popup from 'components/Popup/Popup';
 import ControlledInput from 'components/ControlledInput/ControlledInput';
 import Label from 'components/Label/Label';
 import ErrorMessage from 'components/Error/Error';
+import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
+
 import { inputs } from 'constants/inputs';
 
 import StartPage from 'pages/start/start';
@@ -40,13 +42,14 @@ registerComponent(Popup);
 registerComponent(ControlledInput);
 registerComponent(Label);
 registerComponent(ErrorMessage);
+registerComponent(ArrowRoundButton);
 
 document.addEventListener('DOMContentLoaded', () => {
   // renderDOM(new StartPage());
   // renderDOM(new SignupPage({ inputs }));
-  renderDOM(new Main({ chats }));
+  // renderDOM(new Main({ chats }));
   // renderDOM(new Profile({ userData }));
-  // renderDOM(new changeUserData({ userData }));
+  renderDOM(new changeUserData({ userData }));
   // renderDOM(new changeUserPassword({ userData }));
   // renderDOM(new changeUserAvatar());
 });

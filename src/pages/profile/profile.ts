@@ -17,20 +17,19 @@ export default class Profile extends Block {
     this.setProps({
       props: userData,
     });
-
-    // this.setProps({
-    // 	buttonOnClick: () => console.log('sign up!'),
-    // });
   }
   render() {
     // language=hbs
     return `
         <main class="main">
             <div class='profile'>
-             {{{ ProfileBackButton path="./main.hbs"}}}
-                <section class='profile__container'>
+              <div class="profile__aside">
+                {{{ ArrowRoundButton path="./main.hbs" class="arrow"}}}
+              </div>
+            
+              <section class='profile__container'>
                     {{{ User userData=this.props }}}
-                </section>
+              </section>
             </div>
         </main>
         `;

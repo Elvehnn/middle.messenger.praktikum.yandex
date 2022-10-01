@@ -22,20 +22,18 @@ export default class ControlledInput extends Block {
         const error = validateForm([
           { type: this.props.childInputRef.toLowerCase(), value: target.value },
         ])[this.props.childInputRef.toLowerCase()];
-        // console.log(this.props.childInputRef.toLowerCase());
 
         this.refs.errorRef.setProps({ error: error });
       },
     });
-    // console.log(props);
   }
 
   protected render(): string {
-    // console.log(this.props);
     // language=hbs
     return `
         <div class='controlled-input'>
-          {{{Input inputName=inputName type=type onInput=onInput onFocus=onFocus onBlur=onBlur ref=childInputRef placeholder=placeholder}}}
+          {{{Input inputName=inputName type=type onInput=onInput onFocus=onFocus 
+            onBlur=onBlur ref=childInputRef placeholder=placeholder}}}
           {{{Label label=inputName}}}
           {{{ErrorMessage ref="errorRef"}}}
         </div>

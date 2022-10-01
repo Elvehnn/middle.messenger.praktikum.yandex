@@ -18,7 +18,9 @@ export default class changeUserPassword extends Block {
     return `
         <main class='main'>
             <div class='profile'>
-                {{{ProfileBackButton path="./profile.hbs"}}}
+                <div class="profile__aside">
+                    {{{ ArrowRoundButton path="./profile.hbs" class="arrow"}}}
+                </div>
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
