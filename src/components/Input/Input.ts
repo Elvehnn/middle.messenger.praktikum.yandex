@@ -2,11 +2,12 @@ import Block from 'core/Block';
 import './Input.scss';
 
 interface InputProps {
-  type: 'text' | 'password' | 'email';
+  type: 'text' | 'password' | 'email' | 'file';
   inputName: string;
   placeholder?: string;
   value?: string;
   class?: string;
+  id?: string;
   onInput?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -34,6 +35,7 @@ export default class Input extends Block {
         value='{{value}}' 
         name='{{inputName}}'
         class='{{class}}'
+        id='{{id}}'
       />
      `;
   }

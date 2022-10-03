@@ -90,7 +90,8 @@ export default class MainPage extends Block {
                 <footer class='chat__footer'>
                   <form class='message-form' action='#'>
                     <div class="button-container">
-                      {{{Button ref="attach" class="button button_attach"}}}
+                      {{{Label class='file-input' for='input-file'}}}
+                      {{{Input ref='attach' id='input-file' name='attach' class="input_attach" type="file"}}}
                     </div>
                   
                     {{{MessageInput ref="message" class='message'}}}
