@@ -19,6 +19,8 @@ export enum ValidateType {
   Phone = 'phone',
   FirstName = 'first_name',
   SecondName = 'second_name',
+  Attach = 'attach',
+  Message = 'message',
 }
 
 export type ValidateRule = {
@@ -151,6 +153,14 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
         if (!value.match(FIRST_CAPITAL_LETTER)) {
           errors[type] = 'Name should begin with a capital letter';
+          return;
+        }
+
+        break;
+
+      case ValidateType.Message:
+        if (!value.length) {
+          errors[type] = 'Your message is empty';
           return;
         }
 

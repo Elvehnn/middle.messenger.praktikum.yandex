@@ -4,17 +4,18 @@ import './ArrowRoundButton.scss';
 interface ArrowRoundButtonProps {
   path: string;
   class?: string;
+  onClick?: () => void;
 }
 
 export default class ArrowRoundButton extends Block {
-  constructor({ path, class: string = 'arrow' }: ArrowRoundButtonProps) {
-    super({ path, class: string });
+  constructor({ path, class: string = 'arrow', onClick }: ArrowRoundButtonProps) {
+    super({ path, class: string, events: { click: onClick } });
   }
 
   render() {
     // language=hbs
     return `
-        <a href='{{path}}' class='{{class}}'></a>
+        <button class='{{class}}' onClick={{onClick}}></button>
     `;
   }
 }

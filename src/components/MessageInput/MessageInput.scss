@@ -1,0 +1,14 @@
+@import '../../styles/variables.scss';
+.message {
+    width: 85%;
+    min-height: 3rem;
+    height: 100%;
+    background: $color-text-light;
+    border-radius: 30px;
+    border: none;
+    outline: transparent;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    color: $color-black;
+    resize: none;
+}

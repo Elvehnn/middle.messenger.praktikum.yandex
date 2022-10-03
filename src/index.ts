@@ -16,6 +16,7 @@ import Label from 'components/Label/Label';
 import ErrorMessage from 'components/Error/Error';
 import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
+import MessageInput from 'components/MessageInput/MessageInput';
 
 import { inputs } from 'constants/inputs';
 
@@ -43,6 +44,7 @@ registerComponent(Label);
 registerComponent(ErrorMessage);
 registerComponent(ArrowRoundButton);
 registerComponent(ChatMessage);
+registerComponent(MessageInput);
 
 document.addEventListener('DOMContentLoaded', () => {
   // renderDOM(new StartPage());

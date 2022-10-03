@@ -1,14 +1,47 @@
 import { ChatItemPreview } from 'components/ChatItem/ChatItem';
 import Block from 'core/Block';
+import { validateForm, ValidateType } from 'utils/validateForm';
 import './main.scss';
 
 type MainPageProps = {
   chats: ChatItemPreview[];
 };
 
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
 export default class MainPage extends Block {
   constructor({ chats }: MainPageProps) {
     super({ chats });
+
+    this.setProps({
+      onSubmit: (event: SubmitEvent) => {
+        event.preventDefault();
+
+        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
+          acc[key] = value.getContent() as HTMLInputElement;
+          return acc;
+        }, {} as { [key: string]: HTMLInputElement });
+
+        const { attach, message } = refs;
+
+        const errors = validateForm([{ type: ValidateType.Message, value: message.value }]);
+
+        if (Object.keys(errors).length !== 0) {
+          for (let key in errors) {
+            console.log(errors[key]);
+          }
+        } else {
+          console.log({
+            message: message.value,
+            attach: attach.value,
+          });
+
+          message.value = '';
+        }
+      },
+    });
   }
   render() {
     // language=hbs
@@ -55,15 +88,15 @@ export default class MainPage extends Block {
                 </div>
                   
                 <footer class='chat__footer'>
-                  <form class='message-form' action='./main.html'>
+                  <form class='message-form' action='#'>
                     <div class="button-container">
-                      {{{Button class="button button_attach"}}}
+                      {{{Button ref="attach" class="button button_attach"}}}
                     </div>
                   
-                    <textarea class='message' name='message' placeholder='Write a message'></textarea>
+                    {{{MessageInput ref="message" class='message'}}}
 
                     <div class="button-container">
-                      {{{ ArrowRoundButton path="./main.hbs" class="arrow arrow_reverse" type='submit'}}}
+                      {{{ ArrowRoundButton class="arrow arrow_reverse" onClick=onSubmit}}}
                     </div>
                   </form>
                 </footer>
