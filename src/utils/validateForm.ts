@@ -21,6 +21,7 @@ export enum ValidateType {
   SecondName = 'second_name',
   Attach = 'attach',
   Message = 'message',
+  File = 'file',
 }
 
 export type ValidateRule = {

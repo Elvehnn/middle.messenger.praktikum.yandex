@@ -11,11 +11,11 @@ export interface ProfileProps {
   userData: UserProps[];
 }
 
-export default class Profile extends Block {
+export default class Profile extends Block<ProfileProps> {
   constructor({ userData }: ProfileProps) {
     super();
     this.setProps({
-      props: userData,
+      userData,
     });
   }
   render() {
@@ -24,11 +24,11 @@ export default class Profile extends Block {
         <main class="main">
             <div class='profile'>
               <div class="profile__aside">
-                {{{ ArrowRoundButton path="./main.hbs" class="arrow"}}}
+                {{{ArrowRoundButton path="./main.hbs" class="arrow"}}}
               </div>
             
               <section class='profile__container'>
-                    {{{ User userData=this.props }}}
+                 {{{ User userData=this.props }}}
               </section>
             </div>
         </main>

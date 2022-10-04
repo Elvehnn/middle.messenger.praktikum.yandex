@@ -1,7 +1,11 @@
 import Block from 'core/Block';
 import './changeUserAvatar.scss';
 
-export default class changeUserAvatar extends Block {
+type changeUserAvatarProps = {
+  onSubmit: (event: SubmitEvent) => void;
+};
+
+export default class changeUserAvatar extends Block<changeUserAvatarProps> {
   render() {
     // language=hbs
     return `

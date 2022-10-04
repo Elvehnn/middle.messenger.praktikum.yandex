@@ -14,6 +14,9 @@ interface IncomingControlledInputProps {
   value?: string;
   error?: string;
   childInputRef: string;
+  label?: string;
+  for?: string;
+  class?: string;
   onInput?: () => void;
   onFocus?: () => void;
 }
@@ -23,10 +26,12 @@ type ControlledInputProps = IncomingControlledInputProps & {
 };
 
 export default class ControlledInput extends Block<ControlledInputProps, ControlledInputRefs> {
-  constructor({ error = '', ...props }: ControlledInputProps) {
+  constructor({ error = '', inputName, label = inputName, ...props }: ControlledInputProps) {
     super({
       ...props,
       error,
+      inputName,
+      label,
       onBlur: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
         const error = validateForm([
@@ -42,9 +47,9 @@ export default class ControlledInput extends Block<ControlledInputProps, Control
     // language=hbs
     return `
         <div class='controlled-input'>
-          {{{Input inputName=inputName type=type onInput=onInput onFocus=onFocus 
-            onBlur=onBlur ref=childInputRef placeholder=placeholder id=inputName}}}
-          {{{Label label=inputName}}}
+          {{{Input inputName=inputName type=type onInput=onInput onFocus=onFocus class=class
+            onBlur=onBlur ref=childInputRef placeholder=placeholder id=childInputRef}}}
+          {{{Label label=label for=id}}}
           {{{ErrorMessage ref="errorRef"}}}
         </div>
     `;
