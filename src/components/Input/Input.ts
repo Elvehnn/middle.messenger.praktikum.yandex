@@ -1,7 +1,7 @@
 import Block from 'core/Block';
 import './Input.scss';
 
-interface InputProps {
+type InputIncomingProps = {
   type: 'text' | 'password' | 'email' | 'file';
   inputName: string;
   placeholder?: string;
@@ -11,18 +11,22 @@ interface InputProps {
   onInput?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
-}
+};
 
-export default class Input extends Block {
-  constructor({ onInput, onFocus, onBlur, class: string = 'input', ...props }: InputProps) {
+type InputProps = InputIncomingProps & {
+  onInput?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+};
+
+export default class Input extends Block<InputProps> {
+  constructor({ onInput, onFocus, onBlur, class: string = 'input', ...props }: InputIncomingProps) {
     super({
       class: string,
       ...props,
-      events: {
-        input: onInput,
-        focus: onFocus,
-        blur: onBlur,
-      },
+      onInput,
+      onFocus,
+      onBlur,
     });
   }
 

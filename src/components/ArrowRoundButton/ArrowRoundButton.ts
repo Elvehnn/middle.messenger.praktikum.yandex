@@ -1,14 +1,22 @@
 import Block from 'core/Block';
 import './ArrowRoundButton.scss';
 
-interface ArrowRoundButtonProps {
+interface IncomingArrowRoundButtonProps {
   path: string;
   class?: string;
   onClick?: () => void;
 }
 
-export default class ArrowRoundButton extends Block {
-  constructor({ path, class: string = 'arrow', onClick }: ArrowRoundButtonProps) {
+interface ArrowRoundButtonProps {
+  path: string;
+  class?: string;
+  events: {
+    click?: () => void;
+  };
+}
+
+export default class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
+  constructor({ path, class: string = 'arrow', onClick }: IncomingArrowRoundButtonProps) {
     super({ path, class: string, events: { click: onClick } });
   }
 

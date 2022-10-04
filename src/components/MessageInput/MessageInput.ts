@@ -5,7 +5,7 @@ interface MessageInputProps {
   class: string;
 }
 
-export default class MessageInput extends Block {
+export default class MessageInput extends Block<MessageInputProps> {
   constructor({ class: string }: MessageInputProps) {
     super({ class: string });
   }

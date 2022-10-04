@@ -1,21 +1,31 @@
 import { ChatItemPreview } from 'components/ChatItem/ChatItem';
+import MessageInput from 'components/MessageInput/MessageInput';
+import Input from 'components/Input/Input';
 import Block from 'core/Block';
 import { validateForm, ValidateType } from 'utils/validateForm';
 import './main.scss';
 
-type MainPageProps = {
+type IncomingProps = {
   chats: ChatItemPreview[];
+};
+
+type Props = IncomingProps & {
+  onSubmit: (event: SubmitEvent) => void;
+};
+
+type Refs = {
+  messageRef: MessageInput;
+  attach: Input;
 };
 
 interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-export default class MainPage extends Block {
-  constructor({ chats }: MainPageProps) {
-    super({ chats });
-
-    this.setProps({
+export default class MainPage extends Block<Props, Refs> {
+  constructor({ chats }: IncomingProps) {
+    super({
+      chats,
       onSubmit: (event: SubmitEvent) => {
         event.preventDefault();
 
@@ -24,9 +34,9 @@ export default class MainPage extends Block {
           return acc;
         }, {} as { [key: string]: HTMLInputElement });
 
-        const { attach, message } = refs;
+        const { attach, messageRef } = refs;
 
-        const errors = validateForm([{ type: ValidateType.Message, value: message.value }]);
+        const errors = validateForm([{ type: ValidateType.Message, value: messageRef.value }]);
 
         if (Object.keys(errors).length !== 0) {
           for (let key in errors) {
@@ -34,14 +44,16 @@ export default class MainPage extends Block {
           }
         } else {
           console.log({
-            message: message.value,
+            message: messageRef.value,
             attach: attach.value,
           });
 
-          message.value = '';
+          messageRef.value = '';
         }
       },
     });
+
+    this.setProps({});
   }
   render() {
     // language=hbs
@@ -94,7 +106,7 @@ export default class MainPage extends Block {
                       {{{Input ref='attach' id='input-file' name='attach' class="input_attach" type="file"}}}
                     </div>
                   
-                    {{{MessageInput ref="message" class='message'}}}
+                    {{{MessageInput ref="messageRef" class='message'}}}
 
                     <div class="button-container">
                       {{{ ArrowRoundButton class="arrow arrow_reverse" onClick=onSubmit}}}

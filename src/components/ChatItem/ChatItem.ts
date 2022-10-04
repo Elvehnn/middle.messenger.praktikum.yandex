@@ -6,10 +6,15 @@ export interface ChatItemPreview {
   message: string;
   time: string;
   unread: string;
-  onChatItemClick?: () => void;
 }
 
-export default class ChatItem extends Block {
+type ChatItemProps = ChatItemPreview & {
+  events: {
+    click: () => void;
+  };
+};
+
+export default class ChatItem extends Block<ChatItemProps> {
   constructor({ name, message, time, unread }: ChatItemPreview) {
     const onChatItemClick = () => console.log('chat click!');
 

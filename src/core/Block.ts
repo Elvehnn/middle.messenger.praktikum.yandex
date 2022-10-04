@@ -2,13 +2,12 @@ import EventBus from './EventBus';
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 
-interface BlockMeta<P = any> {
-  props: P;
-}
-
 type Events = Values<typeof Block.EVENTS>;
 
-export default class Block<P = any> {
+export default class Block<
+  P extends Record<string, any>,
+  Refs extends Record<string, Block<any>> = {}
+> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -17,28 +16,18 @@ export default class Block<P = any> {
   } as const;
 
   public id = nanoid(6);
-  private readonly _meta: BlockMeta;
 
   protected _element: Nullable<HTMLElement> = null;
   protected readonly props: P;
-  protected children: { [id: string]: Block } = {};
+  protected children: { [id: string]: Block<{}> } = {};
 
   _eventBus: EventBus<Events>;
 
-  protected state: any = {};
-  protected refs: { [key: string]: Block } = {};
+  // @ts-expect-error Тип {} не соответствует типу Record<string, Block<any>
+  protected refs: Refs = {};
 
   public constructor(props?: P) {
-    // const eventBus = new EventBus<Events>();
-
-    this._meta = {
-      props,
-    };
-
-    this.getStateFromProps(props);
-
     this.props = this._makePropsProxy(props || ({} as P));
-    this.state = this._makePropsProxy(this.state);
 
     this._eventBus = new EventBus<Events>();
 
@@ -52,10 +41,6 @@ export default class Block<P = any> {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-  }
-
-  protected getStateFromProps(props: any): void {
-    this.state = {};
   }
 
   init() {
@@ -86,7 +71,7 @@ export default class Block<P = any> {
     return true;
   }
 
-  setProps = (nextProps: P) => {
+  setProps = (nextProps: Partial<P>) => {
     if (!nextProps) {
       return;
     }
@@ -94,12 +79,8 @@ export default class Block<P = any> {
     Object.assign(this.props as Object, nextProps);
   };
 
-  setState = (nextState: any) => {
-    if (!nextState) {
-      return;
-    }
-
-    Object.assign(this.state, nextState);
+  getProps = () => {
+    return this.props;
   };
 
   get element() {
@@ -195,7 +176,6 @@ export default class Block<P = any> {
     const template = Handlebars.compile(this.render());
 
     fragment.innerHTML = template({
-      ...this.state,
       ...this.props,
       children: this.children,
       refs: this.refs,

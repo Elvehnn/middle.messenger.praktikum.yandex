@@ -1,4 +1,4 @@
-import { ChatItemPreview } from '../constants/interfaces';
+import { ChatItemPreview } from 'components/ChatItem/ChatItem';
 
 export const chats: ChatItemPreview[] = [
   {
