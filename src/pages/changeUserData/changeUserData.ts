@@ -4,13 +4,13 @@ import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
 import { ProfileProps } from '../profile/profile';
 
-export default class ChangeUserData extends Block {
-  constructor({ userData }: ProfileProps) {
-    super({ userData });
+export type ChangeProfileProps = ProfileProps & {
+  saveChanges: () => void;
+};
 
-    this.setProps({
-      saveChanges: () => console.log('save changes'),
-    });
+export default class ChangeUserData extends Block<ChangeProfileProps> {
+  constructor({ userData }: ProfileProps) {
+    super({ userData, saveChanges: () => console.log('save changes') });
   }
 
   render() {
@@ -19,7 +19,7 @@ export default class ChangeUserData extends Block {
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ ArrowRoundButton path="./profile.hbs" class="arrow"}}}
+                    {{{ArrowRoundButton path="./profile.hbs" class="arrow"}}}
                 </div>
                 
                 <section class='profile__container'>

@@ -1,23 +1,82 @@
 import Block from 'core/Block';
-import { DataItem } from 'components/UserDataItem/UserDataItem';
+import { DataItemProps } from 'components/UserDataItem/UserDataItem';
+import Input from 'components/Input/Input';
 import './UserDataInput.scss';
+import ErrorMessage from 'components/Error/Error';
+import { validateForm, ValidateType } from 'utils/validateForm';
 
-export default class UserDataInput extends Block {
-  constructor({ title, data, type }: DataItem) {
-    super({ title, data, type });
+type IncomingUserDataInputProps = DataItemProps & {
+  childRef: string;
+  error?: string;
+};
+
+type UserDataInputProps = IncomingUserDataInputProps & {
+  onInput?: (event: FocusEvent) => void;
+  onFocus?: (event: FocusEvent) => void;
+  onBlur?: (event: FocusEvent) => void;
+};
+
+type UserDataInputRefs = {
+  [key: string]: Input | ErrorMessage;
+};
+
+export default class UserDataInput extends Block<UserDataInputProps, UserDataInputRefs> {
+  constructor({ title, data, type, childRef, error = '' }: IncomingUserDataInputProps) {
+    super({
+      title,
+      data,
+      type,
+      childRef,
+      error,
+      onInput: (event: FocusEvent) => {
+        const target = event.target as HTMLInputElement;
+
+        const error = validateForm([{ type: ValidateType.Password, value: target.value }])[
+          ValidateType.Password
+        ];
+
+        this.refs.errorRef.setProps({ error: error });
+      },
+      onFocus: (event: FocusEvent) => {
+        const target = event.target as HTMLInputElement;
+
+        const error = validateForm([{ type: ValidateType.Password, value: target.value }])[
+          ValidateType.Password
+        ];
+
+        this.refs.errorRef.setProps({ error: error });
+      },
+      onBlur: (event: FocusEvent) => {
+        const target = event.target as HTMLInputElement;
+
+        const error = validateForm([{ type: ValidateType.Password, value: target.value }])[
+          ValidateType.Password
+        ];
+
+        this.refs.errorRef.setProps({ error: error });
+      },
+    });
   }
   render() {
     // language=hbs
     return `
-            <div class='data-item'>
-                <div class='data-item__title'>{{title}}</div>
-                <input
-                    type='{{type}}'
+            <div class='change-data'>
+              <div class='change-data__container'>
+                <div class='change-data__title'>{{title}}</div>
+                {{{Input
+                    ref=childRef
+                    type=type
                     placeholder=' '
-                    name='{{title}}'
-                    value='{{data}}'
-                    class='data-item__input'
-                />
+                    name=title
+                    value=data
+                    class='change-data__input'
+                    onInput=onInput
+                    onFocus=onFocus
+                    onBlur=onBlur
+                }}}
+              </div>
+                
+              {{{ErrorMessage ref="errorRef"}}}
             </div>
         `;
   }

@@ -24,7 +24,7 @@ export default class Block<
   _eventBus: EventBus<Events>;
 
   // @ts-expect-error Тип {} не соответствует типу Record<string, Block<any>
-  protected refs: Refs = {};
+  protected refs: Refs = {} as { [key: string]: Block };
 
   public constructor(props?: P) {
     this.props = this._makePropsProxy(props || ({} as P));
@@ -52,6 +52,7 @@ export default class Block<
   }
 
   componentDidMount(props: P) {
+    this.setProps(props);
     return true;
   }
 
@@ -61,6 +62,7 @@ export default class Block<
 
   _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps);
+
     if (!response) {
       return;
     }

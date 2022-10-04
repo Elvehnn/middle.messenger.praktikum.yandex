@@ -1,15 +1,15 @@
 import Block from 'core/Block';
 import './UserDataItem.scss';
 
-export interface DataItem {
+export interface DataItemProps {
   title: string;
   data: string;
   type: string;
 }
 
-export default class UserDataItem extends Block {
-  constructor({ title, data }: DataItem) {
-    super({ title, data });
+export default class UserDataItem extends Block<DataItemProps> {
+  constructor(props: DataItemProps) {
+    super(props);
   }
   render() {
     // language=hbs

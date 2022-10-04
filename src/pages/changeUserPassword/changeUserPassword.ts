@@ -2,14 +2,69 @@ import Block from 'core/Block';
 import 'components/User/User.scss';
 import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
-import { ProfileProps } from '../profile/profile';
+import UserDataInput from 'components/UserDataInput/UserDataInput';
+import { validateForm, ValidateType } from 'utils/validateForm';
 
-export default class changeUserPassword extends Block {
-  constructor({ userData }: ProfileProps) {
-    super({ userData });
+type changeUserPasswordProps = {
+  onSubmit: (event: SubmitEvent) => void;
+};
+
+type changeUserPasswordRefs = {
+  [key: string]: UserDataInput;
+};
+
+export type refsObject = {
+  [key: string]: HTMLInputElement;
+};
+export default class changeUserPassword extends Block<
+  changeUserPasswordProps,
+  changeUserPasswordRefs
+> {
+  constructor() {
+    super();
 
     this.setProps({
-      saveChanges: () => console.log('save changes'),
+      onSubmit: () => {
+        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
+          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
+          return acc;
+        }, {} as refsObject);
+
+        const { newPassword, repeatNewPassword } = refs;
+        const errors = Object.entries(refs).reduce((acc, [key, input]) => {
+          const errorMessage = validateForm([{ type: ValidateType.Password, value: input.value }])[
+            ValidateType.Password
+          ];
+
+          if (errorMessage) {
+            acc[key] = errorMessage;
+          }
+
+          return acc;
+        }, {} as { [key: string]: string });
+
+        if (Object.entries(errors).length !== 0) {
+          Object.entries(errors).forEach(([key, value]) =>
+            this.refs[key].getRefs().errorRef.setProps({ error: value })
+          );
+
+          return;
+        }
+
+        if (newPassword.value !== repeatNewPassword.value) {
+          Object.entries(this.refs).forEach(([key, value]) => {
+            value.getRefs().errorRef.setProps({ error: 'Passwords do not match' });
+          });
+
+          return;
+        }
+
+        console.log('New password', newPassword.value);
+
+        Object.entries(this.refs).forEach(([key, value]) => {
+          value.getRefs().errorRef.setProps({ error: '' });
+        });
+      },
     });
   }
 
@@ -33,13 +88,13 @@ export default class changeUserPassword extends Block {
                         </div>
 
                         <div class='user__data'>
-                            {{{UserDataInput title="Old password" type="password"}}}
-                            {{{UserDataInput title="New password" type="password"}}}
-                            {{{UserDataInput title="Repeat new password" type="password"}}}
+                            {{{UserDataInput title="Enter old password" type="password" data=''}}}
+                            {{{UserDataInput ref="newPassword" childRef="newPassword" title="Enter new password" type="password" }}}
+                            {{{UserDataInput ref="repeatNewPassword" childRef="repeatNewPassword" title="Repeat new password" type="password"}}}
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{ Button title='Save changes' class='button button_confirm' onClick=saveChanges}}}
+                            {{{ Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
                         </div>
                     </form>
                 </section>

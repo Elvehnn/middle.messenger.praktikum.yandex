@@ -9,6 +9,7 @@ export const userData = [
     data: 'ivan',
     type: 'text',
   },
+
   {
     title: 'Name',
     data: 'Ivan',
@@ -28,5 +29,10 @@ export const userData = [
     title: 'Phone',
     data: '+7 000 000 00 00',
     type: 'tel',
+  },
+  {
+    title: 'Password',
+    data: 'Password8Uhgfjhf',
+    type: 'password',
   },
 ];

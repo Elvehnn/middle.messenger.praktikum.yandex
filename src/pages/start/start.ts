@@ -7,7 +7,7 @@ type IncomingSigninProps = {
   inputs: Array<{ text: string; type: string }>;
 };
 
-type Props = IncomingSigninProps & {
+type SigninProps = IncomingSigninProps & {
   onSubmit: (event: SubmitEvent) => void;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
@@ -21,10 +21,10 @@ interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-type refsObject = {
+export type refsObject = {
   [key: string]: HTMLInputElement;
 };
-export default class StartPage extends Block<Props, SigninRefs> {
+export default class StartPage extends Block<SigninProps, SigninRefs> {
   constructor() {
     super();
 
