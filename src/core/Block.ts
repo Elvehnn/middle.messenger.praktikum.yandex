@@ -83,6 +83,10 @@ export default class Block<
     return this.props;
   };
 
+  getRefs() {
+    return this.refs;
+  }
+
   get element() {
     return this._element;
   }

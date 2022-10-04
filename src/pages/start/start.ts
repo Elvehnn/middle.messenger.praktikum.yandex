@@ -1,17 +1,39 @@
 import Block from 'core/Block';
 import { validateForm, ValidateType } from 'utils/validateForm';
 import './start.scss';
+import ControlledInput from 'components/ControlledInput/ControlledInput';
 
-export default class StartPage extends Block {
+type IncomingSigninProps = {
+  inputs: Array<{ text: string; type: string }>;
+};
+
+type Props = IncomingSigninProps & {
+  onSubmit: (event: SubmitEvent) => void;
+  onInput: (event: FocusEvent) => void;
+  onFocus: (event: FocusEvent) => void;
+};
+
+type SigninRefs = {
+  [key: string]: ControlledInput;
+};
+
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
+type refsObject = {
+  [key: string]: HTMLInputElement;
+};
+export default class StartPage extends Block<Props, SigninRefs> {
   constructor() {
     super();
 
     this.setProps({
       onSubmit: () => {
         const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.refs[key].getContent() as HTMLInputElement;
+          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
           return acc;
-        }, {} as { [key: string]: HTMLInputElement });
+        }, {} as refsObject);
 
         const { login, password } = refs;
 
@@ -22,7 +44,7 @@ export default class StartPage extends Block {
 
         if (Object.keys(errors).length !== 0) {
           for (let key in errors) {
-            this.refs[key].refs.errorRef.setProps({ error: errors[key] });
+            this.refs[key].getRefs().errorRef.setProps({ error: errors[key] });
           }
         } else {
           console.log({
@@ -31,7 +53,7 @@ export default class StartPage extends Block {
           });
 
           for (let key in errors) {
-            this.refs[key].refs.errorRef.setProps({ error: '' });
+            this.refs[key].getRefs().errorRef.setProps({ error: '' });
           }
         }
       },
@@ -39,13 +61,13 @@ export default class StartPage extends Block {
         const target = event.target as HTMLInputElement;
         const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
 
-        this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name] });
+        this.refs[target.name].getRefs().errorRef.setProps({ error: errors[target.name] });
       },
       onFocus: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
         const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
 
-        this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name] });
+        this.refs[target.name].getRefs().errorRef.setProps({ error: errors[target.name] });
       },
     });
   }
@@ -94,9 +116,3 @@ export default class StartPage extends Block {
         `;
   }
 }
-
-// {{{Input
-//   id="password"
-//   type="password"
-//   name="Password"
-// }}}

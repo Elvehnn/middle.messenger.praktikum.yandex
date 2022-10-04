@@ -1,21 +1,43 @@
 import Block from 'core/Block';
 import 'pages/start/start.scss';
 import { validateForm, ValidateType } from 'utils/validateForm';
+import ControlledInput from 'components/ControlledInput/ControlledInput';
+import Input from 'components/Input/Input';
 
-type SignupPageProps = {
+type IncomingSignupProps = {
   inputs: Array<{ text: string; type: string }>;
 };
 
-export default class SignupPage extends Block {
-  constructor({ inputs }: SignupPageProps) {
-    super({ inputs });
+type Props = IncomingSignupProps & {
+  onSubmit: (event: SubmitEvent) => void;
+  onInput: (event: FocusEvent) => void;
+  onFocus: (event: FocusEvent) => void;
+};
 
-    this.setProps({
+type SignupRefs = {
+  [key: string]: ControlledInput;
+};
+
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
+type refsObject = {
+  [key: string]: HTMLInputElement;
+};
+
+export default class SignupPage extends Block<Props, SignupRefs> {
+  constructor({ inputs }: IncomingSignupProps) {
+    super({
+      inputs,
       onSubmit: () => {
         const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key.toLowerCase()] = value.refs[key].getContent() as HTMLInputElement;
+          if (value.getRefs()[key] instanceof Input) {
+            acc[key.toLowerCase()] = value.getRefs()[key].getContent() as HTMLInputElement;
+          }
+
           return acc;
-        }, {} as { [key: string]: HTMLInputElement });
+        }, {} as refsObject);
 
         const { login, password, email, first_name, second_name, phone } = refs;
 
@@ -32,7 +54,7 @@ export default class SignupPage extends Block {
           for (let key in errors) {
             const capitalizedKey = key[0].toUpperCase() + key.slice(1);
 
-            this.refs[capitalizedKey].refs.errorRef.setProps({ error: errors[key] });
+            this.refs[capitalizedKey].getRefs().errorRef.setProps({ error: errors[key] });
           }
         } else {
           console.log({
@@ -45,7 +67,7 @@ export default class SignupPage extends Block {
           });
 
           for (let key in errors) {
-            this.refs[key].refs.errorRef.setProps({ error: '' });
+            this.refs[key].getRefs().errorRef.setProps({ error: '' });
           }
         }
       },
@@ -56,7 +78,9 @@ export default class SignupPage extends Block {
           { type: target.name.toLowerCase() as ValidateType, value: target.value },
         ]);
 
-        this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name.toLowerCase()] });
+        this.refs[target.name]
+          .getRefs()
+          .errorRef.setProps({ error: errors[target.name.toLowerCase()] });
       },
       onFocus: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
@@ -64,7 +88,9 @@ export default class SignupPage extends Block {
           { type: target.name.toLowerCase() as ValidateType, value: target.value },
         ]);
 
-        this.refs[target.name].refs.errorRef.setProps({ error: errors[target.name.toLowerCase()] });
+        this.refs[target.name]
+          .getRefs()
+          .errorRef.setProps({ error: errors[target.name.toLowerCase()] });
       },
     });
   }

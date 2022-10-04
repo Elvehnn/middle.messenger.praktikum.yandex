@@ -14,9 +14,11 @@ type InputIncomingProps = {
 };
 
 type InputProps = InputIncomingProps & {
-  onInput?: () => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  events: {
+    input?: () => void;
+    focus?: () => void;
+    blur?: () => void;
+  };
 };
 
 export default class Input extends Block<InputProps> {
@@ -24,9 +26,11 @@ export default class Input extends Block<InputProps> {
     super({
       class: string,
       ...props,
-      onInput,
-      onFocus,
-      onBlur,
+      events: {
+        input: onInput,
+        focus: onFocus,
+        blur: onBlur,
+      },
     });
   }
 
