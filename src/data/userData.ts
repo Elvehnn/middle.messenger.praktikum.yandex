@@ -1,6 +1,6 @@
 export const userData = [
   {
-    title: 'E-mail',
+    title: 'Email',
     data: 'mail@pochta.ru',
     type: 'email',
   },
@@ -11,28 +11,19 @@ export const userData = [
   },
 
   {
-    title: 'Name',
+    title: 'First_name',
     data: 'Ivan',
     type: 'text',
   },
   {
-    title: 'Second name',
+    title: 'Second_name',
     data: 'Ivanov',
     type: 'text',
   },
-  {
-    title: 'Display name',
-    data: 'Ivan',
-    type: 'text',
-  },
+
   {
     title: 'Phone',
     data: '+7 000 000 00 00',
     type: 'tel',
-  },
-  {
-    title: 'Password',
-    data: 'Password8Uhgfjhf',
-    type: 'password',
   },
 ];

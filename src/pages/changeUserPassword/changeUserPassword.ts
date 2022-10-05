@@ -52,7 +52,7 @@ export default class changeUserPassword extends Block<
         }
 
         if (newPassword.value !== repeatNewPassword.value) {
-          Object.entries(this.refs).forEach(([key, value]) => {
+          Object.values(this.refs).forEach((value) => {
             value.getRefs().errorRef.setProps({ error: 'Passwords do not match' });
           });
 
@@ -61,7 +61,7 @@ export default class changeUserPassword extends Block<
 
         console.log('New password', newPassword.value);
 
-        Object.entries(this.refs).forEach(([key, value]) => {
+        Object.values(this.refs).forEach((value) => {
           value.getRefs().errorRef.setProps({ error: '' });
         });
       },
@@ -88,9 +88,9 @@ export default class changeUserPassword extends Block<
                         </div>
 
                         <div class='user__data'>
-                            {{{UserDataInput title="Enter old password" type="password" data=''}}}
-                            {{{UserDataInput ref="newPassword" childRef="newPassword" title="Enter new password" type="password" }}}
-                            {{{UserDataInput ref="repeatNewPassword" childRef="repeatNewPassword" title="Repeat new password" type="password"}}}
+                            {{{UserDataInput title="Enter old password" type="password" data='' inputName='password'}}}
+                            {{{UserDataInput ref="newPassword" childRef="newPassword" title="Enter new password" type="password" inputName='password'}}}
+                            {{{UserDataInput ref="repeatNewPassword" childRef="repeatNewPassword" title="Repeat new password" type="password" inputName='password'}}}
                         </div>
 
                         <div class="login-form__bottom">

@@ -22,10 +22,24 @@ type InputProps = InputIncomingProps & {
 };
 
 export default class Input extends Block<InputProps> {
-  constructor({ onInput, onFocus, onBlur, class: string = 'input', ...props }: InputIncomingProps) {
+  constructor({
+    onInput,
+    onFocus,
+    onBlur,
+    class: string = 'input',
+    type,
+    value,
+    inputName,
+    id,
+    placeholder,
+  }: InputIncomingProps) {
     super({
       class: string,
-      ...props,
+      type,
+      value,
+      inputName,
+      id,
+      placeholder,
       events: {
         input: onInput,
         focus: onFocus,

@@ -7,6 +7,7 @@ import { validateForm, ValidateType } from 'utils/validateForm';
 
 type IncomingUserDataInputProps = DataItemProps & {
   childRef: string;
+  inputName: string;
   error?: string;
 };
 
@@ -21,37 +22,38 @@ type UserDataInputRefs = {
 };
 
 export default class UserDataInput extends Block<UserDataInputProps, UserDataInputRefs> {
-  constructor({ title, data, type, childRef, error = '' }: IncomingUserDataInputProps) {
+  constructor({ title, data, type, childRef, error = '', inputName }: IncomingUserDataInputProps) {
     super({
       title,
       data,
       type,
       childRef,
       error,
+      inputName,
       onInput: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
 
-        const error = validateForm([{ type: ValidateType.Password, value: target.value }])[
-          ValidateType.Password
-        ];
+        const error = validateForm([
+          { type: inputName.toLowerCase() as ValidateType, value: target.value },
+        ])[inputName.toLowerCase()];
 
         this.refs.errorRef.setProps({ error: error });
       },
       onFocus: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
 
-        const error = validateForm([{ type: ValidateType.Password, value: target.value }])[
-          ValidateType.Password
-        ];
+        const error = validateForm([
+          { type: inputName.toLowerCase() as ValidateType, value: target.value },
+        ])[inputName.toLowerCase()];
 
         this.refs.errorRef.setProps({ error: error });
       },
       onBlur: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
 
-        const error = validateForm([{ type: ValidateType.Password, value: target.value }])[
-          ValidateType.Password
-        ];
+        const error = validateForm([
+          { type: inputName.toLowerCase() as ValidateType, value: target.value },
+        ])[inputName.toLowerCase()];
 
         this.refs.errorRef.setProps({ error: error });
       },
@@ -67,7 +69,7 @@ export default class UserDataInput extends Block<UserDataInputProps, UserDataInp
                     ref=childRef
                     type=type
                     placeholder=' '
-                    name=title
+                    inputName=inputName
                     value=data
                     class='change-data__input'
                     onInput=onInput

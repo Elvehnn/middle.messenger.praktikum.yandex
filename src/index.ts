@@ -18,7 +18,6 @@ import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-import ImageComponent from 'components/Image/Image';
 
 import { inputs } from 'constants/inputs';
 
@@ -48,14 +47,13 @@ registerComponent(ArrowRoundButton);
 registerComponent(ChatMessage);
 registerComponent(MessageInput);
 registerComponent(Avatar);
-registerComponent(ImageComponent);
 
 document.addEventListener('DOMContentLoaded', () => {
   // renderDOM(new StartPage());
   // renderDOM(new SignupPage({ inputs }));
   // renderDOM(new Main({ chats }));
-  renderDOM(new Profile({ userData }));
+  // renderDOM(new Profile({ userData }));
   // renderDOM(new changeUserData({ userData }));
   // renderDOM(new changeUserPassword());
-  // renderDOM(new changeUserAvatar());
+  renderDOM(new changeUserAvatar());
 });

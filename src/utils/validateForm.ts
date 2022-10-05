@@ -30,7 +30,7 @@ export type ValidateRule = {
 };
 
 export const validateForm = (rulesArray: ValidateRule[]) => {
-  let errors: { [key: string]: string } = {};
+  const errors: { [key: string]: string } = {};
 
   rulesArray.forEach((rule) => {
     const { type, value } = rule;
