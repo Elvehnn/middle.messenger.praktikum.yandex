@@ -1,0 +1,20 @@
+.arrow {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    border-radius: 50%;
+    background: url('../../assets/back-btn.svg') no-repeat center center;
+    background-size: cover;
+    border-radius: 50%;
+    border: none;
+    outline: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+        cursor: pointer;
+    }
+    &_reverse {
+        transform: rotate(180deg);
+    }
+}
