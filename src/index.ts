@@ -18,18 +18,17 @@ import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-
 import { inputs } from 'constants/inputs';
-
-import StartPage from 'pages/start/start';
-import SignupPage from 'pages/signup/signup';
-import Main from 'pages/main/main';
 import { chats } from './data/chats';
 import { userData } from './data/userData';
+import StartPage from 'pages/start/start';
+import SignupPage from 'pages/signup/signup';
+import SigninPage from 'pages/signin/signin';
+import MainPage from 'pages/main/main';
 import Profile from 'pages/profile/profile';
-import changeUserData from 'pages/changeUserData/changeUserData';
-import changeUserPassword from 'pages/changeUserPassword/changeUserPassword';
-import changeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
+import ChangeUserData from 'pages/changeUserData/changeUserData';
+import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
+import ChangeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -48,12 +47,23 @@ registerComponent(ChatMessage);
 registerComponent(MessageInput);
 registerComponent(Avatar);
 
+type PagesMap = { [key: string]: any };
+
+const currentLocation: string = window.location.pathname;
+
+const pagesMap: PagesMap = {
+  '/': [StartPage, null],
+  '/signin': [SigninPage, null],
+  '/signup': [SignupPage, { inputs }],
+  '/main': [MainPage, { chats }],
+  '/profile': [Profile, { userData }],
+  '/changeUserData': [ChangeUserData, { userData }],
+  '/changeUserPassword': [ChangeUserPassword, null],
+  '/changeUserAvatar': [ChangeUserAvatar, null],
+};
+
+const [pageToRender, props] = pagesMap[currentLocation];
+
 document.addEventListener('DOMContentLoaded', () => {
-  // renderDOM(new StartPage());
-  // renderDOM(new SignupPage({ inputs }));
-  // renderDOM(new Main({ chats }));
-  renderDOM(new Profile({ userData }));
-  // renderDOM(new changeUserData({ userData }));
-  // renderDOM(new changeUserPassword());
-  // renderDOM(new changeUserAvatar());
+  renderDOM(new pageToRender(props));
 });

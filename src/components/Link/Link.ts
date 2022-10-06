@@ -4,6 +4,7 @@ import './Link.scss';
 type IncomingLinkProps = {
   text: string;
   path: string;
+  class: string;
 };
 
 type LinkProps = IncomingLinkProps & {
