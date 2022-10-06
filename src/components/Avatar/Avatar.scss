@@ -5,6 +5,12 @@
     align-items: center;
     row-gap: 2rem;
     position: relative;
+    border-radius: 50%;
+    &_small {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
     &__change {
         display: flex;
         justify-content: center;

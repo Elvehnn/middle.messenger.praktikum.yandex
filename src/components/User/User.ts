@@ -2,7 +2,7 @@ import Block from 'core/Block';
 import { ProfileProps } from 'pages/profile/profile';
 import './User.scss';
 
-export default class User extends Block<ProfileProps> {
+export default class User extends Block<Partial<ProfileProps>> {
   constructor({ userData }: ProfileProps) {
     super({ userData });
   }
@@ -11,14 +11,14 @@ export default class User extends Block<ProfileProps> {
     // language=hbs
     return `
         <div class='user'>
-				{{{Avatar name="Vadim" imageSrc="../../assets/avatar_template.png"}}}
+				  {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=true}}}
 
-                <div class='user__data'>
-					{{#each userData}}
-                        {{#with this}}
-                            {{{UserDataItem title="{{title}}" data="{{data}}"}}}
-                        {{/with}}
-            		{{/each}}
+          <div class='user__data'>
+					  {{#each userData}}
+              {{#with this}}
+                {{{UserDataItem title="{{title}}" data="{{data}}"}}}
+              {{/with}}
+            {{/each}}
 				</div>
 
 				<div class='user__actions'>
@@ -26,10 +26,10 @@ export default class User extends Block<ProfileProps> {
 						{{{Link class='action-item__title' path='./changeUserData' text='Change user data'}}} 
 					</div>
 					<div class='action-item'>
-                        {{{Link class='action-item__title' path='./changeUserPassword' text='Change password'}}} 
+            {{{Link class='action-item__title' path='./changeUserPassword' text='Change password'}}} 
 					</div>
 					<div class='action-item'>
-                        {{{Link class='action-item__title action-item__title_warning' path='/' text='Log out'}}} 
+            {{{Link class='action-item__title action-item__title_warning' path='/' text='Log out'}}} 
 					</div>
 				</div>
 			</div>

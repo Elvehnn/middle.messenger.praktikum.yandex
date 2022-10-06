@@ -27,7 +27,10 @@ export default class Popup extends Block<PopupProps, PopupRefs> {
     this.setProps({
       onSubmit: (event) => {
         event.preventDefault();
-        console.log('File!');
+        console.log('ok');
+
+        //Здесь будет валидация и сбор данных
+
         // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
         //   acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
         //   return acc;
@@ -67,7 +70,7 @@ export default class Popup extends Block<PopupProps, PopupRefs> {
     // language=hbs
     return `
             <form class='popup' action='./profile.html'>
-                <a class='popup__close' href='./profile.hbs'>
+                <a class='popup__close' href='./profile'>
                     <svg
                         width='15'
                         height='16'

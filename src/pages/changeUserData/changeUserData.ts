@@ -19,13 +19,16 @@ export default class ChangeUserData extends Block<ChangeProfileProps, changeUser
   constructor({ userData }: ProfileProps) {
     super({
       userData,
+      onClick: () => {
+        window.location.pathname = './profile';
+      },
+
       onSubmit: () => {
         const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
           acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
           return acc;
         }, {} as refsObject);
 
-        // const { newPassword, repeatNewPassword } = refs;
         const errors = Object.entries(refs).reduce((acc, [key, input]) => {
           const errorMessage = validateForm([
             { type: key.toLowerCase() as ValidateType, value: input.value },
@@ -66,18 +69,12 @@ export default class ChangeUserData extends Block<ChangeProfileProps, changeUser
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ArrowRoundButton path="./profile.hbs" class="arrow"}}}
+                    {{{ArrowRoundButton class="arrow" onClick=onClick}}}
                 </div>
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
-                        <div class='user__avatar'>
-                            <img
-                                src='../../assets/avatar_template.png'
-                                alt='avatar'
-                                class='user__image'
-                            />
-                        </div>
+                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
 
                         <div class='user__data'>
                             {{#each userData}}
