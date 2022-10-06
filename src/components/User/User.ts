@@ -11,7 +11,7 @@ export default class User extends Block<ProfileProps> {
     // language=hbs
     return `
         <div class='user'>
-				{{{Avatar name="Vadim" imageSrc="../../assets/avatar_template.png"}}}
+				{{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=true}}}
 
                 <div class='user__data'>
 					{{#each userData}}

@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // renderDOM(new StartPage());
   // renderDOM(new SignupPage({ inputs }));
   // renderDOM(new Main({ chats }));
-  // renderDOM(new Profile({ userData }));
+  renderDOM(new Profile({ userData }));
   // renderDOM(new changeUserData({ userData }));
   // renderDOM(new changeUserPassword());
-  renderDOM(new changeUserAvatar());
+  // renderDOM(new changeUserAvatar());
 });

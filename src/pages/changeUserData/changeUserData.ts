@@ -71,13 +71,7 @@ export default class ChangeUserData extends Block<ChangeProfileProps, changeUser
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
-                        <div class='user__avatar'>
-                            <img
-                                src='../../assets/avatar_template.png'
-                                alt='avatar'
-                                class='user__image'
-                            />
-                        </div>
+                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
 
                         <div class='user__data'>
                             {{#each userData}}

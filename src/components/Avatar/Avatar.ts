@@ -4,6 +4,7 @@ import './Avatar.scss';
 type IncomingAvatarProps = {
   imageSrc: string;
   name: string;
+  isEditable: boolean;
 };
 
 type AvatarProps = IncomingAvatarProps & {
@@ -11,17 +12,19 @@ type AvatarProps = IncomingAvatarProps & {
 };
 
 export default class Avatar extends Block<AvatarProps> {
-  constructor({ imageSrc, name }: IncomingAvatarProps) {
-    super({ imageSrc, name });
+  constructor({ imageSrc, name, isEditable }: IncomingAvatarProps) {
+    super({ imageSrc, name, isEditable });
   }
 
   render() {
     // language=hbs
     return `
 		<div class='avatar'>
-			{{{Link class='avatar__change' path='./changeUserAvatar.hbs' text='Change avatar'}}}
-
-			<img style="background: url('{{imageSrc}}') no-repeat center center;" class="user__image" alt="avatar" />
+      {{#if isEditable}}
+        {{{Link class='avatar__change' path='./changeUserAvatar.hbs' text='Change avatar'}}}
+      {{/if}}
+			
+			<img src="{{imageSrc}}" class="user__image" alt="avatar" />
             
 			<h3>{{name}}</h3>
 		</div>
