@@ -6,6 +6,8 @@ interface ErrorMessageProps {
 }
 
 export default class ErrorMessage extends Block<ErrorMessageProps> {
+  static componentName: string = 'ErrorMessage';
+
   protected render(): string {
     // language=hbs
     return `

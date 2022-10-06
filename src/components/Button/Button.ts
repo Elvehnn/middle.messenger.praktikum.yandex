@@ -16,6 +16,8 @@ interface ButtonProps {
 }
 
 export default class Button extends Block<ButtonProps> {
+  static componentName: string = 'Button';
+
   constructor({
     title = '',
     class: string = 'button button_confirm',

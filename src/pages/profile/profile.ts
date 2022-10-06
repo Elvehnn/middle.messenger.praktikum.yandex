@@ -13,6 +13,8 @@ export interface ProfileProps {
 }
 
 export default class Profile extends Block<ProfileProps> {
+  static componentName: string = 'Profile';
+
   constructor({ userData }: ProfileProps) {
     super();
     this.setProps({

@@ -8,6 +8,8 @@ export default class Block<
   P extends Record<string, any>,
   Refs extends Record<string, Block<any>> = {}
 > {
+  static componentName: string;
+
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',

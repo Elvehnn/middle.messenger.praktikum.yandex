@@ -3,6 +3,8 @@ import { ProfileProps } from 'pages/profile/profile';
 import './User.scss';
 
 export default class User extends Block<Partial<ProfileProps>> {
+  static componentName: string = 'User';
+
   constructor({ userData }: ProfileProps) {
     super({ userData });
   }

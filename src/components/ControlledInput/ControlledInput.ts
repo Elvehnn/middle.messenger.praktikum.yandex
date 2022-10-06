@@ -26,6 +26,8 @@ type ControlledInputProps = IncomingControlledInputProps & {
 };
 
 export default class ControlledInput extends Block<ControlledInputProps, ControlledInputRefs> {
+  static componentName: string = 'ControlledInput';
+
   constructor({ error = '', inputName, label = inputName, ...props }: ControlledInputProps) {
     super({
       ...props,

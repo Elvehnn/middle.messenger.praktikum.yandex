@@ -27,6 +27,8 @@ type refsObject = {
 };
 
 export default class SignupPage extends Block<Props, SignupRefs> {
+  static componentName: string = 'SignupPage';
+
   constructor({ inputs }: IncomingSignupProps) {
     super({
       inputs,

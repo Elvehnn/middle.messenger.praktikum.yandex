@@ -22,6 +22,8 @@ type UserDataInputRefs = {
 };
 
 export default class UserDataInput extends Block<UserDataInputProps, UserDataInputRefs> {
+  static componentName: string = 'UserDataInput';
+
   constructor({ title, data, type, childRef, error = '', inputName }: IncomingUserDataInputProps) {
     super({
       title,

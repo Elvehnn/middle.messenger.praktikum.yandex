@@ -16,6 +16,8 @@ type changeUserPasswordRefs = {
 };
 
 export default class ChangeUserData extends Block<ChangeProfileProps, changeUserPasswordRefs> {
+  static componentName: string = 'ChangeUserData';
+
   constructor({ userData }: ProfileProps) {
     super({
       userData,

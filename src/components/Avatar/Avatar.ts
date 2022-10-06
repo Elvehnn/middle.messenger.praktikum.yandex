@@ -12,6 +12,8 @@ type AvatarProps = IncomingAvatarProps & {
 };
 
 export default class Avatar extends Block<AvatarProps> {
+  static componentName: string = 'Avatar';
+
   constructor({ imageSrc, name, isEditable }: IncomingAvatarProps) {
     super({ imageSrc, name, isEditable });
   }

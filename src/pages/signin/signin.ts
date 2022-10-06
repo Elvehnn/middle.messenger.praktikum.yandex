@@ -25,6 +25,8 @@ export type refsObject = {
   [key: string]: HTMLInputElement;
 };
 export default class SigninPage extends Block<SigninProps, SigninRefs> {
+  static componentName: string = 'SigninPage';
+
   constructor() {
     super();
 

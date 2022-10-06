@@ -3,6 +3,8 @@ import { AnyProps } from 'core/RegisterComponent';
 import './SearchBar.scss';
 
 export default class SearchBar extends Block<AnyProps> {
+  static componentName: string = 'SearchBar';
+
   render() {
     // language=hbs
     return `

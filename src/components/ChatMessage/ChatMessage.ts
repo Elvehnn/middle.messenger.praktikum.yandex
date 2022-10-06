@@ -6,6 +6,8 @@ interface ChatMessageProps {
 }
 
 export default class ChatMessage extends Block<ChatMessageProps> {
+  static componentName: string = 'ChatMessage';
+
   constructor({ class: string = 'chat-message chat-message_mate' }: ChatMessageProps) {
     super({ class: string });
   }

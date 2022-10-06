@@ -12,6 +12,8 @@ type LinkProps = IncomingLinkProps & {
 };
 
 export default class Link extends Block<LinkProps> {
+  static componentName: string = 'Link';
+
   constructor(props: IncomingLinkProps) {
     const onClick = (event: MouseEvent) => {
       console.log('going to...');
