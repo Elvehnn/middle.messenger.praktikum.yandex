@@ -1,29 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2017" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-
-    "module": "commonjs" /* Specify what module code is generated. */,
-    "rootDir": "./src" /* Specify the root folder within your source files. */,
-
-    "baseUrl": "./src" /* Specify the base directory to resolve non-relative module names. */,
-
+    "target": "es2017",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "baseUrl": "./src",
     "typeRoots": ["node_modules/@types", "typings/app.d.ts"],
-
-    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
-
-    "outDir": "dist" /* Specify an output folder for all emitted files. */,
-
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,
-
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-
-    "strict": true /* Enable all strict type-checking options. */,
-    "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied `any` type.. */,
-    "strictNullChecks": true /* When type checking, take into account `null` and `undefined`. */,
-
-    "noUnusedLocals": true /* Enable error reporting when a local variables aren't read. */,
-    "noUnusedParameters": true /* Raise an error when a function parameter isn't read */,
-
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "sourceMap": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true
   }
 }
