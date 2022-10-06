@@ -2,6 +2,8 @@ import Block from 'core/Block';
 import './start.scss';
 
 export default class StartPage extends Block<Record<string, any>> {
+  static componentName: string = 'StartPage';
+
   render() {
     // language=hbs
     return `

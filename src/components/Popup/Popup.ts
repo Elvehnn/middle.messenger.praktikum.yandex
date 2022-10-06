@@ -22,6 +22,8 @@ interface SubmitEvent extends Event {
 // };
 
 export default class Popup extends Block<PopupProps, PopupRefs> {
+  static componentName: string = 'Popup';
+
   constructor(props: PopupProps) {
     super(props);
     this.setProps({

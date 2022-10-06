@@ -8,6 +8,8 @@ interface LabelProps {
 }
 
 export default class Label extends Block<LabelProps> {
+  static componentName: string = 'Label';
+
   constructor({ class: string = 'label', ...props }: LabelProps) {
     super({ class: string, ...props });
   }

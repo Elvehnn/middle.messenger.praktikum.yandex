@@ -14,6 +14,8 @@ export type refsObject = {
   [key: string]: HTMLInputElement;
 };
 export default class changeUserPassword extends Block<ChangeProfileProps, changeUserPasswordRefs> {
+  static componentName: string = 'ChangeUserPassword';
+
   constructor() {
     super();
 

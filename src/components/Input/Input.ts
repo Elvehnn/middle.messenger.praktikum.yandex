@@ -22,6 +22,8 @@ type InputProps = InputIncomingProps & {
 };
 
 export default class Input extends Block<InputProps> {
+  static componentName: string = 'Input';
+
   constructor({
     onInput,
     onFocus,

@@ -15,6 +15,8 @@ type ChatItemProps = ChatItemPreview & {
 };
 
 export default class ChatItem extends Block<ChatItemProps> {
+  static componentName: string = 'ChatItem';
+
   constructor({ name, message, time, unread }: ChatItemPreview) {
     const onChatItemClick = () => console.log('chat click!');
 
@@ -27,7 +29,7 @@ export default class ChatItem extends Block<ChatItemProps> {
         <div class='border'>
             <div class='chat-item' >
                 <div class='chat-item__avatar'>
-                    <img class='avatar' src='../assets/avatar.jpg' alt='avatar' />
+                    <img class='avatar' src='./images/avatar.jpg' alt='avatar' />
                 </div>
 
                 <div class='chat-item__text'>

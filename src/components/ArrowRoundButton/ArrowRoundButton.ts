@@ -16,6 +16,8 @@ interface ArrowRoundButtonProps {
 }
 
 export default class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
+  static componentName: string = 'ArrowRoundButton';
+
   constructor({ path, class: string = 'arrow', onClick }: IncomingArrowRoundButtonProps) {
     super({ path, class: string, events: { click: onClick } });
   }

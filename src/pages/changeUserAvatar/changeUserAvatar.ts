@@ -6,6 +6,8 @@ type changeUserAvatarProps = {
 };
 
 export default class changeUserAvatar extends Block<changeUserAvatarProps> {
+  static componentName: string = 'ChangeUserAvatar';
+
   render() {
     // language=hbs
     return `

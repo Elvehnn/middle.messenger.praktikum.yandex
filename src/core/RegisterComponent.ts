@@ -3,6 +3,7 @@ import Handlebars, { HelperOptions } from 'handlebars';
 
 interface BlockConstructable<Props extends Record<string, any> = any, IncomingProps = any> {
   new (props: IncomingProps): Block<Props>;
+  componentName: string;
 }
 
 export type AnyProps = Record<string, any>;
@@ -12,7 +13,7 @@ export default function registerComponent<
   IncomingProps = AnyProps
 >(Component: BlockConstructable<Props, IncomingProps>) {
   Handlebars.registerHelper(
-    Component.name,
+    Component.componentName || Component.name,
     function (this: Props, { hash: { ref, ...hash }, data, fn }: HelperOptions) {
       if (!data.root.children) {
         data.root.children = {};

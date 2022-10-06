@@ -23,6 +23,8 @@ interface SubmitEvent extends Event {
 }
 
 export default class MainPage extends Block<Props, Refs> {
+  static componentName: string = 'MainPage';
+
   constructor({ chats }: IncomingProps) {
     super({
       chats,
