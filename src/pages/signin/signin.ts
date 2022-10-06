@@ -108,7 +108,7 @@ export default class SigninPage extends Block<SigninProps, SigninRefs> {
 
                 <div class="login-form__bottom">
                     {{{Button title="Log in" onClick=onSubmit}}}
-                    {{{Link class="link" text="Create account" path="/signup"}}}
+                    {{{Link class="link" text="Create account" path="./signup"}}}
                 </div>
             </form>
         </main>

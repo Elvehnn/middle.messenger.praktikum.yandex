@@ -61,7 +61,7 @@ export default class MainPage extends Block<Props, Refs> {
         <main class="main">
             <section class='left'>
             <div class='top-list'>
-                {{{Link class='top-list__goto-profile' path='./profile.hbs' text='Profile >'}}} 
+                {{{Link class='top-list__goto-profile' path='./profile' text='Profile >'}}} 
                 {{{SearchBar}}}
             </div>
             
@@ -77,8 +77,8 @@ export default class MainPage extends Block<Props, Refs> {
             <section class='chat'>
                 <header class='chat__header'> 
                   <div class='chat-info'>
-                    <div class='chat-info__avatar'>
-                      <img class='avatar' src='../assets/avatar.jpg' alt='avatar' />
+                    <div class='avatar'>
+                      <img class='avatar_small' src='./images/avatar.jpg' alt='avatar' />
                     </div>
                       
                     <h4 class='chat-info__name'>Vadim</h4>

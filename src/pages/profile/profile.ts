@@ -9,6 +9,7 @@ export interface UserProps {
 
 export interface ProfileProps {
   userData: UserProps[];
+  onClick: () => void;
 }
 
 export default class Profile extends Block<ProfileProps> {
@@ -16,6 +17,9 @@ export default class Profile extends Block<ProfileProps> {
     super();
     this.setProps({
       userData,
+      onClick: () => {
+        window.location.pathname = './main';
+      },
     });
   }
   render() {
@@ -24,7 +28,7 @@ export default class Profile extends Block<ProfileProps> {
         <main class="main">
             <div class='profile'>
               <div class="profile__aside">
-                {{{ArrowRoundButton path="./main.hbs" class="arrow"}}}
+                {{{ArrowRoundButton class="arrow" onClick=onClick}}}
               </div>
             
               <section class='profile__container'>

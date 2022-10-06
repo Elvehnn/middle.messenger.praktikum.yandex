@@ -4,10 +4,7 @@ import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
 import { validateForm, ValidateType } from 'utils/validateForm';
-
-type changeUserPasswordProps = {
-  onSubmit: (event: SubmitEvent) => void;
-};
+import { ChangeProfileProps } from 'pages/changeUserData/changeUserData';
 
 type changeUserPasswordRefs = {
   [key: string]: UserDataInput;
@@ -16,14 +13,12 @@ type changeUserPasswordRefs = {
 export type refsObject = {
   [key: string]: HTMLInputElement;
 };
-export default class changeUserPassword extends Block<
-  changeUserPasswordProps,
-  changeUserPasswordRefs
-> {
+export default class changeUserPassword extends Block<ChangeProfileProps, changeUserPasswordRefs> {
   constructor() {
     super();
 
     this.setProps({
+      onClick: () => (window.location.pathname = './profile'),
       onSubmit: () => {
         const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
           acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
@@ -74,7 +69,7 @@ export default class changeUserPassword extends Block<
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ ArrowRoundButton path="./profile.hbs" class="arrow"}}}
+                    {{{ ArrowRoundButton  class="arrow" onClick=onClick}}}
                 </div>
                 
                 <section class='profile__container'>

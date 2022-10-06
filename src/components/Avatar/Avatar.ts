@@ -21,7 +21,7 @@ export default class Avatar extends Block<AvatarProps> {
     return `
 		<div class='avatar'>
       {{#if isEditable}}
-        {{{Link class='avatar__change' path='./changeUserAvatar.hbs' text='Change avatar'}}}
+        {{{Link class='avatar__change' path='./changeUserAvatar' text='Change avatar'}}}
       {{/if}}
 			
 			<img src="{{imageSrc}}" class="user__image" alt="avatar" />
