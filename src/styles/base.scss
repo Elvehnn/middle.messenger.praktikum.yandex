@@ -1,71 +1,78 @@
-@import './variables.scss';
+@import "./variables.scss";
+
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: $font-family;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-family;
 }
 
 ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
+  color: $color-main-first;
 }
 
 html {
-	width: 100vw;
-	height: 100vh;
-	font-size: 10px;
+  width: 100vw;
+  height: 100vh;
+  font-size: 10px;
 }
 
 body {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
 }
 
 .main {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 h1 {
-	position: absolute;
-	left: -9999px;
+  position: absolute;
+  left: -9999px;
 }
 
 h2 {
-	font-style: normal;
-	font-weight: 300;
-	font-size: 2rem;
-	line-height: 4.5vw;
-	text-align: left;
-	color: $color-text-dark;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 2rem;
+  line-height: 4.5vw;
+  text-align: left;
+  color: $color-text-dark;
 
-	& > span.bold {
-		font-weight: 600;
-	}
+  & > span.bold {
+    font-weight: 600;
+  }
 }
 
 h3 {
-	font-style: normal;
-	font-weight: 500;
-	font-size: 1.6rem;
-	text-align: center;
-	letter-spacing: 0.02em;
-	color: $color-black;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.6rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: $color-black;
 }
 
 h4 {
-	font-style: normal;
-	font-weight: 600;
-	font-size: 1.4rem;
-	letter-spacing: 0.02em;
-	color: $color-black;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  color: $color-black;
 }
