@@ -12,14 +12,10 @@ type IncomingUserDataInputProps = DataItemProps & {
 };
 
 type UserDataInputProps = IncomingUserDataInputProps & {
-  onInput?: (event: FocusEvent) => void;
-  onFocus?: (event: FocusEvent) => void;
-  onBlur?: (event: FocusEvent) => void;
+  onInputEvent?: (event: FocusEvent) => void;
 };
 
-type UserDataInputRefs = {
-  [key: string]: Input | ErrorMessage;
-};
+type UserDataInputRefs = Record<string, Input | ErrorMessage>;
 
 export default class UserDataInput extends Block<UserDataInputProps, UserDataInputRefs> {
   static componentName: string = 'UserDataInput';
@@ -32,30 +28,9 @@ export default class UserDataInput extends Block<UserDataInputProps, UserDataInp
       childRef,
       error,
       inputName,
-      onInput: (event: FocusEvent) => {
+      onInputEvent: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
-
-        const error = validateForm([
-          { type: inputName.toLowerCase() as ValidateType, value: target.value },
-        ])[inputName.toLowerCase()];
-
-        this.refs.errorRef.setProps({ error: error });
-      },
-      onFocus: (event: FocusEvent) => {
-        const target = event.target as HTMLInputElement;
-
-        const error = validateForm([
-          { type: inputName.toLowerCase() as ValidateType, value: target.value },
-        ])[inputName.toLowerCase()];
-
-        this.refs.errorRef.setProps({ error: error });
-      },
-      onBlur: (event: FocusEvent) => {
-        const target = event.target as HTMLInputElement;
-
-        const error = validateForm([
-          { type: inputName.toLowerCase() as ValidateType, value: target.value },
-        ])[inputName.toLowerCase()];
+        const error = validateForm([{ name: inputName as ValidateType, input: target }])[inputName];
 
         this.refs.errorRef.setProps({ error: error });
       },
@@ -74,9 +49,9 @@ export default class UserDataInput extends Block<UserDataInputProps, UserDataInp
                     inputName=inputName
                     value=data
                     class='change-data__input'
-                    onInput=onInput
-                    onFocus=onFocus
-                    onBlur=onBlur
+                    onInput=onInputEvent
+                    onFocus=onInputEvent
+                    onBlur=onInputEvent
                 }}}
               </div>
                 

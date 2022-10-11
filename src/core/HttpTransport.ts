@@ -1,42 +1,38 @@
-enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
+enum Methods {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Delete = 'DELETE',
 }
 
 type Options = {
-  method: METHODS;
+  method: Methods;
   timeout?: number;
   data?: { [key: string]: string };
   headers?: { [key: string]: string };
 };
 
 class HTTPTransport {
-  get = (url: string, options: Options = { method: METHODS.GET }) => {
+  get = (url: string, options: Options) => {
     const urlWithParams = options.data ? url + queryStringify(options.data) : url;
 
-    return this.request(urlWithParams, { ...options, method: METHODS.GET }, options.timeout);
+    return this.request(urlWithParams, { ...options, method: Methods.Get });
   };
 
-  post = (url: string, options: Options = { method: METHODS.POST }) => {
-    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+  post = (url: string, options: Options) => {
+    return this.request(url, { ...options, method: Methods.Post });
   };
 
-  put = (url: string, options: Options = { method: METHODS.PUT }) => {
-    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+  put = (url: string, options: Options) => {
+    return this.request(url, { ...options, method: Methods.Put });
   };
 
-  delete = (url: string, options: Options = { method: METHODS.DELETE }) => {
-    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+  delete = (url: string, options: Options) => {
+    return this.request(url, { ...options, method: Methods.Delete });
   };
 
-  request = (
-    url: string,
-    options: Options = { method: METHODS.GET },
-    timeout = 5000
-  ): Promise<XMLHttpRequest> => {
-    const { method, data, headers = {} } = options;
+  request = (url: string, options: Options): Promise<XMLHttpRequest> => {
+    const { method, data, headers = {}, timeout = 5000 } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -46,8 +42,8 @@ class HTTPTransport {
 
       const headersEntries = Object.entries(headers);
 
-      headersEntries.forEach((item) => {
-        xhr.setRequestHeader(item[0], item[1]);
+      headersEntries.forEach(([key, value]) => {
+        xhr.setRequestHeader(key, value);
       });
 
       xhr.timeout = timeout;
@@ -60,7 +56,7 @@ class HTTPTransport {
       xhr.onabort = reject;
       xhr.ontimeout = reject;
 
-      if (method === METHODS.GET || !data) {
+      if (method === Methods.Get || !data) {
         xhr.send();
       } else {
         xhr.send(JSON.stringify(data));

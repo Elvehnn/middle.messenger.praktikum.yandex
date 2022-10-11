@@ -17,10 +17,10 @@ type ChatItemProps = ChatItemPreview & {
 export default class ChatItem extends Block<ChatItemProps> {
   static componentName: string = 'ChatItem';
 
-  constructor({ name, message, time, unread }: ChatItemPreview) {
+  constructor({ ...rest }: ChatItemPreview) {
     const onChatItemClick = () => console.log('chat click!');
 
-    super({ name, message, time, unread, events: { click: onChatItemClick } });
+    super({ ...rest, events: { click: onChatItemClick } });
   }
 
   protected render(): string {

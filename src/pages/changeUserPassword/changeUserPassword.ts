@@ -3,17 +3,15 @@ import 'components/User/User.scss';
 import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
-import { validateForm, ValidateType } from 'utils/validateForm';
 import { ChangeProfileProps } from 'pages/changeUserData/changeUserData';
+import { getChildInputRefs } from 'utils/getChildInputRefs';
+import { getErrorsObject } from 'utils/getErrorsObject';
+import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 
-type changeUserPasswordRefs = {
-  [key: string]: UserDataInput;
-};
+type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
-export type refsObject = {
-  [key: string]: HTMLInputElement;
-};
-export default class changeUserPassword extends Block<ChangeProfileProps, changeUserPasswordRefs> {
+export type RefsObject = Record<string, HTMLInputElement>;
+export default class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserPassword';
 
   constructor() {
@@ -22,31 +20,13 @@ export default class changeUserPassword extends Block<ChangeProfileProps, change
     this.setProps({
       onClick: () => (window.location.pathname = './profile'),
       onSubmit: () => {
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-          return acc;
-        }, {} as refsObject);
+        const refs = getChildInputRefs(this.refs);
+
+        const errors = getErrorsObject(refs);
+
+        setChildErrorsProps(errors, this.refs);
 
         const { newPassword, repeatNewPassword } = refs;
-        const errors = Object.entries(refs).reduce((acc, [key, input]) => {
-          const errorMessage = validateForm([{ type: ValidateType.Password, value: input.value }])[
-            ValidateType.Password
-          ];
-
-          if (errorMessage) {
-            acc[key] = errorMessage;
-          }
-
-          return acc;
-        }, {} as { [key: string]: string });
-
-        if (Object.entries(errors).length !== 0) {
-          Object.entries(errors).forEach(([key, value]) =>
-            this.refs[key].getRefs().errorRef.setProps({ error: value })
-          );
-
-          return;
-        }
 
         if (newPassword.value !== repeatNewPassword.value) {
           Object.values(this.refs).forEach((value) => {
@@ -56,11 +36,9 @@ export default class changeUserPassword extends Block<ChangeProfileProps, change
           return;
         }
 
-        console.log('New password', newPassword.value);
-
-        Object.values(this.refs).forEach((value) => {
-          value.getRefs().errorRef.setProps({ error: '' });
-        });
+        if (Object.keys(errors).length === 0) {
+          console.log('New password', newPassword.value);
+        }
       },
     });
   }

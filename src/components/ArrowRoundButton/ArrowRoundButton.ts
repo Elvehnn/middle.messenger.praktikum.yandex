@@ -7,13 +7,11 @@ interface IncomingArrowRoundButtonProps {
   onClick?: () => void;
 }
 
-interface ArrowRoundButtonProps {
-  path: string;
-  class?: string;
+type ArrowRoundButtonProps = IncomingArrowRoundButtonProps & {
   events: {
     click?: () => void;
   };
-}
+};
 
 export default class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
   static componentName: string = 'ArrowRoundButton';

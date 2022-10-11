@@ -11,82 +11,88 @@ import {
   PHONE_SYMBOLS,
   SPECIAL_CHARACTERS,
 } from '../constants/validateRegExpressions';
+import { lowerCaseFirstLetter } from './lowerCaseFirstLetter';
 
 export enum ValidateType {
   Login = 'login',
   Password = 'password',
   Email = 'email',
   Phone = 'phone',
-  FirstName = 'first_name',
-  SecondName = 'second_name',
+  FirstName = 'firstName',
+  SecondName = 'secondName',
   Attach = 'attach',
   Message = 'message',
   File = 'file',
+  NewPassword = 'newPassword',
+  RepeatNewPassword = 'repeatNewPassword',
 }
 
 export type ValidateRule = {
-  type: ValidateType;
-  value: string;
+  name: ValidateType;
+  input: HTMLInputElement;
 };
 
 export const validateForm = (rulesArray: ValidateRule[]) => {
-  const errors: { [key: string]: string } = {};
+  const errors: Record<string, string> = {};
 
   rulesArray.forEach((rule) => {
-    const { type, value } = rule;
+    const { name, input } = rule;
+    const { value } = input;
 
-    switch (type) {
+    switch (lowerCaseFirstLetter(name)) {
       case ValidateType.Login:
         if (!value.length) {
-          errors[type] = 'Login can not be empty';
+          errors[name] = 'Login can not be empty';
           return;
         }
 
         if (value.length > 20 || value.length < 3) {
-          errors[type] = 'Login must contain from 3 to 20 symbols';
+          errors[name] = 'Login must contain from 3 to 20 symbols';
           return;
         }
 
         if (value.match(ALL_DIGITS)) {
-          errors[type] = 'Login should use at least one letter';
+          errors[name] = 'Login should use at least one letter';
           return;
         }
 
         if (!value.match(LATIN_LETTERS)) {
-          errors[type] = 'Login should use only latin letters';
+          errors[name] = 'Login should use only latin letters';
           return;
         }
 
         if (!value.match(ONE_SPACE_SYMBOL)) {
-          errors[type] = 'Login should not contain space symbols';
+          errors[name] = 'Login should not contain space symbols';
           return;
         }
 
         if (value.match(SPECIAL_CHARACTERS)) {
-          errors[type] = 'Login should not contain special symbols';
+          errors[name] = 'Login should not contain special symbols';
           return;
         }
 
         break;
 
       case ValidateType.Password:
+      case ValidateType.NewPassword:
+      case ValidateType.RepeatNewPassword:
         if (!value.length) {
-          errors[type] = 'Password can not be empty';
+          errors[name] = 'Password can not be empty';
           return;
         }
 
         if (value.length > 40 || value.length < 8) {
-          errors[type] = 'Password must contain from 8 to 40 symbols';
+          errors[name] = 'Password must contain from 8 to 40 symbols';
           return;
         }
 
         if (!value.match(ONE_CAPITAL_LETTER)) {
-          errors[type] = 'Password must contain one capital letter at least';
+          errors[name] = 'Password must contain one capital letter at least';
           return;
         }
 
         if (!value.match(ONE_DIGIT)) {
-          errors[type] = 'Password must contain one digit at least';
+          errors[name] = 'Password must contain one digit at least';
           return;
         }
 
@@ -94,12 +100,12 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
       case ValidateType.Email:
         if (!value.length) {
-          errors[type] = 'Email can not be empty';
+          errors[name] = 'Email can not be empty';
           return;
         }
 
         if (!value.match(EMAIL_CHARACTERS)) {
-          errors[type] = 'Invalid e-mail address';
+          errors[name] = 'Invalid e-mail address';
           return;
         }
 
@@ -107,53 +113,36 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
       case ValidateType.Phone:
         if (!value.length) {
-          errors[type] = 'Phone can not be empty';
+          errors[name] = 'Phone can not be empty';
           return;
         }
 
         if (!value.match(NO_DIGITS)) {
-          errors[type] = 'Phone number must not contain letters';
+          errors[name] = 'Phone number must not contain letters';
           return;
         }
 
         if (!value.match(PHONE_SYMBOLS)) {
-          errors[type] = 'Invalid phone number';
+          errors[name] = 'Invalid phone number';
           return;
         }
 
         break;
 
       case ValidateType.FirstName:
-        if (!value.length) {
-          errors[type] = 'Name can not be empty';
-          return;
-        }
-
-        if (!value.match(ONLY_LETTERS_AND_DASH)) {
-          errors[type] = 'Name must contain only letters and dash';
-          return;
-        }
-
-        if (!value.match(FIRST_CAPITAL_LETTER)) {
-          errors[type] = 'Name should begin with a capital letter';
-          return;
-        }
-
-        break;
-
       case ValidateType.SecondName:
         if (!value.length) {
-          errors[type] = 'Name can not be empty';
+          errors[name] = 'Name can not be empty';
           return;
         }
 
         if (!value.match(ONLY_LETTERS_AND_DASH)) {
-          errors[type] = 'Name must contain only letters and dash';
+          errors[name] = 'Name must contain only letters and dash';
           return;
         }
 
         if (!value.match(FIRST_CAPITAL_LETTER)) {
-          errors[type] = 'Name should begin with a capital letter';
+          errors[name] = 'Name should begin with a capital letter';
           return;
         }
 
@@ -161,14 +150,14 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
       case ValidateType.Message:
         if (!value.length) {
-          errors[type] = 'Your message is empty';
+          errors[name] = 'Your message is empty';
           return;
         }
 
         break;
 
       default:
-        errors[type] = 'Unknown error';
+        errors[name] = 'Unknown error';
     }
   });
 

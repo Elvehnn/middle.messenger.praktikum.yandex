@@ -41,9 +41,7 @@ export default class MainPage extends Block<Props, Refs> {
         const errors = validateForm([{ type: ValidateType.Message, value: messageRef.value }]);
 
         if (Object.keys(errors).length !== 0) {
-          for (let key in errors) {
-            console.log(errors[key]);
-          }
+          Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
         } else {
           console.log({
             message: messageRef.value,

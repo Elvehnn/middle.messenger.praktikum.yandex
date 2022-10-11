@@ -3,19 +3,20 @@ import 'components/User/User.scss';
 import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
 import { ProfileProps } from '../profile/profile';
-import { refsObject } from 'pages/changeUserPassword/changeUserPassword';
-import { validateForm, ValidateType } from 'utils/validateForm';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
+import { getChildInputRefs } from 'utils/getChildInputRefs';
+import { getErrorsObject } from 'utils/getErrorsObject';
+import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 
 export type ChangeProfileProps = ProfileProps & {
   onSubmit: (event: SubmitEvent) => void;
 };
 
-type changeUserPasswordRefs = {
+type ChangeUserPasswordRefs = {
   [key: string]: UserDataInput;
 };
 
-export default class ChangeUserData extends Block<ChangeProfileProps, changeUserPasswordRefs> {
+export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserData';
 
   constructor({ userData }: ProfileProps) {
@@ -26,41 +27,19 @@ export default class ChangeUserData extends Block<ChangeProfileProps, changeUser
       },
 
       onSubmit: () => {
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-          return acc;
-        }, {} as refsObject);
+        const refs = getChildInputRefs(this.refs);
+        const errors = getErrorsObject(refs);
 
-        const errors = Object.entries(refs).reduce((acc, [key, input]) => {
-          const errorMessage = validateForm([
-            { type: key.toLowerCase() as ValidateType, value: input.value },
-          ])[key.toLowerCase()];
+        setChildErrorsProps(errors, this.refs);
 
-          if (errorMessage) {
-            acc[key] = errorMessage;
-          }
+        if (Object.keys(errors).length === 0) {
+          const newData = Object.entries(refs).reduce((acc, [key, input]) => {
+            acc[key] = input.value;
+            return acc;
+          }, {} as Record<string, string>);
 
-          return acc;
-        }, {} as { [key: string]: string });
-
-        if (Object.entries(errors).length !== 0) {
-          Object.entries(errors).forEach(([key, value]) =>
-            this.refs[key].getRefs().errorRef.setProps({ error: value })
-          );
-
-          return;
+          console.log(newData);
         }
-
-        Object.values(this.refs).forEach((value) => {
-          value.getRefs().errorRef.setProps({ error: '' });
-        });
-
-        const newData = Object.entries(refs).reduce((acc, [key, input]) => {
-          acc[key] = input.value;
-          return acc;
-        }, {} as { [key: string]: string });
-
-        console.log(newData);
       },
     });
   }

@@ -11,12 +11,12 @@ export const userData = [
   },
 
   {
-    title: 'First_name',
+    title: 'FirstName',
     data: 'Ivan',
     type: 'text',
   },
   {
-    title: 'Second_name',
+    title: 'SecondName',
     data: 'Ivanov',
     type: 'text',
   },
