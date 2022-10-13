@@ -18,7 +18,7 @@ import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-import { inputs } from 'constants/inputs';
+import { INPUTS } from 'constants/inputs';
 import { chats } from './data/chats';
 import { userData } from './data/userData';
 import StartPage from 'pages/start/start';
@@ -29,6 +29,8 @@ import Profile from 'pages/profile/profile';
 import ChangeUserData from 'pages/changeUserData/changeUserData';
 import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
 import ChangeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
+import Router from 'core/Router';
+import { initRouter } from 'services/initRouter';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -47,23 +49,17 @@ registerComponent(ChatMessage);
 registerComponent(MessageInput);
 registerComponent(Avatar);
 
-type PagesMap = { [key: string]: any };
-
-const currentLocation: string = window.location.pathname;
-
-const pagesMap: PagesMap = {
-  '/': [StartPage, null],
-  '/signin': [SigninPage, null],
-  '/signup': [SignupPage, { inputs }],
-  '/main': [MainPage, { chats }],
-  '/profile': [Profile, { userData }],
-  '/changeUserData': [ChangeUserData, { userData }],
-  '/changeUserPassword': [ChangeUserPassword, null],
-  '/changeUserAvatar': [ChangeUserAvatar, null],
-};
-
-const [pageToRender, props] = pagesMap[currentLocation];
+declare global {
+  interface Window {
+    router: Router;
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderDOM(new pageToRender(props));
+  const router = new Router();
+  window.router = router;
+
+  renderDOM(new StartPage());
+  initRouter(router);
+  router.start();
 });
