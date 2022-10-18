@@ -18,17 +18,7 @@ import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-import { INPUTS } from 'constants/inputs';
-import { chats } from './data/chats';
-import { userData } from './data/userData';
 import StartPage from 'pages/start/start';
-import SignupPage from 'pages/signup/signup';
-import SigninPage from 'pages/signin/signin';
-import MainPage from 'pages/main/main';
-import Profile from 'pages/profile/profile';
-import ChangeUserData from 'pages/changeUserData/changeUserData';
-import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
-import ChangeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
 
