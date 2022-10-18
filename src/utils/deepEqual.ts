@@ -1,11 +1,9 @@
-import { isObject } from './isObject';
-
 function deepEqual(a: Indexed, b: Indexed): boolean {
   if (a === b) {
     return true;
   }
 
-  if (a === null || b === null || !isObject(a) || !isObject(b)) {
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
     return false;
   }
 
@@ -28,6 +26,44 @@ function deepEqual(a: Indexed, b: Indexed): boolean {
 
 export default deepEqual;
 
-// const a = {a: 1};
-// const b = {a: 1};
-// deepEqual(a, b);
+//Praktikum solution:
+// type PlainObject<T = any> = {
+//   [k in string]: T;
+// };
+
+// function isPlainObject(value: unknown): value is PlainObject {
+//   return typeof value === 'object'
+//       && value !== null
+//       && value.constructor === Object
+//       && Object.prototype.toString.call(value) === '[object Object]';
+// }
+
+// function isArray(value: unknown): value is [] {
+//   return Array.isArray(value);
+// }
+
+// function isArrayOrObject(value: unknown): value is [] | PlainObject {
+//   return isPlainObject(value) || isArray(value);
+// }
+
+// function isEqual(lhs: PlainObject, rhs: PlainObject) {
+//   if (Object.keys(lhs).length !== Object.keys(rhs).length) {
+//       return false;
+//   }
+
+//   for (const [key, value] of Object.entries(lhs)) {
+//       const rightValue = rhs[key];
+//       if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
+//           if (isEqual(value, rightValue)) {
+//               continue;
+//           }
+//           return false;
+//       }
+
+//       if (value !== rightValue) {
+//           return false;
+//       }
+//   }
+
+//   return true;
+// }
