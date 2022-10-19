@@ -24,8 +24,8 @@ export default class Router implements RouterProps {
     Router.__instance = this;
   }
 
-  use(pathname: string, view: BlockConstructable) {
-    const route = new Route({ pathname, view });
+  use(pathname: string, view: BlockConstructable, isPrivate: boolean) {
+    const route = new Route({ pathname, view, isPrivate });
     this.routes.push(route);
 
     return this;

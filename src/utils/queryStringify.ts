@@ -1,4 +1,4 @@
-function queryStringify(data: Record<string, string>): string {
+export default function queryStringify(data: Record<string, string>): string {
   const params = Object.entries(data).reduce((acc, [key, value]) => {
     acc += `${key}=${value}&`;
     return acc;

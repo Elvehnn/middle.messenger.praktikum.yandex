@@ -21,6 +21,7 @@ import Avatar from 'components/Avatar/Avatar';
 import StartPage from 'pages/start/start';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
+import store, { Store } from './store/Store';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -42,14 +43,16 @@ registerComponent(Avatar);
 declare global {
   interface Window {
     router: Router;
+    store: Store<AppState>;
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const router = new Router();
   window.router = router;
+  window.store = store;
 
-  renderDOM(new StartPage());
+  // renderDOM(new StartPage());
   initRouter(router);
   router.start();
 });

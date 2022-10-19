@@ -1,8 +1,19 @@
 import Block from 'core/Block';
+import { Store } from 'store/Store';
+import { withStore } from 'utils/HOCS/WithStore';
 import './start.scss';
 
-export default class StartPage extends Block<Record<string, any>> {
+export type StartPageProps = {
+  store: Store<AppState>;
+};
+
+export class StartPage extends Block<StartPageProps> {
   static componentName: string = 'StartPage';
+
+  constructor(props: StartPageProps) {
+    super(props);
+    console.log(this.children);
+  }
 
   render() {
     // language=hbs
@@ -26,3 +37,5 @@ export default class StartPage extends Block<Record<string, any>> {
         `;
   }
 }
+
+export default withStore(StartPage);

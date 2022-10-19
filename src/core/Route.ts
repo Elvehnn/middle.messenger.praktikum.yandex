@@ -6,17 +6,20 @@ import renderDOM from './RenderDOM';
 export interface RouteProps {
   pathname: string;
   view: BlockConstructable;
+  isPrivate: boolean;
 }
 
 export default class Route {
   private _pathname: string;
   private _blockClass: BlockConstructable;
   private _block: Nullable<Block<AnyProps>>;
+  private _isPrivate: boolean;
 
-  constructor({ pathname, view }: RouteProps) {
+  constructor({ pathname, view, isPrivate }: RouteProps) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
+    this._isPrivate = isPrivate;
   }
 
   navigate(pathname: string, viewProps: AnyProps) {

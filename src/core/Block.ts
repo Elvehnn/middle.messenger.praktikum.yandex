@@ -4,6 +4,11 @@ import Handlebars from 'handlebars';
 
 type Events = Values<typeof Block.EVENTS>;
 
+export interface BlockClass<P extends Record<string, any>> extends Function {
+  new (props: P): Block<P>;
+  componentName?: string;
+}
+
 export default class Block<
   P extends Record<string, any>,
   Refs extends Record<string, Block<any>> = {}
@@ -72,6 +77,8 @@ export default class Block<
   }
 
   componentDidUpdate(oldProps: P, newProps: P) {
+    this.children = {};
+
     return true;
   }
 

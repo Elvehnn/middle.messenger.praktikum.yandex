@@ -6,6 +6,24 @@ declare global {
   export type Indexed<T = unknown> = {
     [key in string]: T;
   };
+
+  export type AppState = {
+    view: BlockConstructable | null;
+    isLoading: boolean;
+    loginFormError: string | null;
+    user: User | null;
+  };
+
+  export type User = {
+    isAuth: boolean;
+    id: number;
+    login: string;
+    firstName: string;
+    secondName: string;
+    avatar: string;
+    phone: string;
+    email: string;
+  };
 }
 
 export {};
