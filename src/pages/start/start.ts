@@ -12,7 +12,6 @@ export class StartPage extends Block<StartPageProps> {
 
   constructor(props: StartPageProps) {
     super(props);
-    console.log(this.children);
   }
 
   render() {

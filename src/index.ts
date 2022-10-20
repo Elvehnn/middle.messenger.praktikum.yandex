@@ -18,7 +18,6 @@ import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-import StartPage from 'pages/start/start';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
 import store, { Store } from './store/Store';
