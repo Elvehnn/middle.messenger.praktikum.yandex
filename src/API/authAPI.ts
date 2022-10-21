@@ -8,7 +8,7 @@ type LoginRequestData = {
 
 type LoginResponseData = {} | APIError;
 
-export class authAPI extends HTTPTransport {
+export class AuthAPI extends HTTPTransport {
   signin = (data: LoginRequestData): LoginResponseData => this.post('auth/signin', { data });
 
   getUserInfo = () => this.get('auth/user');

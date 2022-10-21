@@ -3,7 +3,7 @@ import { Store } from 'store/Store';
 
 type WithStateProps = { store: Store<AppState> };
 
-export function withStore<P extends WithStateProps>(Block: BlockClass<P>) {
+export function WithStore<P extends WithStateProps>(Block: BlockClass<P>) {
   // @ts-expect-error No base constructor has the specified
   return class extends Block<P> {
     public static componentName = Block.componentName || Block.name;

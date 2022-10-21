@@ -4,8 +4,11 @@ import ControlledInput from 'components/ControlledInput/ControlledInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import Router from 'core/Router';
 
 type IncomingSigninProps = {
+  router: Router;
   inputs: Array<{ text: string; type: string }>;
 };
 
@@ -26,7 +29,7 @@ interface SubmitEvent extends Event {
 export type refsObject = {
   [key: string]: HTMLInputElement;
 };
-export default class SigninPage extends Block<SigninProps, SigninRefs> {
+class SigninPage extends Block<SigninProps, SigninRefs> {
   static componentName: string = 'SigninPage';
 
   constructor() {
@@ -94,3 +97,5 @@ export default class SigninPage extends Block<SigninProps, SigninRefs> {
         `;
   }
 }
+
+export default WithRouter(SigninPage);

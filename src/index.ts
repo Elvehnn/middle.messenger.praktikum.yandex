@@ -21,6 +21,7 @@ import Avatar from 'components/Avatar/Avatar';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
 import store, { Store } from './store/Store';
+import { StartPage } from 'pages/start/start';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -51,7 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
   window.router = router;
   window.store = store;
 
-  // renderDOM(new StartPage());
-  initRouter(router);
-  router.start();
+  renderDOM(new StartPage({ router }));
+
+  store.on('updated', (prevState, nextState) => {
+    if (process.env.DEBUG) {
+      console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
+    }
+  });
+
+  initRouter(router, store);
 });

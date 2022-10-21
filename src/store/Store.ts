@@ -1,8 +1,15 @@
 import EventBus from 'core/EventBus';
 import { defaultState } from './defaultState';
 
+export type Dispatch<State> = (
+  nextStateOrAction: Partial<State> | Action<State>,
+  payload?: any
+) => void;
+
+export type Action<State> = (dispatch: Dispatch<State>, state: State, payload: any) => void;
+
 export class Store<State extends Record<string, any>> extends EventBus {
-  private state: Indexed = {};
+  private state = {} as State;
 
   constructor(defaultState: State) {
     super();
@@ -20,6 +27,14 @@ export class Store<State extends Record<string, any>> extends EventBus {
 
     this.state = { ...this.state, ...nextState };
     this.emit('updated', prevState, nextState);
+  }
+
+  dispatch(nextStateOrAction: Partial<State> | Action<State>, payload?: any) {
+    if (typeof nextStateOrAction === 'function') {
+      nextStateOrAction(this.dispatch.bind(this), this.state, payload);
+    } else {
+      this.setState({ ...this.state, ...nextStateOrAction });
+    }
   }
 }
 

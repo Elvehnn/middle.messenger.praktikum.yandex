@@ -1,17 +1,12 @@
-import { BlockConstructable } from './RegisterComponent';
-import Route from './Route';
+import Route, { RouteProps } from './Route';
 
 interface RouterProps {
   routes: Array<Route>;
-  history: History;
 }
 
 export default class Router implements RouterProps {
   private _currentRoute: Nullable<Route> = null;
-
   routes: Array<Route> = [];
-  history: any;
-
   static __instance: Router;
 
   constructor() {
@@ -19,13 +14,12 @@ export default class Router implements RouterProps {
       return Router.__instance;
     }
 
-    this.history = window.history;
-
     Router.__instance = this;
   }
 
-  use(pathname: string, view: BlockConstructable, isPrivate: boolean) {
-    const route = new Route({ pathname, view, isPrivate });
+  use(props: RouteProps, callback: () => void) {
+    const route = new Route({ ...props, callback });
+
     this.routes.push(route);
 
     return this;
@@ -33,41 +27,33 @@ export default class Router implements RouterProps {
 
   start() {
     window.onpopstate = () => {
-      this._onRouteChange(window.location.pathname);
+      this._onRouteChange.call(this);
     };
 
-    window.addEventListener('hashchange', () => this._onRouteChange(window.location.pathname));
-
-    this._onRouteChange(window.location.pathname);
+    this._onRouteChange();
   }
 
-  _onRouteChange(pathname: string) {
+  private _onRouteChange(pathname: string = window.location.pathname) {
     const route = this.getRoute(pathname);
-    console.log(route, pathname);
 
     if (!route) {
       return;
     }
 
-    if (this._currentRoute) {
-      this._currentRoute.leave();
-    }
-
-    this._currentRoute = route;
-    route.render(route);
+    route.callback();
   }
 
   go(pathname: string) {
-    this.history.pushState({}, '', pathname);
+    window.history.pushState({}, '', pathname);
     this._onRouteChange(pathname);
   }
 
   back() {
-    this.history.back();
+    window.history.back();
   }
 
   forward() {
-    this.history.forward();
+    window.history.forward();
   }
 
   getRoute(pathname: string) {
