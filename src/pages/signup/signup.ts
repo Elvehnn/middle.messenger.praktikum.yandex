@@ -4,15 +4,20 @@ import ControlledInput from 'components/ControlledInput/ControlledInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import Router from 'core/Router';
+import { INPUTS } from 'constants/inputs';
 
 type IncomingSignupProps = {
-  inputs: Array<{ text: string; type: string }>;
+  router: Router;
 };
 
 type SignupProps = IncomingSignupProps & {
-  onSubmit: (event: SubmitEvent) => void;
+  onSubmit?: (event: SubmitEvent) => void;
+  inputs: Array<Record<string, string>>;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
+  navigateToSignin?: () => void;
 };
 
 type SignupRefs = Record<string, ControlledInput>;
@@ -21,14 +26,14 @@ interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-export default class SignupPage extends Block<SignupProps, SignupRefs> {
+class SignupPage extends Block<SignupProps, SignupRefs> {
   static componentName: string = 'SignupPage';
 
-  constructor({ inputs }: IncomingSignupProps) {
-    super();
+  constructor(props: SignupProps) {
+    super(props);
 
     this.setProps({
-      inputs: inputs,
+      inputs: INPUTS,
       onSubmit: () => {
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
@@ -44,6 +49,7 @@ export default class SignupPage extends Block<SignupProps, SignupRefs> {
           console.log(newData);
         }
       },
+      navigateToSignin: () => this.props.router.go('/signin'),
     });
   }
   render() {
@@ -73,10 +79,12 @@ export default class SignupPage extends Block<SignupProps, SignupRefs> {
 
                 <div class="login-form__bottom">
                     {{{Button title="Sign up" onClick=onSubmit}}}
-                    {{{Link class="link" text="Sign in" path="/signin"}}}
+                    {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin}}}
                 </div>
             </form>
         </main>
         `;
   }
 }
+
+export default WithRouter(SignupPage);

@@ -3,4 +3,5 @@ export const defaultState: AppState = {
   view: null,
   loginFormError: null,
   user: null,
+  isAppStarted: false,
 };

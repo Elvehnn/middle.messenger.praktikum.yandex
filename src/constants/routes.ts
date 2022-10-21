@@ -8,7 +8,9 @@ import ChangeUserData from 'pages/changeUserData/changeUserData';
 import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
 import ChangeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
 
-export const ROUTS: Array<RouteProps> = [
+export type PartialRouteProps = Omit<RouteProps, 'callback'>;
+
+export const ROUTS: Array<PartialRouteProps> = [
   {
     pathname: '/',
     view: StartPage,

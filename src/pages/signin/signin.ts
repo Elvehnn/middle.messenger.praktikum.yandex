@@ -16,6 +16,7 @@ type SigninProps = IncomingSigninProps & {
   onSubmit: (event: SubmitEvent) => void;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
+  navigateToSignup: () => void;
 };
 
 type SigninRefs = {
@@ -32,8 +33,8 @@ export type refsObject = {
 class SigninPage extends Block<SigninProps, SigninRefs> {
   static componentName: string = 'SigninPage';
 
-  constructor() {
-    super();
+  constructor(props?: SigninProps) {
+    super(props);
 
     this.setProps({
       onSubmit: () => {
@@ -50,6 +51,9 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
             password: password.value,
           });
         }
+      },
+      navigateToSignup: () => {
+        this.props.router.go('/signup');
       },
     });
   }
@@ -90,7 +94,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
                 <div class="login-form__bottom">
                     {{{Button title="Log in" onClick=onSubmit}}}
-                    {{{Link class="link" text="Create account" path="./signup"}}}
+                    {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup }}}
                 </div>
             </form>
         </main>

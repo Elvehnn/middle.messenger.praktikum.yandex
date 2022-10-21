@@ -14,8 +14,12 @@ export class StartPage extends Block<StartPageProps> {
   constructor(props: StartPageProps) {
     super(props);
 
+    console.log(props);
+
     this.setProps({
-      navigateToSignin: () => this.props.router.go('/signin'),
+      navigateToSignin: () => {
+        this.props.router.go('/signin');
+      },
     });
   }
 
@@ -25,7 +29,6 @@ export class StartPage extends Block<StartPageProps> {
         <main class="main">
           <h1>Chatterbox</h1>
           {{{Button title="Shall we begin?" onClick=navigateToSignin}}}
-          
         </main>
         `;
   }
