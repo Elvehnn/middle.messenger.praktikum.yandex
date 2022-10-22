@@ -1,6 +1,6 @@
 import { ChatItemPreview } from 'components/ChatItem/ChatItem';
 
-export const chats: ChatItemPreview[] = [
+export const CHATS: ChatItemPreview[] = [
   {
     name: 'Vlad',
     message: 'И Human Interface Guidelines и Material Design рекомендуют...',

@@ -4,13 +4,15 @@ import Input from 'components/Input/Input';
 import Block from 'core/Block';
 import { validateForm, ValidateType } from 'utils/validateForm';
 import './main.scss';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import Router from 'core/Router';
+import { CHATS } from '../../data/chats';
 
-type IncomingProps = {
+type MainPageProps = {
   chats: ChatItemPreview[];
-};
-
-type Props = IncomingProps & {
+  router: Router;
   onSubmit: (event: SubmitEvent) => void;
+  navigateToProfile: () => void;
 };
 
 type Refs = {
@@ -22,12 +24,15 @@ interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-export default class MainPage extends Block<Props, Refs> {
+class MainPage extends Block<MainPageProps, Refs> {
   static componentName: string = 'MainPage';
 
-  constructor({ chats }: IncomingProps) {
-    super({
-      chats,
+  constructor(props?: MainPageProps) {
+    super(props);
+
+    this.setProps({
+      chats: CHATS,
+      navigateToProfile: () => this.props.router.go('/profile'),
       onSubmit: (event: SubmitEvent) => {
         event.preventDefault();
 
@@ -38,7 +43,7 @@ export default class MainPage extends Block<Props, Refs> {
 
         const { attach, messageRef } = refs;
 
-        const errors = validateForm([{ type: ValidateType.Message, value: messageRef.value }]);
+        const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
 
         if (Object.keys(errors).length !== 0) {
           Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
@@ -52,8 +57,6 @@ export default class MainPage extends Block<Props, Refs> {
         }
       },
     });
-
-    this.setProps({});
   }
   render() {
     // language=hbs
@@ -61,7 +64,7 @@ export default class MainPage extends Block<Props, Refs> {
         <main class="main">
             <section class='left'>
             <div class='top-list'>
-                {{{Link class='top-list__goto-profile' path='./profile' text='Profile >'}}} 
+                {{{Button class='button button_redirect top-list__goto-profile' title='Profile >' onClick=navigateToProfile}}} 
                 {{{SearchBar}}}
             </div>
             
@@ -118,3 +121,5 @@ export default class MainPage extends Block<Props, Refs> {
         `;
   }
 }
+
+export default WithRouter(MainPage);
