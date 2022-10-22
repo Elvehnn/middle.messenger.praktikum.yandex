@@ -1,5 +1,6 @@
 export type APIError = {
   reason: string;
+  status: string;
 };
 
 export type UserFromServer = {

@@ -22,7 +22,7 @@ import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
 import store, { Store } from './store/Store';
 import { StartPage } from 'pages/start/start';
-import { startApp } from 'utils/startApp';
+import { startApp } from 'services/startApp';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const router = new Router();
   window.router = router;
   window.store = store;
-
-  console.log(router);
 
   renderDOM(new StartPage({ router }));
 

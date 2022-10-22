@@ -28,7 +28,10 @@ export class StartPage extends Block<StartPageProps> {
     return `
         <main class="main">
           <h1>Chatterbox</h1>
+          <div class="start">
           {{{Button title="Shall we begin?" onClick=navigateToSignin}}}
+          </div>
+          
         </main>
         `;
   }

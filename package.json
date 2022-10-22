@@ -17,7 +17,8 @@
         "pages": "./src/pages",
         "utils": "./src/utils",
         "constants": "./src/constants",
-        "services": "./src/services"
+        "services": "./src/services",
+        "API": "./src/API"
     },
     "repository": {
         "type": "git",

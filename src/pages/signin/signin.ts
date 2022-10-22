@@ -6,9 +6,13 @@ import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { Store } from 'store/Store';
+import { signin } from 'services/authorization';
 
 type IncomingSigninProps = {
   router: Router;
+  store: Store<AppState>;
   inputs: Array<{ text: string; type: string }>;
 };
 
@@ -46,10 +50,11 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          console.log({
-            login: login.value,
-            password: password.value,
-          });
+          // console.log({
+          //   login: login.value,
+          //   password: password.value,
+          // });
+          this.props.store.dispatch(signin, { login: login.value, password: password.value });
         }
       },
       navigateToSignup: () => {
@@ -102,4 +107,4 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
   }
 }
 
-export default WithRouter(SigninPage);
+export default WithRouter(WithStore(SigninPage));

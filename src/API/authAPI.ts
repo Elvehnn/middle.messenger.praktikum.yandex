@@ -1,5 +1,5 @@
 import HTTPTransport from 'core/HttpTransport';
-import { APIError } from './typesAPI';
+import { APIError } from 'API/typesAPI';
 
 type LoginRequestData = {
   login: string;
@@ -8,7 +8,10 @@ type LoginRequestData = {
 
 type LoginResponseData = {} | APIError;
 
-export class AuthAPI extends HTTPTransport {
+export default class AuthAPI extends HTTPTransport {
+  constructor() {
+    super();
+  }
   signin = (data: LoginRequestData): LoginResponseData => this.post('auth/signin', { data });
 
   getUserInfo = () => this.get('auth/user');

@@ -16,7 +16,6 @@ declare global {
   };
 
   export type User = {
-    isAuth: boolean;
     id: number;
     login: string;
     firstName: string;
