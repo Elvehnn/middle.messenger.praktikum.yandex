@@ -29,7 +29,7 @@ export const signin = async (
   const user = await api.getUserInfo();
 
   if (isApiReturnedError(user)) {
-    dispatch(logout);
+    dispatch(signout);
 
     return;
   }
@@ -39,7 +39,7 @@ export const signin = async (
   dispatch({ isLoading: false, loginFormError: null });
 };
 
-export const logout = async (dispatch: Dispatch<AppState>) => {
+export const signout = async (dispatch: Dispatch<AppState>) => {
   dispatch({ isLoading: true });
 
   await api.signout();

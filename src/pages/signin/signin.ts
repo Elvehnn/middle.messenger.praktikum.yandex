@@ -50,10 +50,6 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          // console.log({
-          //   login: login.value,
-          //   password: password.value,
-          // });
           this.props.store.dispatch(signin, { login: login.value, password: password.value });
         }
       },

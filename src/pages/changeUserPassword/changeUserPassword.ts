@@ -20,7 +20,6 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
 
   constructor(props: ChangeProfileProps) {
     super(props);
-    console.log(props);
 
     this.setProps({
       onSubmit: () => {

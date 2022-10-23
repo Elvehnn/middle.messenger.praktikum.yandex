@@ -1,15 +1,20 @@
 import Block from 'core/Block';
 import Router from 'core/Router';
+import { signout } from 'services/authorization';
+import { Store } from 'store/Store';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithStore } from 'utils/HOCS/WithStore';
 import { stringToCamelCase } from 'utils/stringToCamelCase';
 import './User.scss';
 
 export type UserProps = {
   router: Router;
+  store: Store<AppState>;
   user: Nullable<UserType>;
   userData: Array<any>;
   navigateTo: (event: PointerEvent) => void;
+  signout: () => void;
 };
 
 class User extends Block<UserProps> {
@@ -27,6 +32,7 @@ class User extends Block<UserProps> {
         const path = (event.target as HTMLButtonElement).textContent || '';
         this.props.router.go(`/${stringToCamelCase(path)}`);
       },
+      signout: () => this.props.store.dispatch(signout),
     });
   }
 
@@ -52,7 +58,7 @@ class User extends Block<UserProps> {
             {{{Button class='action-item__title' title='Change user password' onClick=navigateTo}}} 
 					</div>
 					<div class='action-item'>
-            {{{Button class='action-item__title action-item__title_warning' title='Log out' onClick=navigateTo}}} 
+            {{{Button class='action-item__title action-item__title_warning' title='Log out' onClick=signout}}} 
 					</div>
 				</div>
 			</div>
@@ -61,4 +67,4 @@ class User extends Block<UserProps> {
   }
 }
 
-export default WithRouter(User);
+export default WithStore(WithRouter(User));
