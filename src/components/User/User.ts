@@ -1,12 +1,36 @@
 import Block from 'core/Block';
-import { ProfileProps } from 'pages/profile/profile';
+import Router from 'core/Router';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { stringToCamelCase } from 'utils/stringToCamelCase';
 import './User.scss';
 
-export default class User extends Block<Partial<ProfileProps>> {
-  static componentName: string = 'User';
+export type UserProps = {
+  router: Router;
+  user: Nullable<User>;
+  userData: Array<any>;
+  navigateTo: (event: PointerEvent) => void;
+};
 
-  constructor({ userData }: ProfileProps) {
-    super({ userData });
+class User extends Block<UserProps> {
+  static componentName: string = 'User';
+  userData: any;
+
+  constructor(props: UserProps) {
+    super(props);
+    const data = props.user
+      ? Object.entries(props.user).map(([title, data]) => {
+          if (title !== 'id' && title !== 'avatar') {
+            return { title: title, data: data };
+          }
+        })
+      : [];
+    this.setProps({
+      userData: data,
+      navigateTo: (event: PointerEvent) => {
+        const path = (event.target as HTMLButtonElement).textContent || '';
+        this.props.router.go(`/${stringToCamelCase(path)}`);
+      },
+    });
   }
 
   render() {
@@ -25,7 +49,7 @@ export default class User extends Block<Partial<ProfileProps>> {
 
 				<div class='user__actions'>
 					<div class='action-item'>
-						{{{Link class='action-item__title' path='./changeUserData' text='Change user data'}}} 
+						{{{Button class='action-item__title' path='./changeUserData' title='Change user data' onClick=navigateTo}}} 
 					</div>
 					<div class='action-item'>
             {{{Link class='action-item__title' path='./changeUserPassword' text='Change password'}}} 
@@ -39,3 +63,5 @@ export default class User extends Block<Partial<ProfileProps>> {
         `;
   }
 }
+
+export default WithRouter(User);

@@ -17,6 +17,7 @@ declare global {
 
   export type User = {
     id: number;
+    displayName: string;
     login: string;
     firstName: string;
     secondName: string;

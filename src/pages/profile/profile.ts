@@ -1,28 +1,29 @@
 import Block from 'core/Block';
+import Router from 'core/Router';
+import { Store } from 'store/Store';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { WithUser } from 'utils/HOCS/WithUser';
 import './profile.scss';
 
-export interface UserProps {
-  title: string;
-  data: string;
-  type: string;
-}
-
 export interface ProfileProps {
-  userData: UserProps[];
+  user: Nullable<User>;
+  store: Store<AppState>;
+  router: Router;
   onClick: () => void;
 }
 
-export default class Profile extends Block<ProfileProps> {
+class Profile extends Block<ProfileProps> {
   static componentName: string = 'Profile';
 
-  constructor({ userData }: ProfileProps) {
-    super();
+  constructor(props: ProfileProps) {
+    super(props);
     this.setProps({
-      userData,
       onClick: () => {
-        window.location.pathname = './main';
+        this.props.router.go('/main');
       },
     });
+    console.log(props);
   }
   render() {
     // language=hbs
@@ -34,10 +35,12 @@ export default class Profile extends Block<ProfileProps> {
               </div>
             
               <section class='profile__container'>
-                 {{{ User userData=this.props }}}
+                 {{{ User user=user}}}
               </section>
             </div>
         </main>
         `;
   }
 }
+
+export default WithRouter(WithStore(WithUser(Profile)));

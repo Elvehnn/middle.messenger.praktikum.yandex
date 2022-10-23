@@ -32,7 +32,7 @@ class MainPage extends Block<MainPageProps, Refs> {
 
     this.setProps({
       chats: CHATS,
-      navigateToProfile: () => this.props.router.go('/profile'),
+
       onSubmit: (event: SubmitEvent) => {
         event.preventDefault();
 
@@ -55,6 +55,9 @@ class MainPage extends Block<MainPageProps, Refs> {
 
           messageRef.value = '';
         }
+      },
+      navigateToProfile: () => {
+        this.props.router.go('/profile');
       },
     });
   }
