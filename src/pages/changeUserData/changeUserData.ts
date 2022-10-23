@@ -7,8 +7,14 @@ import UserDataInput from 'components/UserDataInput/UserDataInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithUser } from 'utils/HOCS/WithUser';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { getUserDataArray } from 'utils/getUserDataArray';
+import { changeUserProfile } from 'services/changeUserData';
+import { WithStore } from 'utils/HOCS/WithStore';
 
 export type ChangeProfileProps = ProfileProps & {
+  userData: Array<any>;
   onSubmit: (event: SubmitEvent) => void;
 };
 
@@ -16,29 +22,34 @@ type ChangeUserPasswordRefs = {
   [key: string]: UserDataInput;
 };
 
-export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
+class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserData';
 
-  constructor({ userData }: ProfileProps) {
-    super({
-      userData,
-      onClick: () => {
-        window.location.pathname = './profile';
-      },
+  constructor(props: ChangeProfileProps) {
+    super(props);
 
-      onSubmit: () => {
+    const data = props.user ? getUserDataArray(props.user) : [];
+
+    this.setProps({
+      userData: data,
+
+      onSubmit: async () => {
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const newData = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[key] = input.value;
-            return acc;
-          }, {} as Record<string, string>);
+          const newData = {
+            login: refs.login.value,
+            first_name: refs.firstName.value,
+            second_name: refs.secondName.value,
+            display_name: refs.displayName.value,
+            phone: refs.phone.value,
+            email: refs.email.value,
+          };
 
-          console.log(newData);
+          this.props.store.dispatch(changeUserProfile, newData);
         }
       },
     });
@@ -50,7 +61,7 @@ export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUser
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ArrowRoundButton class="arrow" onClick=onClick}}}
+                    {{{ArrowRoundButton}}}
                 </div>
                 
                 <section class='profile__container'>
@@ -75,3 +86,5 @@ export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUser
         `;
   }
 }
+
+export default WithStore(WithRouter(WithUser(ChangeUserData)));

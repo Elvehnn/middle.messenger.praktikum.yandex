@@ -1,7 +1,7 @@
 import { BlockClass } from 'core/Block';
 import deepEqual from 'utils/deepEqual';
 
-type WithUserProps = { user: Nullable<User> };
+type WithUserProps = { user: Nullable<UserType> };
 
 export function WithUser<P extends WithUserProps>(WrappedBlock: BlockClass<P>) {
   // @ts-expect-error No base constructor has the specified

@@ -15,7 +15,7 @@ declare global {
     isAppStarted: boolean;
   };
 
-  export type User = {
+  export type UserType = {
     id: number;
     displayName: string;
     login: string;

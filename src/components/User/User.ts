@@ -1,12 +1,13 @@
 import Block from 'core/Block';
 import Router from 'core/Router';
+import { getUserDataArray } from 'utils/getUserDataArray';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { stringToCamelCase } from 'utils/stringToCamelCase';
 import './User.scss';
 
 export type UserProps = {
   router: Router;
-  user: Nullable<User>;
+  user: Nullable<UserType>;
   userData: Array<any>;
   navigateTo: (event: PointerEvent) => void;
 };
@@ -17,13 +18,9 @@ class User extends Block<UserProps> {
 
   constructor(props: UserProps) {
     super(props);
-    const data = props.user
-      ? Object.entries(props.user).map(([title, data]) => {
-          if (title !== 'id' && title !== 'avatar') {
-            return { title: title, data: data };
-          }
-        })
-      : [];
+
+    const data = props.user ? getUserDataArray(props.user) : [];
+
     this.setProps({
       userData: data,
       navigateTo: (event: PointerEvent) => {

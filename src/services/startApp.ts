@@ -11,7 +11,6 @@ export async function startApp(dispatch: Dispatch<AppState>) {
 
   try {
     const response = await api.getUserInfo();
-    console.log(response);
 
     if (isApiReturnedError(response)) {
       console.log(response.status);

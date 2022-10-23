@@ -7,10 +7,9 @@ import { WithUser } from 'utils/HOCS/WithUser';
 import './profile.scss';
 
 export interface ProfileProps {
-  user: Nullable<User>;
+  user: Nullable<UserType>;
   store: Store<AppState>;
   router: Router;
-  onClick: () => void;
 }
 
 class Profile extends Block<ProfileProps> {
@@ -18,12 +17,6 @@ class Profile extends Block<ProfileProps> {
 
   constructor(props: ProfileProps) {
     super(props);
-    this.setProps({
-      onClick: () => {
-        this.props.router.go('/main');
-      },
-    });
-    console.log(props);
   }
   render() {
     // language=hbs
@@ -31,11 +24,11 @@ class Profile extends Block<ProfileProps> {
         <main class="main">
             <div class='profile'>
               <div class="profile__aside">
-                {{{ArrowRoundButton class="arrow" onClick=onClick}}}
+                {{{ArrowRoundButton}}}
               </div>
             
               <section class='profile__container'>
-                 {{{ User user=user}}}
+                 {{{User user=user}}}
               </section>
             </div>
         </main>

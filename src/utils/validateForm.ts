@@ -25,6 +25,7 @@ export enum ValidateType {
   File = 'file',
   NewPassword = 'newPassword',
   RepeatNewPassword = 'repeatNewPassword',
+  DisplayName = 'displayName',
 }
 
 export type ValidateRule = {
@@ -131,6 +132,7 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
       case ValidateType.FirstName:
       case ValidateType.SecondName:
+      case ValidateType.DisplayName:
         if (!value.length) {
           errors[name] = 'Name can not be empty';
           return;

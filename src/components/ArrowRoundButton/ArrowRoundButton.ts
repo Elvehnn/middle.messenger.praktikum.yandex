@@ -1,10 +1,11 @@
 import Block from 'core/Block';
+import Router from 'core/Router';
+import { WithRouter } from 'utils/HOCS/WithRouter';
 import './ArrowRoundButton.scss';
 
 interface IncomingArrowRoundButtonProps {
-  path: string;
-  class?: string;
-  onClick?: () => void;
+  router: Router;
+  navigateBack: () => void;
 }
 
 type ArrowRoundButtonProps = IncomingArrowRoundButtonProps & {
@@ -13,17 +14,26 @@ type ArrowRoundButtonProps = IncomingArrowRoundButtonProps & {
   };
 };
 
-export default class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
+class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
   static componentName: string = 'ArrowRoundButton';
 
-  constructor({ path, class: string = 'arrow', onClick }: IncomingArrowRoundButtonProps) {
-    super({ path, class: string, events: { click: onClick } });
+  constructor(props: IncomingArrowRoundButtonProps) {
+    super({
+      ...props,
+      events: {
+        click: () => {
+          this.props.router.back();
+        },
+      },
+    });
   }
 
   render() {
     // language=hbs
     return `
-        <button class='{{class}}' onClick={{onClick}}></button>
+        <button class='arrow'></button>
     `;
   }
 }
+
+export default WithRouter(ArrowRoundButton);
