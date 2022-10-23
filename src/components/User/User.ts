@@ -46,13 +46,13 @@ class User extends Block<UserProps> {
 
 				<div class='user__actions'>
 					<div class='action-item'>
-						{{{Button class='action-item__title' path='./changeUserData' title='Change user data' onClick=navigateTo}}} 
+						{{{Button class='action-item__title' title='Change user data' onClick=navigateTo}}} 
 					</div>
 					<div class='action-item'>
-            {{{Link class='action-item__title' path='./changeUserPassword' text='Change password'}}} 
+            {{{Button class='action-item__title' title='Change user password' onClick=navigateTo}}} 
 					</div>
 					<div class='action-item'>
-            {{{Link class='action-item__title action-item__title_warning' path='/' text='Log out'}}} 
+            {{{Button class='action-item__title action-item__title_warning' title='Log out' onClick=navigateTo}}} 
 					</div>
 				</div>
 			</div>

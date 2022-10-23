@@ -1,16 +1,9 @@
 import HTTPTransport from 'core/HttpTransport';
-import { APIError, UserFromServer } from 'API/typesAPI';
-
-type ChangeProfileRequestData = {
-  first_name: 'string';
-  second_name: 'string';
-  display_name: 'string';
-  login: 'string';
-  email: 'string';
-  phone: 'string';
-};
-
-type ChangeProfileResponseData = {} | APIError;
+import {
+  ChangePasswordRequestData,
+  ChangeProfileRequestData,
+  ChangeProfileResponseData,
+} from 'API/typesAPI';
 
 export default class UserAPI extends HTTPTransport {
   constructor() {
@@ -21,7 +14,8 @@ export default class UserAPI extends HTTPTransport {
 
   changeAvatar = () => this.get('auth/user');
 
-  changePassword = () => this.post('auth/logout');
+  changePassword = async (data: ChangePasswordRequestData): Promise<ChangeProfileResponseData> =>
+    this.put('user/password', { data }) as Promise<ChangeProfileResponseData>;
 
   getUserById = () => {};
 }

@@ -1,4 +1,4 @@
-import { ChangeProfileRequestData, UserFromServer } from 'API/typesAPI';
+import { ChangePasswordRequestData, ChangeProfileRequestData, UserFromServer } from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformUserObject } from 'utils/transformUserObject';
@@ -33,11 +33,11 @@ export const changeUserProfile = async (
 export const changeUserPassword = async (
   dispatch: Dispatch<AppState>,
   state: AppState,
-  action: ChangeProfileRequestData
+  action: ChangePasswordRequestData
 ) => {
   dispatch({ isLoading: true });
 
-  const response = await api.changeProfile(action);
+  const response = await api.changePassword(action);
 
   if (isApiReturnedError(response)) {
     dispatch({ isLoading: false, loginFormError: response.reason });
@@ -46,7 +46,6 @@ export const changeUserPassword = async (
   }
 
   dispatch({
-    user: transformUserObject(response as UserFromServer),
     isLoading: false,
     loginFormError: null,
   });

@@ -22,3 +22,10 @@ export type ChangeProfileRequestData = {
   email: 'string';
   phone: 'string';
 };
+
+export type ChangePasswordRequestData = {
+  oldPassword: 'string';
+  newPassword: 'string';
+};
+
+export type ChangeProfileResponseData = {} | APIError;

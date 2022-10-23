@@ -7,26 +7,29 @@ import { ChangeProfileProps } from 'pages/changeUserData/changeUserData';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithUser } from 'utils/HOCS/WithUser';
+import { changeUserPassword } from 'services/changeUserData';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
 export type RefsObject = Record<string, HTMLInputElement>;
-export default class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
+class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserPassword';
 
-  constructor() {
-    super();
+  constructor(props: ChangeProfileProps) {
+    super(props);
+    console.log(props);
 
     this.setProps({
-      onClick: () => (window.location.pathname = './profile'),
       onSubmit: () => {
         const refs = getChildInputRefs(this.refs);
-
         const errors = getErrorsObject(refs);
 
         setChildErrorsProps(errors, this.refs);
 
-        const { newPassword, repeatNewPassword } = refs;
+        const { oldPassword, newPassword, repeatNewPassword } = refs;
 
         if (newPassword.value !== repeatNewPassword.value) {
           Object.values(this.refs).forEach((value) => {
@@ -37,7 +40,8 @@ export default class ChangeUserPassword extends Block<ChangeProfileProps, Change
         }
 
         if (Object.keys(errors).length === 0) {
-          console.log('New password', newPassword.value);
+          const newData = { oldPassword: oldPassword.value, newPassword: newPassword.value };
+          this.props.store.dispatch(changeUserPassword, newData);
         }
       },
     });
@@ -49,7 +53,7 @@ export default class ChangeUserPassword extends Block<ChangeProfileProps, Change
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ ArrowRoundButton  class="arrow" onClick=onClick}}}
+                    {{{ArrowRoundButton }}}
                 </div>
                 
                 <section class='profile__container'>
@@ -57,13 +61,13 @@ export default class ChangeUserPassword extends Block<ChangeProfileProps, Change
                         {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
 
                         <div class='user__data'>
-                            {{{UserDataInput title="Enter old password" type="password" data='' inputName='password'}}}
+                            {{{UserDataInput ref="oldPassword" childRef="oldPassword" title="Enter old password" type="password" inputName='password'}}}
                             {{{UserDataInput ref="newPassword" childRef="newPassword" title="Enter new password" type="password" inputName='password'}}}
                             {{{UserDataInput ref="repeatNewPassword" childRef="repeatNewPassword" title="Repeat new password" type="password" inputName='password'}}}
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{ Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
                         </div>
                     </form>
                 </section>
@@ -72,3 +76,5 @@ export default class ChangeUserPassword extends Block<ChangeProfileProps, Change
         `;
   }
 }
+
+export default WithStore(WithRouter(WithUser(ChangeUserPassword)));

@@ -23,6 +23,7 @@ export enum ValidateType {
   Attach = 'attach',
   Message = 'message',
   File = 'file',
+  OldPassword = 'oldPassword',
   NewPassword = 'newPassword',
   RepeatNewPassword = 'repeatNewPassword',
   DisplayName = 'displayName',
@@ -77,6 +78,7 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
       case ValidateType.Password:
       case ValidateType.NewPassword:
       case ValidateType.RepeatNewPassword:
+      case ValidateType.OldPassword:
         if (!value.length) {
           errors[name] = 'Password can not be empty';
           return;
