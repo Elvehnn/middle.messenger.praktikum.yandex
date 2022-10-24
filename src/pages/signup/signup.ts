@@ -7,9 +7,14 @@ import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
 import { INPUTS } from 'constants/inputs';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { Store } from 'store/Store';
+import { stringToCamelCase } from 'utils/stringToCamelCase';
+import { signup } from 'services/authorization';
 
 type IncomingSignupProps = {
   router: Router;
+  store: Store<AppState>;
 };
 
 type SignupProps = IncomingSignupProps & {
@@ -40,15 +45,28 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
 
         setChildErrorsProps(errors, this.refs);
 
+        console.log(refs);
+
         if (Object.keys(errors).length === 0) {
           const newData = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[key] = input.value;
+            acc[stringToCamelCase(key)] = input.value;
             return acc;
           }, {} as Record<string, string>);
 
-          console.log(newData);
+          const user = {
+            login: newData.login,
+            first_name: newData.firstName,
+            second_name: newData.secondName,
+            password: newData.password,
+            phone: newData.phone,
+            email: newData.email,
+          };
+
+          this.props.store.dispatch(signup, user);
+          return;
         }
       },
+
       navigateToSignin: () => this.props.router.go('/signin'),
     });
   }
@@ -87,4 +105,4 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
   }
 }
 
-export default WithRouter(SignupPage);
+export default WithStore(WithRouter(SignupPage));

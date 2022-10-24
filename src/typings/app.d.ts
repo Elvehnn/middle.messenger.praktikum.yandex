@@ -13,6 +13,9 @@ declare global {
     loginFormError: string | null;
     user: User | null;
     isAppStarted: boolean;
+    chats: Array<ChatType>;
+    selectedChat: number;
+    isPopupShown: boolean;
   };
 
   export type UserType = {
@@ -24,6 +27,15 @@ declare global {
     avatar: string;
     phone: string;
     email: string;
+  };
+
+  export type ChatType = {
+    id: number;
+    title: string;
+    avatar: Record<string, any>;
+    createdBy: number;
+    unreadCount: number;
+    lastMessage: Record<string, any>;
   };
 }
 

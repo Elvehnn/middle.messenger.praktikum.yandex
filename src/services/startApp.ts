@@ -2,23 +2,30 @@ import { Dispatch } from 'store/Store';
 import AuthAPI from 'API/AuthAPI';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformUserObject } from 'utils/transformUserObject';
-import { UserFromServer } from 'API/typesAPI';
+import { ChatFromServer, UserFromServer } from 'API/typesAPI';
+import ChatsAPI from 'API/ChatsAPI';
+import { transformChatsObject } from 'utils/transformChatsObject';
 
-const api = new AuthAPI();
+const authApi = new AuthAPI();
+const chatsApi = new ChatsAPI();
 
 export async function startApp(dispatch: Dispatch<AppState>) {
   await new Promise((r) => setTimeout(r, 1000));
 
   try {
-    const response = await api.getUserInfo();
+    const user = await authApi.getUserInfo();
 
-    if (isApiReturnedError(response)) {
-      console.log(response.status);
+    if (isApiReturnedError(user)) {
+      console.log(user.status);
       window.router.go('/signin');
       return;
     }
+    const chats = (await chatsApi.getChats()) as ChatFromServer[];
 
-    dispatch({ user: transformUserObject(response as UserFromServer) });
+    dispatch({
+      user: transformUserObject(user as UserFromServer),
+      chats: chats.map((chat) => transformChatsObject(chat)),
+    });
     window.router.go('/main');
   } catch (err) {
     console.error(err);

@@ -3,8 +3,8 @@ import './ChatItem.scss';
 
 export interface ChatItemPreview {
   name: string;
-  message: string;
-  time: string;
+  lastMessage?: string;
+  time?: string;
   unread: string;
 }
 
@@ -34,13 +34,11 @@ export default class ChatItem extends Block<ChatItemProps> {
 
                 <div class='chat-item__text'>
                     <h4 class='chat-item__name'>{{name}}</h4>
-                    <p class='chat-item__message'>{{message}}</p>
                 </div>
 
                 <div class='chat-item__info'>
                     <button class='chat-item__delete'>X</button>
                     <div class='chat-item__notifications'>
-                        <time class='chat-item__time'>{{time}}</time>
                         <p class='chat-item__unread'>{{unread}}</p>
                     </div>
                 </div>
@@ -49,3 +47,5 @@ export default class ChatItem extends Block<ChatItemProps> {
     `;
   }
 }
+
+// <time class='chat-item__time'>{{time}}</time>

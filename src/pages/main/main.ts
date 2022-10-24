@@ -6,13 +6,17 @@ import { validateForm, ValidateType } from 'utils/validateForm';
 import './main.scss';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
-import { CHATS } from '../../data/chats';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { Store } from 'store/Store';
 
 type MainPageProps = {
-  chats: ChatItemPreview[];
   router: Router;
+  store: Store<AppState>;
+  chats: Array<ChatType>;
+  selectedChat: number;
   onSubmit: (event: SubmitEvent) => void;
   navigateToProfile: () => void;
+  toggleCreateChatForm: () => void;
 };
 
 type Refs = {
@@ -31,7 +35,8 @@ class MainPage extends Block<MainPageProps, Refs> {
     super(props);
 
     this.setProps({
-      chats: CHATS,
+      chats: this.props.store.getState().chats,
+      selectedChat: this.props.store.getState().selectedChat,
 
       onSubmit: (event: SubmitEvent) => {
         event.preventDefault();
@@ -59,70 +64,92 @@ class MainPage extends Block<MainPageProps, Refs> {
       navigateToProfile: () => {
         this.props.router.go('/profile');
       },
+      toggleCreateChatForm: () => {
+        const prevState = this.props.store.getState().isPopupShown;
+        this.props.store.dispatch({ isPopupShown: !prevState });
+      },
     });
   }
   render() {
+    const isPopupshown = this.props.store.getState().isPopupShown;
     // language=hbs
     return `
         <main class="main">
+            {{#if ${isPopupshown}}}
+              <div class='form-container'>
+                <div class='overlay'></div>
+                {{{CreateChatForm}}}
+              </div>
+            {{/if}}
+
             <section class='left'>
-            <div class='top-list'>
+              <div class='top-list'>
                 {{{Button class='button button_redirect top-list__goto-profile' title='Profile >' onClick=navigateToProfile}}} 
                 {{{SearchBar}}}
-            </div>
-            
-            <div class='chat-list'>
-            {{#each chats}}
-            {{#with this}}
-                {{{ChatItem name="{{name}}" message="{{message}}" time="{{time}}" unread="{{unread}}"}}}
-            {{/with}}
-        {{/each}}
-            </div>
+              </div>
+              
+              <div class='chat-list'>
+                {{#each chats}}
+                  {{#with this}}
+                    {{{ChatItem name=title unread=unreadCount}}}
+                  {{/with}}
+                {{/each}}
+              </div>
+
+              {{{Button class='button button_redirect top-list__goto-profile' title="Create chat +" onClick=toggleCreateChatForm}}}
             </section>
 
             <section class='chat'>
+              {{#if this.selectedChat}}
                 <header class='chat__header'> 
-                  <div class='chat-info'>
-                    <div class='avatar'>
-                      <img class='avatar_small' src='./images/avatar.jpg' alt='avatar' />
+                    <div class='chat-info'>
+                      <div class='avatar'>
+                        <img class='avatar_small' src='./images/avatar.jpg' alt='avatar' />
+                      </div>
+                        
+                      <h4 class='chat-info__name'>Vadim</h4>
                     </div>
-                      
-                    <h4 class='chat-info__name'>Vadim</h4>
-                  </div>
 
-                  <div class='header-menu'>
-                    <div class="dots"></div>
-                  </div>
+                    <div class='header-menu'>
+                      <div class="dots"></div>
+                    </div>
                 </header>
-                  
+                    
                 <div class='chat__content'>
-                  <div class='conversation'>
-                    <div class='conversation__day'>
-                      <h4>Date</h4>
-                      {{{ChatMessage class="chat-message chat-message_mate"}}}
-                      {{{ChatMessage class="chat-message chat-message_owner"}}}
+                    <div class='conversation'>
+                      <div class='conversation__day'>
+                        <h4>Date</h4>
+                        {{{ChatMessage class="chat-message chat-message_mate"}}}
+                        {{{ChatMessage class="chat-message chat-message_owner"}}}
+                      </div>
                     </div>
-                  </div>
                 </div>
-                  
+                    
                 <footer class='chat__footer'>
-                  <form class='message-form' action='#'>
-                    <div class="button-container">
-                      {{{Label class='file-input' for='input-file'}}}
-                      {{{Input ref='attach' id='input-file' name='attach' class="input_attach" type="file"}}}
-                    </div>
-                  
-                    {{{MessageInput ref="messageRef" class='message'}}}
+                    <form class='message-form' action='#'>
+                      <div class="button-container">
+                        {{{Label class='file-input' for='input-file'}}}
+                        {{{Input ref='attach' id='input-file' name='attach' class="input_attach" type="file"}}}
+                      </div>
+                    
+                      {{{MessageInput ref="messageRef" class='message'}}}
 
-                    <div class="button-container">
-                      {{{ ArrowRoundButton class="arrow arrow_reverse" onClick=onSubmit}}}
-                    </div>
-                  </form>
+                      <div class="button-container">
+                        {{{ ArrowRoundButton class="arrow arrow_reverse" onClick=onSubmit}}}
+                      </div>
+                    </form>
                 </footer>
+
+                {{else}}
+                  <h2>Select a chat to start messaging</h2>
+                  
+              {{/if}}
             </section>
+
+            
         </main>
         `;
   }
 }
 
-export default WithRouter(MainPage);
+export default WithStore(WithRouter(MainPage));

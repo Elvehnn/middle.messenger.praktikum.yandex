@@ -27,6 +27,7 @@ export enum ValidateType {
   NewPassword = 'newPassword',
   RepeatNewPassword = 'repeatNewPassword',
   DisplayName = 'displayName',
+  ChatName = 'chatName',
 }
 
 export type ValidateRule = {
@@ -42,6 +43,15 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
     const { value } = input;
 
     switch (lowerCaseFirstLetter(name)) {
+      case ValidateType.ChatName:
+        if (!value.length) {
+          errors[name] = 'Name can not be empty';
+          return;
+        }
+        if (value.length > 20 || value.length < 3) {
+          errors[name] = 'Name must contain from 3 to 20 symbols';
+          return;
+        }
       case ValidateType.Login:
         if (!value.length) {
           errors[name] = 'Login can not be empty';

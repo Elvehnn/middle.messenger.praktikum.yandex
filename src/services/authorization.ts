@@ -9,6 +9,15 @@ type LoginPayload = {
   password: string;
 };
 
+type SignupPayload = {
+  login: 'string';
+  password: 'string';
+  first_name: 'string';
+  second_name: 'string';
+  email: 'string';
+  phone: 'string';
+};
+
 const api = new AuthAPI();
 
 export const signin = async (
@@ -34,9 +43,11 @@ export const signin = async (
     return;
   }
 
-  dispatch({ user: transformUserObject(user as UserFromServer) });
-  window.router.go('/main');
-  dispatch({ isLoading: false, loginFormError: null });
+  dispatch({
+    user: transformUserObject(user as UserFromServer),
+    isLoading: false,
+    loginFormError: null,
+  });
 };
 
 export const signout = async (dispatch: Dispatch<AppState>) => {
@@ -47,4 +58,37 @@ export const signout = async (dispatch: Dispatch<AppState>) => {
   dispatch({ isLoading: false, user: null });
 
   window.router.go('/signin');
+};
+
+export const signup = async (
+  dispatch: Dispatch<AppState>,
+  state: AppState,
+  action: SignupPayload
+) => {
+  dispatch({ isLoading: true });
+
+  const response = await api.signup(action);
+
+  if (isApiReturnedError(response)) {
+    dispatch({ isLoading: false, loginFormError: response.reason });
+
+    return;
+  }
+
+  const user = await api.getUserInfo();
+
+  if (isApiReturnedError(user)) {
+    dispatch(signout);
+
+    return;
+  }
+
+  dispatch({
+    user: transformUserObject(user as UserFromServer),
+    isLoading: false,
+    loginFormError: null,
+  });
+
+  window.router.go('/main');
+  // dispatch({ isLoading: false, loginFormError: null });
 };

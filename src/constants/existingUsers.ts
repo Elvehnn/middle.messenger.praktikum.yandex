@@ -17,3 +17,12 @@ const user2 = {
   password: 'String1980',
   phone: '+79009000000',
 };
+const user3 = {
+  id: 0,
+  first_name: 'Elena',
+  second_name: 'Pupkina',
+  login: 'Elvehnn1980',
+  email: 'Elvehnn1980@gmail.com',
+  password: 'Elvehnn1980',
+  phone: '+7(960)900-00-00',
+};
