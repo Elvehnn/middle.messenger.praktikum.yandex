@@ -16,7 +16,6 @@ type CreateChatFormProps = {
   onSubmit: (event: SubmitEvent) => void;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
-  navigateToMain: () => void;
   onCancel: () => void;
 };
 
@@ -50,9 +49,6 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
         }
       },
 
-      navigateToMain: () => {
-        this.props.router.go('/main');
-      },
       onCancel: () => {
         this.props.store.dispatch({ isPopupShown: false });
       },

@@ -14,7 +14,7 @@ declare global {
     user: User | null;
     isAppStarted: boolean;
     chats: Array<ChatType>;
-    selectedChat: number;
+    selectedChat: Nullable<ChatType>;
     isPopupShown: boolean;
   };
 

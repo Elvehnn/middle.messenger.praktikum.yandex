@@ -30,8 +30,8 @@ export default class HTTPTransport {
     return this.request(PATH.BASE + url, Methods.Put, options.data);
   };
 
-  delete = (url: string) => {
-    return this.request(PATH.BASE + url, Methods.Delete);
+  delete = (url: string, options: Options) => {
+    return this.request(PATH.BASE + url, Methods.Delete, options.data);
   };
 
   request = <T extends any>(

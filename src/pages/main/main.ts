@@ -1,19 +1,18 @@
-import { ChatItemPreview } from 'components/ChatItem/ChatItem';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Input from 'components/Input/Input';
 import Block from 'core/Block';
-import { validateForm, ValidateType } from 'utils/validateForm';
 import './main.scss';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
+import { WithChats } from 'utils/HOCS/WithChats';
 
 type MainPageProps = {
   router: Router;
   store: Store<AppState>;
-  chats: Array<ChatType>;
-  selectedChat: number;
+  chats: Nullable<Array<ChatType>>;
+  // selectedChat: number;
   onSubmit: (event: SubmitEvent) => void;
   navigateToProfile: () => void;
   toggleCreateChatForm: () => void;
@@ -31,35 +30,29 @@ interface SubmitEvent extends Event {
 class MainPage extends Block<MainPageProps, Refs> {
   static componentName: string = 'MainPage';
 
-  constructor(props?: MainPageProps) {
+  constructor(props: MainPageProps) {
     super(props);
 
     this.setProps({
-      chats: this.props.store.getState().chats,
-      selectedChat: this.props.store.getState().selectedChat,
+      // selectedChat: this.props.store.getState().selectedChat,
 
       onSubmit: (event: SubmitEvent) => {
-        event.preventDefault();
-
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getContent() as HTMLInputElement;
-          return acc;
-        }, {} as { [key: string]: HTMLInputElement });
-
-        const { attach, messageRef } = refs;
-
-        const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
-
-        if (Object.keys(errors).length !== 0) {
-          Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
-        } else {
-          console.log({
-            message: messageRef.value,
-            attach: attach.value,
-          });
-
-          messageRef.value = '';
-        }
+        // event.preventDefault();
+        // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
+        //   acc[key] = value.getContent() as HTMLInputElement;
+        //   return acc;
+        // }, {} as { [key: string]: HTMLInputElement });
+        // const { attach, messageRef } = refs;
+        // const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
+        // if (Object.keys(errors).length !== 0) {
+        //   Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
+        // } else {
+        //   console.log({
+        //     message: messageRef.value,
+        //     attach: attach.value,
+        //   });
+        //   messageRef.value = '';
+        // }
       },
       navigateToProfile: () => {
         this.props.router.go('/profile');
@@ -71,11 +64,14 @@ class MainPage extends Block<MainPageProps, Refs> {
     });
   }
   render() {
-    const isPopupshown = this.props.store.getState().isPopupShown;
+    const isPopupShown = this.props.store.getState().isPopupShown;
+    const id = this.props.store.getState().selectedChat?.id;
+    const title = this.props.store.getState().selectedChat?.title;
+
     // language=hbs
     return `
         <main class="main">
-            {{#if ${isPopupshown}}}
+            {{#if ${isPopupShown}}}
               <div class='form-container'>
                 <div class='overlay'></div>
                 {{{CreateChatForm}}}
@@ -90,9 +86,7 @@ class MainPage extends Block<MainPageProps, Refs> {
               
               <div class='chat-list'>
                 {{#each chats}}
-                  {{#with this}}
-                    {{{ChatItem name=title unread=unreadCount}}}
-                  {{/with}}
+                  {{{ChatItem chat=this}}}
                 {{/each}}
               </div>
 
@@ -100,14 +94,14 @@ class MainPage extends Block<MainPageProps, Refs> {
             </section>
 
             <section class='chat'>
-              {{#if this.selectedChat}}
+              {{#if ${id}}}
                 <header class='chat__header'> 
                     <div class='chat-info'>
                       <div class='avatar'>
                         <img class='avatar_small' src='./images/avatar.jpg' alt='avatar' />
                       </div>
                         
-                      <h4 class='chat-info__name'>Vadim</h4>
+                      <h4 class='chat-info__name'>${title}</h4>
                     </div>
 
                     <div class='header-menu'>
@@ -142,7 +136,6 @@ class MainPage extends Block<MainPageProps, Refs> {
 
                 {{else}}
                   <h2>Select a chat to start messaging</h2>
-                  
               {{/if}}
             </section>
 
@@ -152,4 +145,4 @@ class MainPage extends Block<MainPageProps, Refs> {
   }
 }
 
-export default WithStore(WithRouter(MainPage));
+export default WithRouter(WithStore(WithChats(MainPage)));

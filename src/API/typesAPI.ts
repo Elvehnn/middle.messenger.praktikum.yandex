@@ -55,4 +55,8 @@ export type CreateChatRequestData = {
   title: string;
 };
 
+export type DeleteChatRequestData = {
+  chatId: number;
+};
+
 export type ResponseData = {} | APIError;

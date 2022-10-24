@@ -26,7 +26,7 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
     if (prevState.view !== nextState.view) {
       const Page = nextState.view;
       const newPage = new Page({});
-      console.log(newPage);
+      console.log(newPage.props);
 
       renderDOM(newPage);
       document.title = `App / ${Page.componentName}`;

@@ -5,6 +5,6 @@ export const defaultState: AppState = {
   user: null,
   isAppStarted: false,
   chats: [],
-  selectedChat: 0,
+  selectedChat: null,
   isPopupShown: false,
 };
