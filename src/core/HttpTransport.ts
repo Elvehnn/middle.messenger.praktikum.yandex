@@ -22,7 +22,6 @@ export default class HTTPTransport {
   };
 
   post = (url: string, options?: Options) => {
-    console.log(options);
     return this.request(PATH.BASE + url, Methods.Post, options?.data);
   };
 

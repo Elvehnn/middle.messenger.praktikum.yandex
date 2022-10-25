@@ -10,7 +10,7 @@ import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithUser } from 'utils/HOCS/WithUser';
-import { changeUserPassword } from 'services/changeUserData';
+import { changeUserPassword } from 'services/userData';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 

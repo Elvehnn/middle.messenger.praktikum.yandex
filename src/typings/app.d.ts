@@ -16,6 +16,7 @@ declare global {
     chats: Array<ChatType>;
     selectedChat: Nullable<ChatType>;
     isPopupShown: boolean;
+    foundUsers: Array<UserType>;
   };
 
   export type UserType = {

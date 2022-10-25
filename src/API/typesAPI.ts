@@ -54,13 +54,16 @@ export type ChatFromServer = {
 export type CreateChatRequestData = {
   title: string;
 };
+export type GetUserByLoginRequestData = {
+  login: string;
+};
 
 export type DeleteChatRequestData = {
   chatId: number;
 };
 
 export type AddUserToChatRequestData = {
-  users: Number[];
+  users: UserType[];
   chatId: Number;
 };
 

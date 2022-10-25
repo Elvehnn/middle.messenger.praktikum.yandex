@@ -1,5 +1,10 @@
 import HTTPTransport from 'core/HttpTransport';
-import { ChangePasswordRequestData, ChangeProfileRequestData, ResponseData } from 'API/typesAPI';
+import {
+  ChangePasswordRequestData,
+  ChangeProfileRequestData,
+  GetUserByLoginRequestData,
+  ResponseData,
+} from 'API/typesAPI';
 
 export default class UserAPI extends HTTPTransport {
   constructor() {
@@ -14,4 +19,7 @@ export default class UserAPI extends HTTPTransport {
     this.put('user/password', { data }) as Promise<ResponseData>;
 
   getUserById = () => {};
+
+  getUserByLogin = async (data: GetUserByLoginRequestData): Promise<ResponseData> =>
+    this.post('user/search', { data }) as Promise<ResponseData>;
 }

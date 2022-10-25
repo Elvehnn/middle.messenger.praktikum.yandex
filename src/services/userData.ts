@@ -1,4 +1,9 @@
-import { ChangePasswordRequestData, ChangeProfileRequestData, UserFromServer } from 'API/typesAPI';
+import {
+  ChangePasswordRequestData,
+  ChangeProfileRequestData,
+  GetUserByLoginRequestData,
+  UserFromServer,
+} from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformUserObject } from 'utils/transformUserObject';
@@ -51,4 +56,28 @@ export const changeUserPassword = async (
   });
 
   window.router.back();
+};
+
+export const getUserByLogin = async (
+  dispatch: Dispatch<AppState>,
+  state: AppState,
+  action: GetUserByLoginRequestData
+) => {
+  dispatch({ isLoading: true });
+
+  const users = (await api.getUserByLogin(action)) as UserFromServer[];
+
+  if (isApiReturnedError(users)) {
+    dispatch({ isLoading: false, loginFormError: users.reason });
+
+    return;
+  }
+
+  console.log(users);
+
+  dispatch({
+    foundUsers: users.map((user) => transformUserObject(user)),
+    isLoading: false,
+    loginFormError: null,
+  });
 };

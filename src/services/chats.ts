@@ -74,12 +74,12 @@ export const addUserToChat = async (
 
   const response = await api.addUserToChat(action);
   console.log(response);
-  // if (isApiReturnedError(response)) {
-  //   dispatch({ isLoading: false, loginFormError: response.reason });
+  if (isApiReturnedError(response)) {
+    dispatch({ isLoading: false, loginFormError: response.reason });
 
-  //   return;
-  // }
+    return;
+  }
 
   // dispatch(getChats);
-  // dispatch({ isLoading: false, loginFormError: null });
+  dispatch({ isLoading: false, loginFormError: null });
 };

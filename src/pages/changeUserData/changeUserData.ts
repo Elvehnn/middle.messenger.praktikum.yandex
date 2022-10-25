@@ -10,7 +10,7 @@ import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithUser } from 'utils/HOCS/WithUser';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { getUserDataArray } from 'utils/getUserDataArray';
-import { changeUserProfile } from 'services/changeUserData';
+import { changeUserProfile } from 'services/userData';
 import { WithStore } from 'utils/HOCS/WithStore';
 
 export type ChangeProfileProps = ProfileProps & {

@@ -8,6 +8,8 @@ import { Store } from 'store/Store';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { getUserByLogin } from 'services/userData';
+import { addUserToChat } from 'services/chats';
 
 type AddUserToChatFormProps = {
   router: Router;
@@ -32,7 +34,7 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormP
   constructor(props: AddUserToChatFormProps) {
     super(props);
     this.setProps({
-      onSubmit: (event) => {
+      onSubmit: async (event) => {
         event.preventDefault();
 
         const refs = getChildInputRefs(this.refs);
@@ -43,8 +45,15 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormP
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          console.log(login.value);
-          // this.props.store.dispatch(createChat, { title: userLogin.value });
+          const promise = Promise.resolve(
+            this.props.store.dispatch(getUserByLogin, { login: login.value })
+          );
+          promise.then(() => {
+            const users = this.props.store.getState().foundUsers;
+            const chatId = this.props.store.getState().selectedChat?.id;
+
+            this.props.store.dispatch(addUserToChat, { users: users, chatId: chatId });
+          });
         }
       },
     });
