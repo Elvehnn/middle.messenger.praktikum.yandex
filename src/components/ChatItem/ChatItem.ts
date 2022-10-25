@@ -1,5 +1,5 @@
 import Block from 'core/Block';
-import { deleteChat } from 'services/chats';
+import { deleteChat, getChatUsers } from 'services/chats';
 import { Store } from 'store/Store';
 import { WithStore } from 'utils/HOCS/WithStore';
 import './ChatItem.scss';
@@ -25,7 +25,7 @@ class ChatItem extends Block<ChatItemProps> {
         return;
       }
 
-      this.props.store.dispatch({ selectedChat: this.props.chat });
+      this.props.store.dispatch(getChatUsers, this.props.chat);
     };
 
     super({

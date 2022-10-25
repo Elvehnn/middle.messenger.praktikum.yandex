@@ -4,10 +4,13 @@ import {
   ChatFromServer,
   CreateChatRequestData,
   DeleteChatRequestData,
+  getChatUsersRequestData,
+  UserFromServer,
 } from 'API/typesAPI';
 import { Dispatch } from 'store/Store';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformChatsObject } from 'utils/transformChatsObject';
+import { transformUserObject } from 'utils/transformUserObject';
 
 const api = new ChatsAPI();
 
@@ -73,13 +76,32 @@ export const addUserToChat = async (
   dispatch({ isLoading: true });
 
   const response = await api.addUserToChat(action);
-  console.log(response);
+
   if (isApiReturnedError(response)) {
     dispatch({ isLoading: false, loginFormError: response.reason });
 
     return;
   }
 
-  // dispatch(getChats);
   dispatch({ isLoading: false, loginFormError: null });
+};
+
+export const getChatUsers = async (
+  dispatch: Dispatch<AppState>,
+  state: AppState,
+  action: ChatType
+) => {
+  dispatch({ isLoading: true });
+
+  const response = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
+
+  if (isApiReturnedError(response)) {
+    dispatch({ isLoading: false, loginFormError: response.reason });
+
+    return;
+  }
+
+  const selectedChat = { ...action, chatUsers: response.map((user) => transformUserObject(user)) };
+
+  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };

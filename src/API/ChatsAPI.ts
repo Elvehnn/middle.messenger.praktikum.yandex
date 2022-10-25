@@ -3,6 +3,7 @@ import {
   AddUserToChatRequestData,
   CreateChatRequestData,
   DeleteChatRequestData,
+  getChatUsersRequestData,
   ResponseData,
 } from './typesAPI';
 
@@ -19,7 +20,11 @@ export default class ChatsAPI extends HTTPTransport {
   getChats = async () => this.get('chats');
 
   addUserToChat = async (data: AddUserToChatRequestData): Promise<ResponseData> => {
-    console.log(data);
     return this.put('chats/users', { data }) as Promise<ResponseData>;
+  };
+
+  getChatUsers = async (data: getChatUsersRequestData): Promise<ResponseData> => {
+    console.log(data);
+    return this.get(`chats/${data.chatId}/users`) as Promise<ResponseData>;
   };
 }

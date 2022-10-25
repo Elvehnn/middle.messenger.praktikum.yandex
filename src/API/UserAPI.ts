@@ -20,6 +20,6 @@ export default class UserAPI extends HTTPTransport {
 
   getUserById = () => {};
 
-  getUserByLogin = async (data: GetUserByLoginRequestData): Promise<ResponseData> =>
+  getUserByLogin = async (data: Record<string, string>): Promise<ResponseData> =>
     this.post('user/search', { data }) as Promise<ResponseData>;
 }

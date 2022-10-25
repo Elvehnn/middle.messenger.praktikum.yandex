@@ -67,4 +67,8 @@ export type AddUserToChatRequestData = {
   chatId: Number;
 };
 
+export type getChatUsersRequestData = {
+  chatId: Number;
+};
+
 export type ResponseData = {} | APIError;

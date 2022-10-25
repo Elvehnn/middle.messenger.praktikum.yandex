@@ -9,7 +9,7 @@ import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { getUserByLogin } from 'services/userData';
-import { addUserToChat } from 'services/chats';
+import { addUserToChat, getChatUsers } from 'services/chats';
 
 type AddUserToChatFormProps = {
   router: Router;
@@ -45,19 +45,19 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormP
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const promise = Promise.resolve(
-            this.props.store.dispatch(getUserByLogin, { login: login.value })
-          );
-          promise.then(() => {
-            const users = this.props.store.getState().foundUsers;
-            const chatId = this.props.store.getState().selectedChat?.id;
+          const users = await getUserByLogin(login.value);
+          const chatId = this.props.store.getState().selectedChat?.id;
+          console.log(users);
 
-            this.props.store.dispatch(addUserToChat, { users: users, chatId: chatId });
-          });
+          this.props.store.dispatch(addUserToChat, { users: [users[0].id], chatId: chatId });
+
+          console.log(this.props.store.getState().selectedChat);
+          this.props.store.dispatch(getChatUsers, this.props.store.getState().selectedChat);
         }
       },
     });
   }
+
   render() {
     // language=hbs
     return `

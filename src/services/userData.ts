@@ -58,26 +58,9 @@ export const changeUserPassword = async (
   window.router.back();
 };
 
-export const getUserByLogin = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: GetUserByLoginRequestData
-) => {
-  dispatch({ isLoading: true });
-
-  const users = (await api.getUserByLogin(action)) as UserFromServer[];
-
-  if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
-
-    return;
-  }
+export const getUserByLogin = async (login: string) => {
+  const users = (await api.getUserByLogin({ login })) as UserFromServer[];
 
   console.log(users);
-
-  dispatch({
-    foundUsers: users.map((user) => transformUserObject(user)),
-    isLoading: false,
-    loginFormError: null,
-  });
+  return users;
 };
