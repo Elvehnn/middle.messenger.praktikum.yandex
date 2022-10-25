@@ -58,7 +58,7 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
           return;
         }
 
-        if (value.length > 20 || value.length < 3) {
+        if (value.length > 10 || value.length < 3) {
           errors[name] = 'Login must contain from 3 to 20 symbols';
           return;
         }

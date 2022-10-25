@@ -18,7 +18,9 @@ import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
 import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-import CreateChatForm from 'components/Forms/CreateChatForm';
+import CreateChatForm from 'components/Forms/CreateChatForm/CreateChatForm';
+import AddUserToChatForm from 'components/Forms/AddUserToChatForm/AddUserToChatForm';
+import ChatMenu from 'components/ChatMenu/ChatMenu';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
 import store, { Store } from './store/Store';
@@ -42,6 +44,8 @@ registerComponent(ChatMessage);
 registerComponent(MessageInput);
 registerComponent(Avatar);
 registerComponent(CreateChatForm);
+registerComponent(AddUserToChatForm);
+registerComponent(ChatMenu);
 
 declare global {
   interface Window {

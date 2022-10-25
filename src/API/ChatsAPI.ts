@@ -1,5 +1,10 @@
 import HTTPTransport from 'core/HttpTransport';
-import { CreateChatRequestData, DeleteChatRequestData, ResponseData } from './typesAPI';
+import {
+  AddUserToChatRequestData,
+  CreateChatRequestData,
+  DeleteChatRequestData,
+  ResponseData,
+} from './typesAPI';
 
 export default class ChatsAPI extends HTTPTransport {
   constructor() {
@@ -12,4 +17,9 @@ export default class ChatsAPI extends HTTPTransport {
     this.delete('chats', { data }) as Promise<ResponseData>;
 
   getChats = async () => this.get('chats');
+
+  addUserToChat = async (data: AddUserToChatRequestData): Promise<ResponseData> => {
+    console.log(data);
+    return this.put('chats/users', { data }) as Promise<ResponseData>;
+  };
 }

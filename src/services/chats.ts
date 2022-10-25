@@ -1,5 +1,10 @@
 import ChatsAPI from 'API/ChatsAPI';
-import { ChatFromServer, CreateChatRequestData, DeleteChatRequestData } from 'API/typesAPI';
+import {
+  AddUserToChatRequestData,
+  ChatFromServer,
+  CreateChatRequestData,
+  DeleteChatRequestData,
+} from 'API/typesAPI';
 import { Dispatch } from 'store/Store';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformChatsObject } from 'utils/transformChatsObject';
@@ -58,4 +63,23 @@ export const deleteChat = async (
 
   dispatch(getChats);
   dispatch({ isLoading: false, loginFormError: null });
+};
+
+export const addUserToChat = async (
+  dispatch: Dispatch<AppState>,
+  state: AppState,
+  action: AddUserToChatRequestData
+) => {
+  dispatch({ isLoading: true });
+
+  const response = await api.addUserToChat(action);
+  console.log(response);
+  // if (isApiReturnedError(response)) {
+  //   dispatch({ isLoading: false, loginFormError: response.reason });
+
+  //   return;
+  // }
+
+  // dispatch(getChats);
+  // dispatch({ isLoading: false, loginFormError: null });
 };

@@ -12,10 +12,11 @@ type MainPageProps = {
   router: Router;
   store: Store<AppState>;
   chats: Nullable<Array<ChatType>>;
-  // selectedChat: number;
   onSubmit: (event: SubmitEvent) => void;
   navigateToProfile: () => void;
   toggleCreateChatForm: () => void;
+  toggleShowChatMenu: () => void;
+  toggleShowAddUserForm: () => void;
 };
 
 type Refs = {
@@ -34,8 +35,6 @@ class MainPage extends Block<MainPageProps, Refs> {
     super(props);
 
     this.setProps({
-      // selectedChat: this.props.store.getState().selectedChat,
-
       onSubmit: (event: SubmitEvent) => {
         // event.preventDefault();
         // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
@@ -58,27 +57,29 @@ class MainPage extends Block<MainPageProps, Refs> {
         this.props.router.go('/profile');
       },
       toggleCreateChatForm: () => {
-        const prevState = this.props.store.getState().isPopupShown;
-        this.props.store.dispatch({ isPopupShown: !prevState });
+        document.querySelector('#createChat')?.classList.toggle('form-container_shown');
+      },
+      toggleShowChatMenu: () => {
+        document.querySelector('.chat-menu')?.classList.toggle('chat-menu_shown');
+      },
+      toggleShowAddUserForm: () => {
+        document.querySelector('#addUser')?.classList.toggle('form-container_shown');
+        document.querySelector('.chat-menu')?.classList.remove('chat-menu_shown');
       },
     });
   }
   render() {
-    const isPopupShown = this.props.store.getState().isPopupShown;
     const id = this.props.store.getState().selectedChat?.id;
     const title = this.props.store.getState().selectedChat?.title;
 
     // language=hbs
     return `
         <main class="main">
-            {{#if ${isPopupShown}}}
-              <div class='form-container'>
-                <div class='overlay'></div>
-                {{{CreateChatForm}}}
-              </div>
-            {{/if}}
-
-            <section class='left'>
+          {{{CreateChatForm onCancel=toggleCreateChatForm}}}
+      
+          {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}
+            
+          <section class='left'>
               <div class='top-list'>
                 {{{Button class='button button_redirect top-list__goto-profile' title='Profile >' onClick=navigateToProfile}}} 
                 {{{SearchBar}}}
@@ -91,9 +92,9 @@ class MainPage extends Block<MainPageProps, Refs> {
               </div>
 
               {{{Button class='button button_redirect top-list__goto-profile' title="Create chat +" onClick=toggleCreateChatForm}}}
-            </section>
+          </section>
 
-            <section class='chat'>
+          <section class='chat'>
               {{#if ${id}}}
                 <header class='chat__header'> 
                     <div class='chat-info'>
@@ -104,8 +105,9 @@ class MainPage extends Block<MainPageProps, Refs> {
                       <h4 class='chat-info__name'>${title}</h4>
                     </div>
 
-                    <div class='header-menu'>
-                      <div class="dots"></div>
+                    <div class='chat__menu'>
+                      {{{Button class="dots" onClick=toggleShowChatMenu}}}
+                      {{{ChatMenu addUserHandler=toggleShowAddUserForm}}}
                     </div>
                 </header>
                     
@@ -137,9 +139,7 @@ class MainPage extends Block<MainPageProps, Refs> {
                 {{else}}
                   <h2>Select a chat to start messaging</h2>
               {{/if}}
-            </section>
-
-            
+          </section>
         </main>
         `;
   }
