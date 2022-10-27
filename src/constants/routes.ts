@@ -6,7 +6,6 @@ import MainPage from 'pages/main/main';
 import Profile from 'pages/profile/profile';
 import ChangeUserData from 'pages/changeUserData/changeUserData';
 import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
-import ChangeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
 
 export type PartialRouteProps = Omit<RouteProps, 'callback'>;
 
@@ -44,11 +43,6 @@ export const ROUTS: Array<PartialRouteProps> = [
   {
     pathname: '/changeUserPassword',
     view: ChangeUserPassword,
-    isPrivate: true,
-  },
-  {
-    pathname: '/changeUserAvatar',
-    view: ChangeUserAvatar,
     isPrivate: true,
   },
 ];

@@ -64,3 +64,13 @@ export const getUserByLogin = async (login: string) => {
   console.log(users);
   return users;
 };
+
+export const changeAvatar = async (
+  dispatch: Dispatch<AppState>,
+  state: AppState,
+  action: FormData
+) => {
+  const newUser = await api.changeAvatar(action);
+
+  console.log(newUser);
+};

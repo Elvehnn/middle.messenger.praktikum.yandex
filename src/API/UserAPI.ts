@@ -13,7 +13,11 @@ export default class UserAPI extends HTTPTransport {
   changeProfile = async (data: ChangeProfileRequestData): Promise<ResponseData> =>
     this.put('user/profile', { data }) as Promise<ResponseData>;
 
-  changeAvatar = () => this.get('auth/user');
+  changeAvatar = async (data: FormData): Promise<ResponseData> =>
+    this.put('user/profile/avatar', {
+      data,
+      contentType: 'multipart/form-data',
+    }) as Promise<ResponseData>;
 
   changePassword = async (data: ChangePasswordRequestData): Promise<ResponseData> =>
     this.put('user/password', { data }) as Promise<ResponseData>;

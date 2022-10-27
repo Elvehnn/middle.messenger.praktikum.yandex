@@ -10,8 +10,9 @@ enum Methods {
 
 type Options = {
   timeout?: number;
-  data?: Record<string, any>;
+  data?: Record<string, any> | FormData;
   headers?: Record<string, string>;
+  contentType?: string;
 };
 
 export default class HTTPTransport {
@@ -26,7 +27,8 @@ export default class HTTPTransport {
   };
 
   put = (url: string, options: Options) => {
-    return this.request(PATH.BASE + url, Methods.Put, options.data);
+    console.log(options);
+    return this.request(PATH.BASE + url, Methods.Put, options.data, options?.contentType);
   };
 
   delete = (url: string, options: Options) => {
@@ -36,7 +38,8 @@ export default class HTTPTransport {
   request = <T extends any>(
     url: string,
     method: Methods,
-    data?: Record<string, string>,
+    data?: Record<string, string> | FormData,
+    contentType: string = 'application/json',
     timeout: number = 5000
   ): Promise<T> => {
     return new Promise((resolve, reject) => {
@@ -44,7 +47,7 @@ export default class HTTPTransport {
 
       xhr.open(method, url);
       xhr.responseType = 'json';
-      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Content-Type', contentType);
       xhr.timeout = timeout;
       xhr.withCredentials = true;
 
@@ -58,9 +61,15 @@ export default class HTTPTransport {
 
       if (method === Methods.Get || !data) {
         xhr.send();
-      } else {
-        xhr.send(JSON.stringify(data));
+        return;
       }
+
+      if (data instanceof FormData) {
+        xhr.send(data);
+        return;
+      }
+
+      xhr.send(JSON.stringify(data));
     });
   };
 }

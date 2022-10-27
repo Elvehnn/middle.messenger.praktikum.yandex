@@ -28,7 +28,8 @@ class Profile extends Block<ProfileProps> {
               </div>
             
               <section class='profile__container'>
-                 {{{User user=user}}}
+                {{{ChangeAvatar}}}
+                {{{User user=user}}}
               </section>
             </div>
         </main>

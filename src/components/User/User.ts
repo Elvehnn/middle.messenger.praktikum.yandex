@@ -5,6 +5,7 @@ import { Store } from 'store/Store';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithStore } from 'utils/HOCS/WithStore';
+import { navigateTo } from 'utils/navigateTo';
 import { stringToCamelCase } from 'utils/stringToCamelCase';
 import './User.scss';
 
@@ -30,7 +31,7 @@ class User extends Block<UserProps> {
       userData: data,
       navigateTo: (event: PointerEvent) => {
         const path = (event.target as HTMLButtonElement).textContent || '';
-        this.props.router.go(`/${stringToCamelCase(path)}`);
+        navigateTo(`${stringToCamelCase(path)}`);
       },
       signout: () => this.props.store.dispatch(signout),
     });

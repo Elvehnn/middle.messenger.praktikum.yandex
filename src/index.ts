@@ -19,6 +19,7 @@ import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
 import CreateChatForm from 'components/Forms/CreateChatForm/CreateChatForm';
+import ChangeAvatar from 'components/Forms/ChangeAvatar/ChangeAvatar';
 import AddUserToChatForm from 'components/Forms/AddUserToChatForm/AddUserToChatForm';
 import DeleteUserFromChatForm from 'components/Forms/DeleteUserFromChatForm/DeleteUserFromChatForm';
 import ChatMenu from 'components/ChatMenu/ChatMenu';
@@ -47,6 +48,7 @@ registerComponent(Avatar);
 registerComponent(CreateChatForm);
 registerComponent(AddUserToChatForm);
 registerComponent(DeleteUserFromChatForm);
+registerComponent(ChangeAvatar);
 registerComponent(ChatMenu);
 
 declare global {
