@@ -1,7 +1,6 @@
 import Block from 'core/Block';
 import './ChangeAvatar.scss';
 import ControlledInput from 'components/ControlledInput/ControlledInput';
-import { navigateTo } from 'utils/navigateTo';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { changeAvatar } from 'services/userData';
@@ -40,6 +39,7 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         }
 
         this.props.store.dispatch(changeAvatar, formData);
+        document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
 
         //Здесь будет валидация и сбор данных
 
@@ -79,8 +79,16 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         <div class='overlay'></div>
 
         <form class='avatar-form' id='formElem'>
-          <input type="file" name="avatar">
-          {{{Button title='Change avatar' class='button button_confirm' onClick=onSubmit type='submit'}}}
+          {{{Button class='avatar-form__close' onClick=onCancel title='X'}}}
+
+          {{{Label class='avatar-form__label' for='avatar' label="Select file to upload"}}}
+          {{{Input ref='avatar' id='avatar' inputName='avatar' class="avatar-form__upload" type="file" accept="image/*" }}}
+          <p class='avatar-form__warning'>Need to select any file</p>
+
+          <div class="avatar-form__footer">
+            {{{Button title='Change avatar' class='button button_confirm' onClick=onSubmit type='submit'}}}
+            {{{Button title='Cancel' class='button button_redirect' onClick=onCancel}}}
+          </div>
         </form>
     </div>
         `;
@@ -88,14 +96,3 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
 }
 
 export default WithStore(ChangeAvatar);
-
-// {{{Button class='avatar-form__close' onClick=onCancel title='X'}}}
-
-// {{{Label class='avatar-form__label' for='avatar' label="Select file to upload"}}}
-// { { {Input ref = 'avatar' id = 'avatar' inputName = 'avatar' class="avatar-form__upload" type = "file" accept = "image/*" } } }
-// <p class='avatar-form__warning'>Need to select any file</p>
-
-//           <div class="avatar-form__footer">
-//             {{{Button title='Change avatar' class='button button_confirm' onClick=onSubmit type='submit'}}}
-//             {{{Button title='Cancel' class='button button_redirect' onClick=onCancel}}}
-//             </div>

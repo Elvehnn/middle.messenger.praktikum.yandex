@@ -14,6 +14,7 @@ export type UserProps = {
   store: Store<AppState>;
   user: Nullable<UserType>;
   userData: Array<any>;
+  userLogin: string;
   navigateTo: (event: PointerEvent) => void;
   signout: () => void;
 };
@@ -26,9 +27,11 @@ class User extends Block<UserProps> {
     super(props);
 
     const data = props.user ? getUserDataArray(props.user) : [];
+    const userLogin = props.user?.login;
 
     this.setProps({
       userData: data,
+      userLogin: userLogin,
       navigateTo: (event: PointerEvent) => {
         const path = (event.target as HTMLButtonElement).textContent || '';
         navigateTo(`${stringToCamelCase(path)}`);
@@ -41,7 +44,7 @@ class User extends Block<UserProps> {
     // language=hbs
     return `
         <div class='user'>
-				  {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=true}}}
+				  {{{Avatar name=userLogin imageSrc="./images/avatar_template.jpg" isEditable=true}}}
 
           <div class='user__data'>
 					  {{#each userData}}
