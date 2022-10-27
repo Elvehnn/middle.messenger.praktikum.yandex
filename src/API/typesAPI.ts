@@ -62,7 +62,7 @@ export type DeleteChatRequestData = {
   chatId: number;
 };
 
-export type AddUserToChatRequestData = {
+export type UserToChatRequestData = {
   users: UserType[];
   chatId: Number;
 };

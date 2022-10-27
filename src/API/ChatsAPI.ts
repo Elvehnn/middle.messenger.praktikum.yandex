@@ -1,6 +1,6 @@
 import HTTPTransport from 'core/HttpTransport';
 import {
-  AddUserToChatRequestData,
+  UserToChatRequestData,
   CreateChatRequestData,
   DeleteChatRequestData,
   getChatUsersRequestData,
@@ -19,8 +19,12 @@ export default class ChatsAPI extends HTTPTransport {
 
   getChats = async () => this.get('chats');
 
-  addUserToChat = async (data: AddUserToChatRequestData): Promise<ResponseData> => {
+  addUserToChat = async (data: UserToChatRequestData): Promise<ResponseData> => {
     return this.put('chats/users', { data }) as Promise<ResponseData>;
+  };
+
+  deleteUserFromChat = async (data: UserToChatRequestData): Promise<ResponseData> => {
+    return this.delete('chats/users', { data }) as Promise<ResponseData>;
   };
 
   getChatUsers = async (data: getChatUsersRequestData): Promise<ResponseData> => {

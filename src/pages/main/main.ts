@@ -17,6 +17,7 @@ type MainPageProps = {
   toggleCreateChatForm: () => void;
   toggleShowChatMenu: () => void;
   toggleShowAddUserForm: () => void;
+  toggleShowDeleteUserForm: () => void;
 };
 
 type Refs = {
@@ -66,6 +67,10 @@ class MainPage extends Block<MainPageProps, Refs> {
         document.querySelector('#addUser')?.classList.toggle('form-container_shown');
         document.querySelector('.chat-menu')?.classList.remove('chat-menu_shown');
       },
+      toggleShowDeleteUserForm: () => {
+        document.querySelector('#deleteUser')?.classList.toggle('form-container_shown');
+        document.querySelector('.chat-menu')?.classList.remove('chat-menu_shown');
+      },
     });
   }
   render() {
@@ -82,6 +87,8 @@ class MainPage extends Block<MainPageProps, Refs> {
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}
       
           {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}
+
+          {{{DeleteUserFromChatForm onCancel=toggleShowDeleteUserForm}}}
             
           <section class='left'>
               <div class='top-list'>
@@ -112,7 +119,7 @@ class MainPage extends Block<MainPageProps, Refs> {
 
                     <div class='chat__menu'>
                       {{{Button class="dots" onClick=toggleShowChatMenu}}}
-                      {{{ChatMenu addUserHandler=toggleShowAddUserForm}}}
+                      {{{ChatMenu addUserHandler=toggleShowAddUserForm deleteUserHandler=toggleShowDeleteUserForm}}}
                     </div>
                 </header>
                     

@@ -20,6 +20,7 @@ import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
 import CreateChatForm from 'components/Forms/CreateChatForm/CreateChatForm';
 import AddUserToChatForm from 'components/Forms/AddUserToChatForm/AddUserToChatForm';
+import DeleteUserFromChatForm from 'components/Forms/DeleteUserFromChatForm/DeleteUserFromChatForm';
 import ChatMenu from 'components/ChatMenu/ChatMenu';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
@@ -45,6 +46,7 @@ registerComponent(MessageInput);
 registerComponent(Avatar);
 registerComponent(CreateChatForm);
 registerComponent(AddUserToChatForm);
+registerComponent(DeleteUserFromChatForm);
 registerComponent(ChatMenu);
 
 declare global {
