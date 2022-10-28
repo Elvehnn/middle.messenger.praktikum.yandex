@@ -15,7 +15,6 @@ export async function startApp(dispatch: Dispatch<AppState>) {
 
   try {
     const user = (await authApi.getUserInfo()) as UserFromServer;
-    console.log(user);
 
     if (isApiReturnedError(user)) {
       window.router.go('/signin');

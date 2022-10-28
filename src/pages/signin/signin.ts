@@ -53,25 +53,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          await Promise.resolve(
-            this.props.store.dispatch(signin, { login: login.value, password: password.value })
-          );
-
-          this.props.store.dispatch(getChats);
-
-          const currentUser = this.props.store.getState().user;
-
-          if (currentUser) {
-            console.log(currentUser);
-            Promise.resolve(getAvatar(currentUser)).then((avatar) => {
-              currentUser.avatar = avatar;
-            });
-          }
-          console.log(currentUser);
-
-          this.props.store.dispatch({ user: currentUser });
-
-          this.props.router.go('/main');
+          this.props.store.dispatch(signin, { login: login.value, password: password.value });
         }
       },
 

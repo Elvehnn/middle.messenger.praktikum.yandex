@@ -45,8 +45,6 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
 
         setChildErrorsProps(errors, this.refs);
 
-        console.log(refs);
-
         if (Object.keys(errors).length === 0) {
           const newData = Object.entries(refs).reduce((acc, [key, input]) => {
             acc[stringToCamelCase(key)] = input.value;
@@ -63,7 +61,6 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
           };
 
           this.props.store.dispatch(signup, user);
-          return;
         }
       },
 

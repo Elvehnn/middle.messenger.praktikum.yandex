@@ -1,9 +1,14 @@
 import AuthAPI from 'API/AuthAPI';
-import { UserFromServer } from 'API/typesAPI';
+import { ChatFromServer, UserFromServer } from 'API/typesAPI';
 import SigninPage from '../pages/signin/signin';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformUserObject } from 'utils/transformUserObject';
 import type { Dispatch } from '../store/Store';
+import { getAvatar } from './userData';
+import { getChats } from './chats';
+import UserAPI from 'API/UserAPI';
+import ChatsAPI from 'API/ChatsAPI';
+import { transformChatsObject } from 'utils/transformChatsObject';
 
 type LoginPayload = {
   login: string;
@@ -20,6 +25,7 @@ type SignupPayload = {
 };
 
 const api = new AuthAPI();
+const chatsApi = new ChatsAPI();
 
 export const signin = async (
   dispatch: Dispatch<AppState>,
@@ -44,13 +50,15 @@ export const signin = async (
     return;
   }
 
-  console.log(user);
+  user.avatar = await getAvatar(user);
+  const chats = (await chatsApi.getChats()) as ChatFromServer[];
 
   dispatch({
     user: transformUserObject(user),
-    isLoading: false,
-    loginFormError: null,
+    chats: chats.map((chat) => transformChatsObject(chat)),
   });
+
+  window.router.go('/main');
 };
 
 export const signout = async (dispatch: Dispatch<AppState>) => {
@@ -87,7 +95,7 @@ export const signup = async (
     return;
   }
 
-  const user = await api.getUserInfo();
+  const user = (await api.getUserInfo()) as UserFromServer;
 
   if (isApiReturnedError(user)) {
     dispatch(signout);
@@ -95,10 +103,12 @@ export const signup = async (
     return;
   }
 
+  user.avatar = await getAvatar(user);
+  const chats = (await chatsApi.getChats()) as ChatFromServer[];
+
   dispatch({
-    user: transformUserObject(user as UserFromServer),
-    isLoading: false,
-    loginFormError: null,
+    user: transformUserObject(user),
+    chats: chats.map((chat) => transformChatsObject(chat)),
   });
 
   window.router.go('/main');

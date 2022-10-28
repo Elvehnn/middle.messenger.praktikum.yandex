@@ -24,8 +24,12 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
     return;
   }
 
-  dispatch({ chats: response.map((item) => transformChatsObject(item)) });
-  dispatch({ isLoading: false, loginFormError: null });
+  dispatch({
+    chats: response.map((item) => transformChatsObject(item)),
+    isLoading: false,
+    loginFormError: null,
+  });
+  return response.map((item) => transformChatsObject(item));
 };
 
 export const createChat = async (
