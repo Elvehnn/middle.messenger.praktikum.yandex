@@ -13,7 +13,7 @@ import { transformUserObject } from 'utils/transformUserObject';
 
 const api = new ChatsAPI();
 
-export const getChats = async (dispatch: Dispatch<AppState>, state: AppState) => {
+export const getChats = async (dispatch: Dispatch<AppState>) => {
   dispatch({ isLoading: true });
 
   const response = (await api.getChats()) as ChatFromServer[];
@@ -25,7 +25,6 @@ export const getChats = async (dispatch: Dispatch<AppState>, state: AppState) =>
   }
 
   dispatch({ chats: response.map((item) => transformChatsObject(item)) });
-  window.router.go('/main');
   dispatch({ isLoading: false, loginFormError: null });
 };
 

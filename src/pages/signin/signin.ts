@@ -10,6 +10,8 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { signin } from 'services/authorization';
 import { getChats } from 'services/chats';
+import { getAvatar } from 'services/userData';
+import { DEFAULT_AVATAR } from 'constants/imagesPaths';
 
 type IncomingSigninProps = {
   router: Router;
@@ -42,7 +44,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
     super(props);
 
     this.setProps({
-      onSubmit: () => {
+      onSubmit: async () => {
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
@@ -51,8 +53,25 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          this.props.store.dispatch(signin, { login: login.value, password: password.value });
+          await Promise.resolve(
+            this.props.store.dispatch(signin, { login: login.value, password: password.value })
+          );
+
           this.props.store.dispatch(getChats);
+
+          const currentUser = this.props.store.getState().user;
+
+          if (currentUser) {
+            console.log(currentUser);
+            Promise.resolve(getAvatar(currentUser)).then((avatar) => {
+              currentUser.avatar = avatar;
+            });
+          }
+          console.log(currentUser);
+
+          this.props.store.dispatch({ user: currentUser });
+
+          this.props.router.go('/main');
         }
       },
 

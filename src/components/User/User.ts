@@ -15,13 +15,15 @@ export type UserProps = {
   user: Nullable<UserType>;
   userData: Array<any>;
   userLogin: string;
+  avatarSrc: string;
   navigateTo: (event: PointerEvent) => void;
   signout: () => void;
+  getAvatarSrc: (path: string) => void;
 };
 
 class User extends Block<UserProps> {
   static componentName: string = 'User';
-  userData: any;
+  avatarSrc: string = '';
 
   constructor(props: UserProps) {
     super(props);
@@ -32,6 +34,7 @@ class User extends Block<UserProps> {
     this.setProps({
       userData: data,
       userLogin: userLogin,
+      avatarSrc: this.props.store.getState().user?.avatar,
       navigateTo: (event: PointerEvent) => {
         const path = (event.target as HTMLButtonElement).textContent || '';
         navigateTo(`${stringToCamelCase(path)}`);
@@ -44,7 +47,7 @@ class User extends Block<UserProps> {
     // language=hbs
     return `
         <div class='user'>
-				  {{{Avatar name=userLogin imageSrc="./images/avatar_template.jpg" isEditable=true}}}
+				  {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=true}}}
 
           <div class='user__data'>
 					  {{#each userData}}

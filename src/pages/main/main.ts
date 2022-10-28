@@ -7,6 +7,7 @@ import Router from 'core/Router';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { WithChats } from 'utils/HOCS/WithChats';
+import { navigateTo } from 'utils/navigateTo';
 
 type MainPageProps = {
   router: Router;
@@ -54,8 +55,8 @@ class MainPage extends Block<MainPageProps, Refs> {
         //   messageRef.value = '';
         // }
       },
-      navigateToProfile: () => {
-        this.props.router.go('/profile');
+      navigateToProfile: async () => {
+        navigateTo('profile');
       },
       toggleCreateChatForm: () => {
         document.querySelector('#createChat')?.classList.toggle('form-container_shown');

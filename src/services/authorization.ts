@@ -1,5 +1,6 @@
 import AuthAPI from 'API/AuthAPI';
 import { UserFromServer } from 'API/typesAPI';
+import SigninPage from '../pages/signin/signin';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformUserObject } from 'utils/transformUserObject';
 import type { Dispatch } from '../store/Store';
@@ -35,7 +36,7 @@ export const signin = async (
     return;
   }
 
-  const user = await api.getUserInfo();
+  const user = (await api.getUserInfo()) as UserFromServer;
 
   if (isApiReturnedError(user)) {
     dispatch(signout);
@@ -43,8 +44,10 @@ export const signin = async (
     return;
   }
 
+  console.log(user);
+
   dispatch({
-    user: transformUserObject(user as UserFromServer),
+    user: transformUserObject(user),
     isLoading: false,
     loginFormError: null,
   });
@@ -55,7 +58,16 @@ export const signout = async (dispatch: Dispatch<AppState>) => {
 
   await api.signout();
 
-  dispatch({ isLoading: false, user: null });
+  dispatch({
+    isLoading: false,
+    view: SigninPage,
+    loginFormError: null,
+    user: null,
+    chats: null,
+    selectedChat: null,
+    isPopupShown: false,
+    foundUsers: [],
+  });
 
   window.router.go('/signin');
 };
@@ -90,5 +102,4 @@ export const signup = async (
   });
 
   window.router.go('/main');
-  // dispatch({ isLoading: false, loginFormError: null });
 };

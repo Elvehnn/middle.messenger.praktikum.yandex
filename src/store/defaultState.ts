@@ -4,7 +4,7 @@ export const defaultState: AppState = {
   loginFormError: null,
   user: null,
   isAppStarted: false,
-  chats: [],
+  chats: null,
   selectedChat: null,
   isPopupShown: false,
   foundUsers: [],

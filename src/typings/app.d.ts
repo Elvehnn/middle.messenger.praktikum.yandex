@@ -11,9 +11,9 @@ declare global {
     view: BlockConstructable | null;
     isLoading: boolean;
     loginFormError: string | null;
-    user: User | null;
+    user: UserType | null;
     isAppStarted: boolean;
-    chats: Array<ChatType>;
+    chats: Nullable<Array<ChatType>>;
     selectedChat: Nullable<ChatType>;
     isPopupShown: boolean;
     foundUsers: Array<UserType>;

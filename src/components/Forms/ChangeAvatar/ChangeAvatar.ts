@@ -34,14 +34,10 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         const form = document.querySelector('form');
         const formData = new FormData(form as HTMLFormElement);
 
-        for (var [key, value] of formData.entries()) {
-          console.log(key, value);
-        }
-
         this.props.store.dispatch(changeAvatar, formData);
         document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
 
-        //Здесь будет валидация и сбор данных
+        //Здесь будет валидация данных
 
         // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
         //   acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;

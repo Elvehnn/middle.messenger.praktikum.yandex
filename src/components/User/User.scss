@@ -7,10 +7,7 @@
   align-items: center;
   justify-content: space-evenly;
   row-gap: 6rem;
-  &__image {
-    width: 130px;
-    height: 130px;
-  }
+
   &__data,
   &__actions {
     display: flex;

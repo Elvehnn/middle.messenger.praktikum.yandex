@@ -17,6 +17,7 @@ class Avatar extends Block<AvatarProps> {
 
   constructor(props: AvatarProps) {
     super(props);
+
     this.setProps({
       showChangeAvatarForm: () => {
         document.querySelector('#changeAvatar')?.classList.add('form-container_shown');
@@ -32,7 +33,7 @@ class Avatar extends Block<AvatarProps> {
         {{{Button class='avatar__change' title='Change avatar' onClick=showChangeAvatarForm}}}
       {{/if}}
 			
-			<img src="{{imageSrc}}" class="user__image" alt="avatar" />
+			<img src="{{imageSrc}}" class="avatar__image" alt="avatar" />
             
 			<h3>{{name}}</h3>
 		</div>

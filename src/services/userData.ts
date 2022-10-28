@@ -5,6 +5,7 @@ import {
   UserFromServer,
 } from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
+import { DEFAULT_AVATAR } from 'constants/imagesPaths';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
 import { transformUserObject } from 'utils/transformUserObject';
 import type { Dispatch } from '../store/Store';
@@ -70,7 +71,18 @@ export const changeAvatar = async (
   state: AppState,
   action: FormData
 ) => {
-  const newUser = await api.changeAvatar(action);
+  const newUser = (await api.changeAvatar(action)) as UserFromServer;
+  newUser.avatar = await getAvatar(newUser);
 
-  console.log(newUser);
+  dispatch({ user: transformUserObject(newUser) });
+};
+
+export const getAvatar = async (user: UserFromServer | UserType) => {
+  if (!user.avatar) {
+    return DEFAULT_AVATAR;
+  }
+
+  const blob = (await api.getAvatar(user.avatar)) as Blob;
+
+  return URL.createObjectURL(blob);
 };

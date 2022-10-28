@@ -26,3 +26,12 @@ const user3 = {
   password: 'Elvehnn1980',
   phone: '+7(960)900-00-00',
 };
+const user4 = {
+  id: 56472,
+  first_name: 'Penka',
+  second_name: 'Penka',
+  login: 'Penka',
+  email: 'Penka@mail.ru',
+  password: 'Penka1980',
+  phone: '+79600000000',
+};
