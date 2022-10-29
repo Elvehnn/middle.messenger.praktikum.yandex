@@ -9,7 +9,7 @@ import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { getUserByLogin } from 'services/userData';
-import { addUserToChat, getChatUsers } from 'services/chats';
+import { addUserToChat } from 'services/chats';
 
 type AddUserToChatFormProps = {
   router: Router;
@@ -46,13 +46,9 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormP
 
         if (Object.keys(errors).length === 0) {
           const users = await getUserByLogin(login.value);
-          const chatId = this.props.store.getState().selectedChat?.id;
-          console.log(users);
+          const chat = this.props.store.getState().selectedChat;
 
-          this.props.store.dispatch(addUserToChat, { users: [users[0].id], chatId: chatId });
-
-          console.log(this.props.store.getState().selectedChat);
-          this.props.store.dispatch(getChatUsers, this.props.store.getState().selectedChat);
+          this.props.store.dispatch(addUserToChat, { users: [users[0].id], chat: chat });
         }
       },
     });

@@ -23,11 +23,15 @@ export default class ChatsAPI extends HTTPTransport {
     this.post(`chats/token/${chatId}`) as Promise<{ token: string }>;
 
   addUserToChat = async (data: UserToChatRequestData): Promise<ResponseData> => {
-    return this.put('chats/users', { data }) as Promise<ResponseData>;
+    return this.put('chats/users', {
+      data: { users: data.users, chatId: data.chat.id },
+    }) as Promise<ResponseData>;
   };
 
   deleteUserFromChat = async (data: UserToChatRequestData): Promise<ResponseData> => {
-    return this.delete('chats/users', { data }) as Promise<ResponseData>;
+    return this.delete('chats/users', {
+      data: { users: data.users, chatId: data.chat.id },
+    }) as Promise<ResponseData>;
   };
 
   getChatUsers = async (data: getChatUsersRequestData): Promise<ResponseData> => {

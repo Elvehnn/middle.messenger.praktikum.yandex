@@ -8,6 +8,8 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { WithChats } from 'utils/HOCS/WithChats';
 import { navigateTo } from 'utils/navigateTo';
+import { validateForm, ValidateType } from 'utils/validateForm';
+import { createMessageElement, MessageStatus, sendMessage } from 'services/chats';
 
 type MainPageProps = {
   router: Router;
@@ -19,6 +21,7 @@ type MainPageProps = {
   toggleShowChatMenu: () => void;
   toggleShowAddUserForm: () => void;
   toggleShowDeleteUserForm: () => void;
+  addMessage: (message: string) => void;
 };
 
 type Refs = {
@@ -38,22 +41,28 @@ class MainPage extends Block<MainPageProps, Refs> {
 
     this.setProps({
       onSubmit: (event: SubmitEvent) => {
-        // event.preventDefault();
-        // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-        //   acc[key] = value.getContent() as HTMLInputElement;
-        //   return acc;
-        // }, {} as { [key: string]: HTMLInputElement });
-        // const { attach, messageRef } = refs;
-        // const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
-        // if (Object.keys(errors).length !== 0) {
-        //   Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
-        // } else {
-        //   console.log({
-        //     message: messageRef.value,
-        //     attach: attach.value,
-        //   });
-        //   messageRef.value = '';
-        // }
+        event.preventDefault();
+
+        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
+          acc[key] = value.getContent() as HTMLInputElement;
+          return acc;
+        }, {} as { [key: string]: HTMLInputElement });
+
+        const { attach, messageRef } = refs;
+
+        const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
+
+        if (Object.keys(errors).length !== 0) {
+          Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
+        } else {
+          const chat = this.props.store.getState().selectedChat;
+
+          if (chat) {
+            sendMessage(messageRef.value, chat);
+          }
+
+          messageRef.value = '';
+        }
       },
       navigateToProfile: async () => {
         navigateTo('profile');
@@ -65,6 +74,7 @@ class MainPage extends Block<MainPageProps, Refs> {
         document.querySelector('.chat-menu')?.classList.toggle('chat-menu_shown');
       },
       toggleShowAddUserForm: () => {
+        console.log('show', document.querySelector('#addUser'));
         document.querySelector('#addUser')?.classList.toggle('form-container_shown');
         document.querySelector('.chat-menu')?.classList.remove('chat-menu_shown');
       },
@@ -74,6 +84,7 @@ class MainPage extends Block<MainPageProps, Refs> {
       },
     });
   }
+
   render() {
     const id = this.props.store.getState().selectedChat?.id;
     const title = this.props.store.getState().selectedChat?.title;
@@ -87,9 +98,8 @@ class MainPage extends Block<MainPageProps, Refs> {
         <main class="main">
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}
       
-          {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}
-
           {{{DeleteUserFromChatForm onCancel=toggleShowDeleteUserForm}}}
+          {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}
             
           <section class='left'>
               <div class='top-list'>
@@ -126,11 +136,7 @@ class MainPage extends Block<MainPageProps, Refs> {
                     
                 <div class='chat__content'>
                     <div class='conversation'>
-                      <div class='conversation__day'>
-                        <h4>Date</h4>
-                        {{{ChatMessage class="chat-message chat-message_mate"}}}
-                        {{{ChatMessage class="chat-message chat-message_owner"}}}
-                      </div>
+     
                     </div>
                 </div>
                     
@@ -144,7 +150,7 @@ class MainPage extends Block<MainPageProps, Refs> {
                       {{{MessageInput ref="messageRef" class='message'}}}
 
                       <div class="button-container">
-                        {{{ ArrowRoundButton class="arrow arrow_reverse" onClick=onSubmit}}}
+                        {{{ArrowRoundButton blockClass="arrow arrow_reverse" onClick=onSubmit}}}
                       </div>
                     </form>
                 </footer>
@@ -159,3 +165,6 @@ class MainPage extends Block<MainPageProps, Refs> {
 }
 
 export default WithRouter(WithStore(WithChats(MainPage)));
+
+// {{{ChatMessage class="chat-message chat-message_mate"}}}
+// {{{ChatMessage class="chat-message chat-message_owner"}}}

@@ -3,35 +3,27 @@ import Router from 'core/Router';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import './ArrowRoundButton.scss';
 
-interface IncomingArrowRoundButtonProps {
+interface ArrowRoundButtonProps {
   router: Router;
-  navigateBack: () => void;
+  onClick: () => void;
+  blockClass: string;
 }
-
-type ArrowRoundButtonProps = IncomingArrowRoundButtonProps & {
-  events: {
-    click?: () => void;
-  };
-};
 
 class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
   static componentName: string = 'ArrowRoundButton';
 
-  constructor(props: IncomingArrowRoundButtonProps) {
+  constructor({ blockClass = 'arrow', router, onClick }: ArrowRoundButtonProps) {
     super({
-      ...props,
-      events: {
-        click: () => {
-          this.props.router.back();
-        },
-      },
+      blockClass,
+      router,
+      onClick,
     });
   }
 
   render() {
     // language=hbs
     return `
-        <button class='arrow'></button>
+        {{{Button class=blockClass onClick=onClick type='submit'}}}
     `;
   }
 }

@@ -5,7 +5,6 @@ import {
   CreateChatRequestData,
   DeleteChatRequestData,
   UserFromServer,
-  getChatUsersRequestData,
 } from 'API/typesAPI';
 import { Dispatch } from 'store/Store';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
@@ -86,7 +85,20 @@ export const addUserToChat = async (
     return;
   }
 
-  dispatch({ isLoading: false, loginFormError: null });
+  const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
+
+  if (isApiReturnedError(users)) {
+    dispatch({ isLoading: false, loginFormError: users.reason });
+
+    return;
+  }
+
+  const selectedChat = {
+    ...action.chat,
+    chatUsers: users.map((user) => transformUserObject(user)),
+  };
+
+  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
 export const deleteUserFromChat = async (
@@ -104,7 +116,20 @@ export const deleteUserFromChat = async (
     return;
   }
 
-  dispatch({ isLoading: false, loginFormError: null });
+  const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
+
+  if (isApiReturnedError(users)) {
+    dispatch({ isLoading: false, loginFormError: users.reason });
+
+    return;
+  }
+
+  const selectedChat = {
+    ...action.chat,
+    chatUsers: users.map((user) => transformUserObject(user)),
+  };
+
+  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
 export const getChatInfo = async (
@@ -136,7 +161,57 @@ export const getChatInfo = async (
     chatToken: token as string,
   };
 
-  state.user && window.socketController.createSocket(state.user.id, selectedChat);
+  if (state.user) {
+    openSocket(state.user.id, selectedChat);
+  }
 
   dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
+};
+
+export const openSocket = (id: number, chat: ChatType) => {
+  const socket = window.socketController.socketsMap.get(String(id));
+
+  if (!socket) {
+    window.socketController.createSocket(id, chat);
+
+    return;
+  }
+};
+
+export const sendMessage = (message: string, chat: ChatType) => {
+  const socket = window.socketController.socketsMap.get(String(chat.id));
+  const messageObject = {
+    content: message,
+    type: 'message',
+  };
+
+  socket?.send(JSON.stringify(messageObject));
+};
+
+export enum MessageStatus {
+  Owner = 'owner',
+  Mate = 'mate',
+}
+export const createMessageElement = (
+  message: { time: string; content: string },
+  status: MessageStatus
+): HTMLDivElement => {
+  const elementClass =
+    status === MessageStatus.Owner
+      ? ['chat-message', 'chat-message_mate']
+      : ['chat-message', 'chat-message_owner'];
+
+  const messageElement = document.createElement('div');
+  messageElement.classList.add(...elementClass);
+
+  const textElement = document.createElement('p');
+  textElement.textContent = message.content;
+
+  const timeElement = document.createElement('time');
+  timeElement.classList.add('chat-message__time');
+  timeElement.textContent = message.time;
+
+  messageElement.append(textElement, timeElement);
+
+  return messageElement;
 };

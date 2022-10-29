@@ -9,7 +9,7 @@ import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { getUserByLogin } from 'services/userData';
-import { deleteUserFromChat, getChatUsers } from 'services/chats';
+import { deleteUserFromChat } from 'services/chats';
 
 type DeleteUserFromChatFormProps = {
   router: Router;
@@ -32,7 +32,7 @@ class DeleteUserFromChatForm extends Block<
   DeleteUserFromChatFormProps,
   DeleteUserFromChatFormRefs
 > {
-  static componentName: string = 'AddUserToChatForm';
+  static componentName: string = 'DeleteUserFromChatForm';
 
   constructor(props: DeleteUserFromChatFormProps) {
     super(props);
@@ -53,9 +53,6 @@ class DeleteUserFromChatForm extends Block<
           console.log(users);
 
           this.props.store.dispatch(deleteUserFromChat, { users: [users[0].id], chatId: chatId });
-
-          console.log(this.props.store.getState().selectedChat);
-          this.props.store.dispatch(getChatUsers, this.props.store.getState().selectedChat);
         }
       },
     });
