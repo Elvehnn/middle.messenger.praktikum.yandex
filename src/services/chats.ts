@@ -5,6 +5,7 @@ import {
   CreateChatRequestData,
   DeleteChatRequestData,
   UserFromServer,
+  getChatUsersRequestData,
 } from 'API/typesAPI';
 import { Dispatch } from 'store/Store';
 import { isApiReturnedError } from 'utils/isApiReturnedError';
@@ -106,22 +107,36 @@ export const deleteUserFromChat = async (
   dispatch({ isLoading: false, loginFormError: null });
 };
 
-export const getChatUsers = async (
+export const getChatInfo = async (
   dispatch: Dispatch<AppState>,
   state: AppState,
   action: ChatType
 ) => {
   dispatch({ isLoading: true });
 
-  const response = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
+  const token = (await api.getChatToken(action.id)).token;
 
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+  if (isApiReturnedError(token)) {
+    dispatch({ isLoading: false, loginFormError: token.reason });
 
     return;
   }
 
-  const selectedChat = { ...action, chatUsers: response.map((user) => transformUserObject(user)) };
+  const users = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
+
+  if (isApiReturnedError(users)) {
+    dispatch({ isLoading: false, loginFormError: users.reason });
+
+    return;
+  }
+
+  const selectedChat = {
+    ...action,
+    chatUsers: users.map((user) => transformUserObject(user)),
+    chatToken: token as string,
+  };
+
+  state.user && window.socketController.createSocket(state.user.id, selectedChat);
 
   dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };

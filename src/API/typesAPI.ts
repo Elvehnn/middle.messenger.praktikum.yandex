@@ -64,11 +64,11 @@ export type DeleteChatRequestData = {
 
 export type UserToChatRequestData = {
   users: UserType[];
-  chatId: Number;
+  chatId: number;
 };
 
 export type getChatUsersRequestData = {
-  chatId: Number;
+  chatId: number;
 };
 
 export type ResponseData = {} | APIError;

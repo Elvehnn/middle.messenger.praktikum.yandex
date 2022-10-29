@@ -28,6 +28,7 @@ import { initRouter } from 'services/initRouter';
 import store, { Store } from './store/Store';
 import { StartPage } from 'pages/start/start';
 import { startApp } from 'services/startApp';
+import SocketController from 'core/SocketController';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -55,6 +56,7 @@ declare global {
   interface Window {
     router: Router;
     store: Store<AppState>;
+    socketController: SocketController;
   }
 }
 
@@ -62,6 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const router = new Router();
   window.router = router;
   window.store = store;
+
+  const socketController = new SocketController();
+  window.socketController = socketController;
 
   renderDOM(new StartPage({ router }));
 
