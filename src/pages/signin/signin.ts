@@ -60,10 +60,16 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
     });
   }
   render() {
+    const isLoading = this.props.store.getState().isLoading;
     // language=hbs
     return `
         <main class="main">
-            <h1>Chatterbox</h1>
+          {{#if ${isLoading}}}
+            {{{Preloader}}}
+          {{/if}}
+
+          <h1>Chatterbox</h1>
+
           <form class="login-form" action="./main.html">
                 <div class="login-form__group">
                     <h2>Sign in</h2>

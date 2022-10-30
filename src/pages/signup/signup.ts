@@ -68,9 +68,14 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
     });
   }
   render() {
+    const isLoading = this.props.store.getState().isLoading;
     // language=hbs
     return `
         <main class="main">
+          {{#if ${isLoading}}}
+            {{{Preloader}}}
+          {{/if}}
+          
             <h1>Chatterbox</h1>
             <form class="login-form" action="./main.html">
                 <div class="login-form__group">
