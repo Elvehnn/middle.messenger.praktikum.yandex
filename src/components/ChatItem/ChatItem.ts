@@ -28,6 +28,8 @@ class ChatItem extends Block<ChatItemProps> {
         return;
       }
 
+      this.props.store.dispatch({ isLoading: true });
+
       this.props.store.dispatch(getChatInfo, this.props.chat);
     };
 

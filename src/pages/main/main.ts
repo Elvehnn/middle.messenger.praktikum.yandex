@@ -86,6 +86,7 @@ class MainPage extends Block<MainPageProps, Refs> {
   }
 
   render() {
+    const isLoading = this.props.store.getState().isLoading;
     const id = this.props.store.getState().selectedChat?.id;
     const title = this.props.store.getState().selectedChat?.title;
     const chatUsers = this.props.store.getState().selectedChat?.chatUsers?.reduce((acc, user) => {
@@ -96,6 +97,10 @@ class MainPage extends Block<MainPageProps, Refs> {
     // language=hbs
     return `
         <main class="main">
+          {{#if ${isLoading}}}
+            {{{Preloader}}}
+          {{/if}}
+
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}
           {{{DeleteUserFromChatForm onCancel=toggleShowDeleteUserForm}}}
           {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}

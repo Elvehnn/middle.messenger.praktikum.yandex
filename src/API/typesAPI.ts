@@ -63,7 +63,12 @@ export type DeleteChatRequestData = {
 };
 
 export type UserToChatRequestData = {
-  users: UserType[];
+  users: number[];
+  chat: ChatType;
+};
+
+export type UserToChatData = {
+  login: string;
   chat: ChatType;
 };
 

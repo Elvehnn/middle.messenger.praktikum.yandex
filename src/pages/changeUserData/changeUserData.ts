@@ -16,6 +16,8 @@ import { navigateBack } from 'utils/navigateTo';
 
 export type ChangeProfileProps = ProfileProps & {
   userData: Array<any>;
+  userLogin: string;
+  avatarSrc: string;
   onSubmit: (event: SubmitEvent) => void;
   navigateBack: () => void;
 };
@@ -34,6 +36,8 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
 
     this.setProps({
       userData: data,
+      userLogin: this.props.store.getState().user?.login,
+      avatarSrc: this.props.store.getState().user?.avatar,
 
       onSubmit: async () => {
         const refs = getChildInputRefs(this.refs);
@@ -59,9 +63,15 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   }
 
   render() {
+    const isLoading = this.props.store.getState().isLoading;
+
     // language=hbs
     return `
         <main class='main'>
+            {{#if ${isLoading}}}
+              {{{Preloader}}}
+            {{/if}}
+
             <div class='profile'>
                 <div class="profile__aside">
                     {{{ArrowRoundButton onClick=navigateBack}}}
@@ -69,7 +79,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
-                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
+                    {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
                             {{#each userData}}

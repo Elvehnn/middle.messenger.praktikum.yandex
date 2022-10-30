@@ -8,7 +8,6 @@ import { Store } from 'store/Store';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
-import { getUserByLogin } from 'services/userData';
 import { addUserToChat } from 'services/chats';
 
 type AddUserToChatFormProps = {
@@ -45,10 +44,11 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormP
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const users = await getUserByLogin(login.value);
+          this.props.store.dispatch({ isLoading: true });
+
           const chat = this.props.store.getState().selectedChat;
 
-          this.props.store.dispatch(addUserToChat, { users: [users[0].id], chat: chat });
+          this.props.store.dispatch(addUserToChat, { login: login.value, chat });
         }
       },
     });

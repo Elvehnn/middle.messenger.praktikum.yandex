@@ -22,18 +22,23 @@ class Profile extends Block<ProfileProps> {
     this.setProps({ navigateBack: () => navigateTo('main') });
   }
   render() {
+    const isLoading = this.props.store.getState().isLoading;
     // language=hbs
     return `
         <main class="main">
+            {{#if ${isLoading}}}
+              {{{Preloader}}}
+            {{/if}}
+
             <div class='profile'>
               <div class="profile__aside">
                 {{{ArrowRoundButton onClick=navigateBack}}}
-              </div>
+            </div>
             
-              <section class='profile__container'>
-                {{{ChangeAvatar}}}
-                {{{User user=user}}}
-              </section>
+            <section class='profile__container'>
+              {{{ChangeAvatar}}}
+              {{{User user=user}}}
+            </section>
             </div>
         </main>
         `;

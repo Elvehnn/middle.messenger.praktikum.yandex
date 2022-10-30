@@ -12,11 +12,6 @@ const chatsApi = new ChatsAPI();
 
 export async function startApp(dispatch: Dispatch<AppState>) {
   const lastView = localStorage.getItem('lastView');
-  console.log('last view: ', lastView);
-
-  // if (!lastView) {
-  //   await new Promise((r) => setTimeout(r, 1000));
-  // }
 
   try {
     const user = (await authApi.getUserInfo()) as UserFromServer;

@@ -1,15 +1,16 @@
 import ChatsAPI from 'API/ChatsAPI';
 import {
-  UserToChatRequestData,
   ChatFromServer,
   CreateChatRequestData,
   DeleteChatRequestData,
   UserFromServer,
+  UserToChatData,
 } from 'API/typesAPI';
 import { Dispatch } from 'store/Store';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
+import { getUserByLogin } from './userData';
 
 const api = new ChatsAPI();
 
@@ -73,11 +74,17 @@ export const deleteChat = async (
 export const addUserToChat = async (
   dispatch: Dispatch<AppState>,
   state: AppState,
-  action: UserToChatRequestData
+  action: UserToChatData
 ) => {
-  dispatch({ isLoading: true });
+  const user = await getUserByLogin(action.login);
 
-  const response = await api.addUserToChat(action);
+  if (user.length === 0) {
+    dispatch({ isLoading: false, loginFormError: 'User not found' });
+
+    return;
+  }
+
+  const response = await api.addUserToChat({ users: [user[0].id], chat: action.chat });
 
   if (isApiReturnedError(response)) {
     dispatch({ isLoading: false, loginFormError: response.reason });
@@ -104,11 +111,17 @@ export const addUserToChat = async (
 export const deleteUserFromChat = async (
   dispatch: Dispatch<AppState>,
   state: AppState,
-  action: UserToChatRequestData
+  action: UserToChatData
 ) => {
-  dispatch({ isLoading: true });
+  const user = await getUserByLogin(action.login);
 
-  const response = await api.deleteUserFromChat(action);
+  if (user.length === 0) {
+    dispatch({ isLoading: false, loginFormError: 'User not found' });
+
+    return;
+  }
+
+  const response = await api.deleteUserFromChat({ users: [user[0].id], chat: action.chat });
 
   if (isApiReturnedError(response)) {
     dispatch({ isLoading: false, loginFormError: response.reason });
@@ -137,8 +150,6 @@ export const getChatInfo = async (
   state: AppState,
   action: ChatType
 ) => {
-  dispatch({ isLoading: true });
-
   const token = (await api.getChatToken(action.id)).token;
 
   if (isApiReturnedError(token)) {

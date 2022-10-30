@@ -22,8 +22,12 @@ export const changeUserProfile = async (
     return;
   }
 
+  const avatar = state?.user?.avatar || DEFAULT_AVATAR;
+
+  const updatedUser = { ...transformUserObject(response as UserFromServer), avatar };
+
   dispatch({
-    user: transformUserObject(response as UserFromServer),
+    user: updatedUser,
     isLoading: false,
     loginFormError: null,
   });
@@ -57,7 +61,6 @@ export const changeUserPassword = async (
 export const getUserByLogin = async (login: string) => {
   const users = (await api.getUserByLogin({ login })) as UserFromServer[];
 
-  console.log(users);
   return users;
 };
 

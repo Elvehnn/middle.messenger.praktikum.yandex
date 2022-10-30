@@ -8,7 +8,6 @@ import { Store } from 'store/Store';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
-import { getUserByLogin } from 'services/userData';
 import { deleteUserFromChat } from 'services/chats';
 
 type DeleteUserFromChatFormProps = {
@@ -48,11 +47,11 @@ class DeleteUserFromChatForm extends Block<
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const users = await getUserByLogin(login.value);
-          const chatId = this.props.store.getState().selectedChat?.id;
-          console.log(users);
+          this.props.store.dispatch({ isLoading: true });
 
-          this.props.store.dispatch(deleteUserFromChat, { users: [users[0].id], chatId: chatId });
+          const chat = this.props.store.getState().selectedChat;
+
+          this.props.store.dispatch(deleteUserFromChat, { login: login.value, chat });
         }
       },
     });

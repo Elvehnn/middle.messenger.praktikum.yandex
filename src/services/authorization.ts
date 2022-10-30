@@ -54,6 +54,8 @@ export const signin = async (
   dispatch({
     user: transformUserObject(user),
     chats: chats.map((chat) => transformChatsObject(chat)),
+    isLoading: false,
+    loginFormError: null,
   });
 
   window.router.go('/main');
@@ -107,6 +109,8 @@ export const signup = async (
   dispatch({
     user: transformUserObject(user),
     chats: chats.map((chat) => transformChatsObject(chat)),
+    isLoading: false,
+    loginFormError: null,
   });
 
   window.router.go('/main');
