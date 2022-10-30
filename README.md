@@ -4,7 +4,7 @@
 
 Используемый образец UI: https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1.
 
-## Текущий деплой - <https://sprint-2-elvehnn.netlify.app/>
+## Текущий деплой - <https://sprint-3-elvehnn.netlify.app/>
 
 ## Используемые технологии
 
