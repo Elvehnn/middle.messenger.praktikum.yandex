@@ -188,17 +188,6 @@ export const sendMessage = (message: string, chat: ChatType) => {
   socket?.send(JSON.stringify(messageObject));
 };
 
-export const getOldMessages = (firstMessageNumber: number, chatId: number) => {
-  const socket = window.socketController.socketsMap.get(String(chatId))?.socket;
-
-  const messageObject = {
-    content: String(firstMessageNumber),
-    type: 'get old',
-  };
-
-  socket?.send(JSON.stringify(messageObject));
-};
-
 export const getUnreadMessagesCount = async (action: ChatType) => {
   return (await api.getUnreadMessagesCount({ chatId: action.id })) as number;
 };

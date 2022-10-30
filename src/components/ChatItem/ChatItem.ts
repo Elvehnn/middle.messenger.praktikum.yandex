@@ -1,6 +1,6 @@
 import { WebSocketMessage } from 'API/typesAPI';
 import Block from 'core/Block';
-import { deleteChat, getChatInfo, getOldMessages, getUnreadMessagesCount } from 'services/chats';
+import { deleteChat, getChatInfo } from 'services/chats';
 import { Store } from 'store/Store';
 import { WithStore } from 'utils/HOCS/WithStore';
 import './ChatItem.scss';

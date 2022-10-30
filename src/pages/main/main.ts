@@ -74,7 +74,6 @@ class MainPage extends Block<MainPageProps, Refs> {
         document.querySelector('.chat-menu')?.classList.toggle('chat-menu_shown');
       },
       toggleShowAddUserForm: () => {
-        console.log('show', document.querySelector('#addUser'));
         document.querySelector('#addUser')?.classList.toggle('form-container_shown');
         document.querySelector('.chat-menu')?.classList.remove('chat-menu_shown');
       },
@@ -135,7 +134,6 @@ class MainPage extends Block<MainPageProps, Refs> {
                     
                 <div class='chat__content'>
                     <div class='conversation'>
-     
                     </div>
                 </div>
                     
@@ -164,6 +162,3 @@ class MainPage extends Block<MainPageProps, Refs> {
 }
 
 export default WithRouter(WithStore(WithChats(MainPage)));
-
-// {{{ChatMessage class="chat-message chat-message_mate"}}}
-// {{{ChatMessage class="chat-message chat-message_owner"}}}

@@ -24,9 +24,7 @@ export default class SocketController implements SocketControllerProps {
     const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${chatToken}`);
 
     this.setHandlers(socket, userId, chat);
-
     this.socketsMap.set(String(id), { socket: socket, oldMessagesArray: [] });
-    console.log(this.socketsMap);
   }
 
   setHandlers(socket: WebSocket, userId: number, chat: ChatType) {
