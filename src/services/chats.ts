@@ -7,9 +7,9 @@ import {
   UserFromServer,
 } from 'API/typesAPI';
 import { Dispatch } from 'store/Store';
-import { isApiReturnedError } from 'utils/isApiReturnedError';
-import { transformChatsObject } from 'utils/transformChatsObject';
-import { transformUserObject } from 'utils/transformUserObject';
+import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
+import { transformChatsObject } from 'utils/transformers/transformChatsObject';
+import { transformUserObject } from 'utils/transformers/transformUserObject';
 
 const api = new ChatsAPI();
 

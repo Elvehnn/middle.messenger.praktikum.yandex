@@ -1,4 +1,4 @@
-import { isObject } from './isObject';
+import { isObject } from '../checkers and validators/isObject';
 
 type StringIndexed = Record<string, any>;
 

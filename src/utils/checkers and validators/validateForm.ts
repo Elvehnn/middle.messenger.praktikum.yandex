@@ -10,8 +10,8 @@ import {
   ONLY_LETTERS_AND_DASH,
   PHONE_SYMBOLS,
   SPECIAL_CHARACTERS,
-} from '../constants/validateRegExpressions';
-import { lowerCaseFirstLetter } from './lowerCaseFirstLetter';
+} from '../../constants/validateRegExpressions';
+import { lowerCaseFirstLetter } from '../transformers/lowerCaseFirstLetter';
 
 export enum ValidateType {
   Login = 'login',

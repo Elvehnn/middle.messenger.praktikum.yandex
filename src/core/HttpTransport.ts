@@ -1,5 +1,5 @@
 import { PATH } from 'constants/pathsAPI';
-import queryStringify from 'utils/queryStringify';
+import queryStringify from 'utils/transformers/queryStringify';
 
 enum Methods {
   Get = 'GET',

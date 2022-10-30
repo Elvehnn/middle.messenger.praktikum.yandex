@@ -38,29 +38,6 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
 
         //Здесь будет валидация данных
-
-        // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-        //   acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-        //   return acc;
-        // }, {} as refsObject);
-
-        // const { file } = refs;
-
-        // const errors = validateForm([{ type: ValidateType.File, value: file.value }]);
-
-        // if (Object.keys(errors).length !== 0) {
-        //   for (let key in errors) {
-        //     this.refs[key].getRefs().errorRef.setProps({ error: errors[key] });
-        //   }
-        // } else {
-        //   console.log({
-        //     file: file.value,
-        //   });
-
-        //   for (let key in errors) {
-        //     this.refs[key].getRefs().errorRef.setProps({ error: '' });
-        //   }
-        // }
       },
       onCancel: () => {
         document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
@@ -77,7 +54,6 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         <form class='avatar-form' id='formElem'>
           {{{Button class='avatar-form__close' onClick=onCancel title='X'}}}
 
-          {{{Label class='avatar-form__label' for='avatar' label="Select file to upload"}}}
           {{{Input ref='avatar' id='avatar' inputName='avatar' class="avatar-form__upload" type="file" accept="image/*" }}}
           <p class='avatar-form__warning'>Need to select any file</p>
 
@@ -92,3 +68,5 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
 }
 
 export default WithStore(ChangeAvatar);
+// Застилиnm label и убрать стандартный инпут
+// {{{Label class='avatar-form__label' for='avatar' label="Select file to upload"}}}

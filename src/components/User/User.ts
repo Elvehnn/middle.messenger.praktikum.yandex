@@ -6,7 +6,7 @@ import { getUserDataArray } from 'utils/getUserDataArray';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { navigateTo } from 'utils/navigateTo';
-import { stringToCamelCase } from 'utils/stringToCamelCase';
+import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import './User.scss';
 
 export type UserProps = {

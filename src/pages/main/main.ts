@@ -8,7 +8,7 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { WithChats } from 'utils/HOCS/WithChats';
 import { navigateTo } from 'utils/navigateTo';
-import { validateForm, ValidateType } from 'utils/validateForm';
+import { validateForm, ValidateType } from 'utils/checkers and validators/validateForm';
 import { sendMessage } from 'services/chats';
 
 type MainPageProps = {
@@ -41,6 +41,7 @@ class MainPage extends Block<MainPageProps, Refs> {
 
     this.setProps({
       onSubmit: (event: SubmitEvent) => {
+        // TODO: добавить обработку прикрепленных файлов
         event.preventDefault();
 
         const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
@@ -48,7 +49,7 @@ class MainPage extends Block<MainPageProps, Refs> {
           return acc;
         }, {} as { [key: string]: HTMLInputElement });
 
-        const { attach, messageRef } = refs;
+        const { messageRef } = refs;
 
         const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
 

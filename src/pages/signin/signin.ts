@@ -9,9 +9,6 @@ import Router from 'core/Router';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { signin } from 'services/authorization';
-import { getChats } from 'services/chats';
-import { getAvatar } from 'services/userData';
-import { DEFAULT_AVATAR } from 'constants/imagesPaths';
 
 type IncomingSigninProps = {
   router: Router;

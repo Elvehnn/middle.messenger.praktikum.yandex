@@ -1,4 +1,4 @@
-import { isStringEqual } from 'utils/isStringEqual';
+import { isStringEqual } from 'utils/checkers and validators/isStringEqual';
 import { BlockConstructable } from './RegisterComponent';
 
 export interface RouteProps {

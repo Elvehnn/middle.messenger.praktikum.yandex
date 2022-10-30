@@ -1,5 +1,5 @@
-import { lowerCaseFirstLetter } from 'utils/lowerCaseFirstLetter';
-import { stringToPascalCase } from 'utils/stringToPascalCase';
+import { lowerCaseFirstLetter } from './lowerCaseFirstLetter';
+import { stringToPascalCase } from './stringToPascalCase';
 
 export const stringToCamelCase = (inputString: string): string => {
   return lowerCaseFirstLetter(stringToPascalCase(inputString));

@@ -1,6 +1,6 @@
 import { RefsObject } from 'pages/changeUserPassword/changeUserPassword';
-import { stringToPascalCase } from './stringToPascalCase';
-import { validateForm, ValidateType } from './validateForm';
+import { stringToPascalCase } from './transformers/stringToPascalCase';
+import { validateForm, ValidateType } from './checkers and validators/validateForm';
 
 export const getErrorsObject = (refs: RefsObject) => {
   return Object.entries(refs).reduce((acc, [key, input]) => {

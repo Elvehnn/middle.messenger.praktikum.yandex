@@ -1,14 +1,12 @@
 import AuthAPI from 'API/AuthAPI';
 import { ChatFromServer, UserFromServer } from 'API/typesAPI';
 import SigninPage from '../pages/signin/signin';
-import { isApiReturnedError } from 'utils/isApiReturnedError';
-import { transformUserObject } from 'utils/transformUserObject';
+import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
+import { transformUserObject } from 'utils/transformers/transformUserObject';
 import type { Dispatch } from '../store/Store';
 import { getAvatar } from './userData';
-import { getChats } from './chats';
-import UserAPI from 'API/UserAPI';
 import ChatsAPI from 'API/ChatsAPI';
-import { transformChatsObject } from 'utils/transformChatsObject';
+import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 
 type LoginPayload = {
   login: string;

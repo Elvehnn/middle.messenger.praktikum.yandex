@@ -9,7 +9,7 @@ import Router from 'core/Router';
 import { INPUTS } from 'constants/inputs';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
-import { stringToCamelCase } from 'utils/stringToCamelCase';
+import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import { signup } from 'services/authorization';
 
 type IncomingSignupProps = {

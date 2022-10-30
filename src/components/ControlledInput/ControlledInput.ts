@@ -1,8 +1,8 @@
 import ErrorMessage from 'components/Error/Error';
 import Input from 'components/Input/Input';
 import Block from 'core/Block';
-import { stringToPascalCase } from 'utils/stringToPascalCase';
-import { validateForm, ValidateType } from 'utils/validateForm';
+import { stringToPascalCase } from 'utils/transformers/stringToPascalCase';
+import { validateForm, ValidateType } from 'utils/checkers and validators/validateForm';
 import './ControlledInput.scss';
 
 export type ControlledInputRefs = {

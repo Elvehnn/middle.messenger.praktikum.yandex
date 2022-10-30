@@ -1,6 +1,6 @@
 require('babel-core/register');
 
-import { renderDOM, registerComponent } from './core';
+import { registerComponent } from './core';
 import './styles/style.scss';
 import Button from 'components/Button/Button';
 import Link from 'components/Link/Link';
@@ -26,7 +26,6 @@ import ChatMenu from 'components/ChatMenu/ChatMenu';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
 import store, { Store } from './store/Store';
-import { StartPage } from 'pages/start/start';
 import { startApp } from 'services/startApp';
 import SocketController from 'core/SocketController';
 
@@ -68,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const socketController = new SocketController();
   window.socketController = socketController;
 
+  //TODO: добавить стартовый экран на запуск приложения
   // renderDOM(new StartPage({ router }));
 
   store.on('updated', (prevState, nextState) => {
@@ -79,7 +79,3 @@ document.addEventListener('DOMContentLoaded', () => {
   initRouter(router, store);
   store.dispatch(startApp);
 });
-
-// window.onunload = () => {
-//   localStorage.removeItem('lastView');
-// };

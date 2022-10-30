@@ -1,9 +1,5 @@
 import { WebSocketMessage } from 'API/typesAPI';
-import {
-  addDOMMessageElement,
-  createMessageElement,
-  MessageStatus,
-} from 'utils/createMessageElement';
+import { addDOMMessageElement } from 'utils/createMessageElement';
 
 export interface SocketControllerProps {
   socketsMap: Map<string, SocketData>;

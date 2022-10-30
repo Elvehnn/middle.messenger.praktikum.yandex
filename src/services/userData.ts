@@ -1,13 +1,8 @@
-import {
-  ChangePasswordRequestData,
-  ChangeProfileRequestData,
-  GetUserByLoginRequestData,
-  UserFromServer,
-} from 'API/typesAPI';
+import { ChangePasswordRequestData, ChangeProfileRequestData, UserFromServer } from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
 import { DEFAULT_AVATAR } from 'constants/imagesPaths';
-import { isApiReturnedError } from 'utils/isApiReturnedError';
-import { transformUserObject } from 'utils/transformUserObject';
+import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
+import { transformUserObject } from 'utils/transformers/transformUserObject';
 import type { Dispatch } from '../store/Store';
 
 const api = new UserAPI();

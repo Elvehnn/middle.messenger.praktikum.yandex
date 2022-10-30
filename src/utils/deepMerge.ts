@@ -1,4 +1,4 @@
-import { isObject } from './isObject';
+import { isObject } from './checkers and validators/isObject';
 
 function deepMerge(lhs: Indexed, rhs: Indexed): Indexed {
   const target: Indexed = lhs ? lhs : {};
