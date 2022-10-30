@@ -30,14 +30,23 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
     this.setProps({
       onSubmit: (event) => {
         event.preventDefault();
+        document
+          .querySelector('.avatar-form__warning')
+          ?.classList.toggle('avatar-form__warning_show');
 
         const form = document.querySelector('form');
         const formData = new FormData(form as HTMLFormElement);
 
-        this.props.store.dispatch(changeAvatar, formData);
-        document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
+        //TODO: Здесь будет правильная валидация данных
 
-        //Здесь будет валидация данных
+        if ((document.querySelector('#avatar') as HTMLInputElement).value) {
+          this.props.store.dispatch(changeAvatar, formData);
+          document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
+
+          return;
+        }
+
+        document.querySelector('.avatar-form__warning')?.classList.add('avatar-form__warning_show');
       },
       onCancel: () => {
         document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');

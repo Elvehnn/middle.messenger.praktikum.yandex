@@ -69,10 +69,12 @@ export const changeAvatar = async (
   state: AppState,
   action: FormData
 ) => {
+  dispatch({ isLoading: true });
+
   const newUser = (await api.changeAvatar(action)) as UserFromServer;
   newUser.avatar = await getAvatar(newUser);
 
-  dispatch({ user: transformUserObject(newUser) });
+  dispatch({ user: transformUserObject(newUser), isLoading: false });
 };
 
 export const getAvatar = async (user: UserFromServer | UserType) => {
