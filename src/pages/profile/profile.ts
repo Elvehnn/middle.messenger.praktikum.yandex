@@ -4,12 +4,14 @@ import { Store } from 'store/Store';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { WithUser } from 'utils/HOCS/WithUser';
+import { navigateTo } from 'utils/navigateTo';
 import './profile.scss';
 
 export interface ProfileProps {
   user: Nullable<UserType>;
   store: Store<AppState>;
   router: Router;
+  navigateBack: () => void;
 }
 
 class Profile extends Block<ProfileProps> {
@@ -17,6 +19,7 @@ class Profile extends Block<ProfileProps> {
 
   constructor(props: ProfileProps) {
     super(props);
+    this.setProps({ navigateBack: () => navigateTo('main') });
   }
   render() {
     // language=hbs
@@ -24,7 +27,7 @@ class Profile extends Block<ProfileProps> {
         <main class="main">
             <div class='profile'>
               <div class="profile__aside">
-                {{{ArrowRoundButton}}}
+                {{{ArrowRoundButton onClick=navigateBack}}}
               </div>
             
               <section class='profile__container'>

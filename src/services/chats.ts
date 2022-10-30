@@ -179,7 +179,7 @@ export const openSocket = (id: number, chat: ChatType) => {
 };
 
 export const sendMessage = (message: string, chat: ChatType) => {
-  const socket = window.socketController.socketsMap.get(String(chat.id));
+  const socket = window.socketController.socketsMap.get(String(chat.id))?.socket;
   const messageObject = {
     content: message,
     type: 'message',
@@ -188,30 +188,17 @@ export const sendMessage = (message: string, chat: ChatType) => {
   socket?.send(JSON.stringify(messageObject));
 };
 
-export enum MessageStatus {
-  Owner = 'owner',
-  Mate = 'mate',
-}
-export const createMessageElement = (
-  message: { time: string; content: string },
-  status: MessageStatus
-): HTMLDivElement => {
-  const elementClass =
-    status === MessageStatus.Owner
-      ? ['chat-message', 'chat-message_mate']
-      : ['chat-message', 'chat-message_owner'];
+export const getOldMessages = (firstMessageNumber: number, chatId: number) => {
+  const socket = window.socketController.socketsMap.get(String(chatId))?.socket;
 
-  const messageElement = document.createElement('div');
-  messageElement.classList.add(...elementClass);
+  const messageObject = {
+    content: String(firstMessageNumber),
+    type: 'get old',
+  };
 
-  const textElement = document.createElement('p');
-  textElement.textContent = message.content;
+  socket?.send(JSON.stringify(messageObject));
+};
 
-  const timeElement = document.createElement('time');
-  timeElement.classList.add('chat-message__time');
-  timeElement.textContent = message.time;
-
-  messageElement.append(textElement, timeElement);
-
-  return messageElement;
+export const getUnreadMessagesCount = async (action: ChatType) => {
+  return (await api.getUnreadMessagesCount({ chatId: action.id })) as number;
 };

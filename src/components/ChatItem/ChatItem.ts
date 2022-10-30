@@ -1,5 +1,6 @@
+import { WebSocketMessage } from 'API/typesAPI';
 import Block from 'core/Block';
-import { deleteChat, getChatInfo } from 'services/chats';
+import { deleteChat, getChatInfo, getOldMessages, getUnreadMessagesCount } from 'services/chats';
 import { Store } from 'store/Store';
 import { WithStore } from 'utils/HOCS/WithStore';
 import './ChatItem.scss';
@@ -18,9 +19,11 @@ type ChatItemProps = ChatItemPreviewProps & {
 
 class ChatItem extends Block<ChatItemProps> {
   static componentName: string = 'ChatItem';
+  unreadCount: number = 0;
+  messagesArray: Array<WebSocketMessage> = [];
 
   constructor(props: ChatItemPreviewProps) {
-    const onChatItemClick = (event: Event) => {
+    const onChatItemClick = async (event: Event) => {
       if ((event.target as HTMLElement).tagName === 'BUTTON') {
         return;
       }

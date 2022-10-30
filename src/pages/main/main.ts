@@ -9,7 +9,7 @@ import { Store } from 'store/Store';
 import { WithChats } from 'utils/HOCS/WithChats';
 import { navigateTo } from 'utils/navigateTo';
 import { validateForm, ValidateType } from 'utils/validateForm';
-import { createMessageElement, MessageStatus, sendMessage } from 'services/chats';
+import { sendMessage } from 'services/chats';
 
 type MainPageProps = {
   router: Router;
@@ -97,7 +97,6 @@ class MainPage extends Block<MainPageProps, Refs> {
     return `
         <main class="main">
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}
-      
           {{{DeleteUserFromChatForm onCancel=toggleShowDeleteUserForm}}}
           {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}
             

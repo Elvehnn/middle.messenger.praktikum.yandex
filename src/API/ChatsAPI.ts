@@ -37,4 +37,8 @@ export default class ChatsAPI extends HTTPTransport {
   getChatUsers = async (data: getChatUsersRequestData): Promise<ResponseData> => {
     return this.get(`chats/${data.chatId}/users`) as Promise<ResponseData>;
   };
+
+  getUnreadMessagesCount = async (data: getChatUsersRequestData): Promise<ResponseData> => {
+    return this.get(`/chats/new/${data.chatId}`) as Promise<ResponseData>;
+  };
 }
