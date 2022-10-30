@@ -1,7 +1,6 @@
 import Block from 'core/Block';
 import './Popup.scss';
 import ControlledInput from 'components/ControlledInput/ControlledInput';
-// import { validateForm, ValidateType } from 'utils/validateForm';
 
 type PopupProps = {
   onSubmit: (event: SubmitEvent) => void;
@@ -17,10 +16,6 @@ interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-// type refsObject = {
-//   [key: string]: HTMLInputElement;
-// };
-
 export default class Popup extends Block<PopupProps, PopupRefs> {
   static componentName: string = 'Popup';
 
@@ -30,31 +25,6 @@ export default class Popup extends Block<PopupProps, PopupRefs> {
       onSubmit: (event) => {
         event.preventDefault();
         console.log('ok');
-
-        //Здесь будет валидация и сбор данных
-
-        // const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-        //   acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-        //   return acc;
-        // }, {} as refsObject);
-
-        // const { file } = refs;
-
-        // const errors = validateForm([{ type: ValidateType.File, value: file.value }]);
-
-        // if (Object.keys(errors).length !== 0) {
-        //   for (let key in errors) {
-        //     this.refs[key].getRefs().errorRef.setProps({ error: errors[key] });
-        //   }
-        // } else {
-        //   console.log({
-        //     file: file.value,
-        //   });
-
-        //   for (let key in errors) {
-        //     this.refs[key].getRefs().errorRef.setProps({ error: '' });
-        //   }
-        // }
       },
       onInput: () => {
         // const target = event.target as HTMLInputElement;

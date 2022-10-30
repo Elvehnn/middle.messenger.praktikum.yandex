@@ -3,80 +3,83 @@ import 'components/User/User.scss';
 import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
 import { ProfileProps } from '../profile/profile';
-import { refsObject } from 'pages/changeUserPassword/changeUserPassword';
-import { validateForm, ValidateType } from 'utils/validateForm';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
+import { getChildInputRefs } from 'utils/getChildInputRefs';
+import { getErrorsObject } from 'utils/getErrorsObject';
+import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithUser } from 'utils/HOCS/WithUser';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { getUserDataArray } from 'utils/getUserDataArray';
+import { changeUserProfile } from 'services/userData';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { navigateTo } from 'utils/navigateTo';
 
 export type ChangeProfileProps = ProfileProps & {
+  userData: Array<any>;
+  userLogin: string;
+  avatarSrc: string;
   onSubmit: (event: SubmitEvent) => void;
+  navigateBack: () => void;
 };
 
-type changeUserPasswordRefs = {
+type ChangeUserPasswordRefs = {
   [key: string]: UserDataInput;
 };
 
-export default class ChangeUserData extends Block<ChangeProfileProps, changeUserPasswordRefs> {
+class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserData';
 
-  constructor({ userData }: ProfileProps) {
-    super({
-      userData,
-      onClick: () => {
-        window.location.pathname = './profile';
-      },
+  constructor(props: ChangeProfileProps) {
+    super(props);
 
-      onSubmit: () => {
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-          return acc;
-        }, {} as refsObject);
+    const data = props.user ? getUserDataArray(props.user) : [];
 
-        const errors = Object.entries(refs).reduce((acc, [key, input]) => {
-          const errorMessage = validateForm([
-            { type: key.toLowerCase() as ValidateType, value: input.value },
-          ])[key.toLowerCase()];
+    this.setProps({
+      userData: data,
+      userLogin: this.props.store.getState().user?.login,
+      avatarSrc: this.props.store.getState().user?.avatar,
 
-          if (errorMessage) {
-            acc[key] = errorMessage;
-          }
+      onSubmit: async () => {
+        const refs = getChildInputRefs(this.refs);
+        const errors = getErrorsObject(refs);
 
-          return acc;
-        }, {} as { [key: string]: string });
+        setChildErrorsProps(errors, this.refs);
 
-        if (Object.entries(errors).length !== 0) {
-          Object.entries(errors).forEach(([key, value]) =>
-            this.refs[key].getRefs().errorRef.setProps({ error: value })
-          );
+        if (Object.keys(errors).length === 0) {
+          const newData = {
+            login: refs.login.value,
+            first_name: refs.firstName.value,
+            second_name: refs.secondName.value,
+            display_name: refs.displayName.value,
+            phone: refs.phone.value,
+            email: refs.email.value,
+          };
 
-          return;
+          this.props.store.dispatch(changeUserProfile, newData);
         }
-
-        Object.values(this.refs).forEach((value) => {
-          value.getRefs().errorRef.setProps({ error: '' });
-        });
-
-        const newData = Object.entries(refs).reduce((acc, [key, input]) => {
-          acc[key] = input.value;
-          return acc;
-        }, {} as { [key: string]: string });
-
-        console.log(newData);
       },
+      navigateBack: () => navigateTo('profile'),
     });
   }
 
   render() {
+    const isLoading = this.props.store.getState().isLoading;
+
     // language=hbs
     return `
         <main class='main'>
+            {{#if ${isLoading}}}
+              {{{Preloader}}}
+            {{/if}}
+
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ArrowRoundButton class="arrow" onClick=onClick}}}
+                    {{{ArrowRoundButton onClick=navigateBack}}}
                 </div>
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
-                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
+                    {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
                             {{#each userData}}
@@ -87,7 +90,8 @@ export default class ChangeUserData extends Block<ChangeProfileProps, changeUser
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{ Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack}}}
                         </div>
                     </form>
                 </section>
@@ -96,3 +100,5 @@ export default class ChangeUserData extends Block<ChangeProfileProps, changeUser
         `;
   }
 }
+
+export default WithStore(WithRouter(WithUser(ChangeUserData)));

@@ -1,9 +1,18 @@
 import Block from 'core/Block';
-import { validateForm, ValidateType } from 'utils/validateForm';
 import './signin.scss';
 import ControlledInput from 'components/ControlledInput/ControlledInput';
+import { getChildInputRefs } from 'utils/getChildInputRefs';
+import { getErrorsObject } from 'utils/getErrorsObject';
+import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import Router from 'core/Router';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { Store } from 'store/Store';
+import { signin } from 'services/authorization';
 
 type IncomingSigninProps = {
+  router: Router;
+  store: Store<AppState>;
   inputs: Array<{ text: string; type: string }>;
 };
 
@@ -11,6 +20,7 @@ type SigninProps = IncomingSigninProps & {
   onSubmit: (event: SubmitEvent) => void;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
+  navigateToSignup: () => void;
 };
 
 type SigninRefs = {
@@ -24,68 +34,50 @@ interface SubmitEvent extends Event {
 export type refsObject = {
   [key: string]: HTMLInputElement;
 };
-export default class SigninPage extends Block<SigninProps, SigninRefs> {
+class SigninPage extends Block<SigninProps, SigninRefs> {
   static componentName: string = 'SigninPage';
 
-  constructor() {
-    super();
+  constructor(props?: SigninProps) {
+    super(props);
 
     this.setProps({
-      onSubmit: () => {
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-          return acc;
-        }, {} as refsObject);
+      onSubmit: async () => {
+        const refs = getChildInputRefs(this.refs);
+        const errors = getErrorsObject(refs);
 
         const { login, password } = refs;
 
-        const errors = validateForm([
-          { type: ValidateType.Login, value: login.value },
-          { type: ValidateType.Password, value: password.value },
-        ]);
+        setChildErrorsProps(errors, this.refs);
 
-        if (Object.keys(errors).length !== 0) {
-          for (let key in errors) {
-            this.refs[key].getRefs().errorRef.setProps({ error: errors[key] });
-          }
-        } else {
-          console.log({
-            login: login.value,
-            password: password.value,
-          });
-
-          for (let key in errors) {
-            this.refs[key].getRefs().errorRef.setProps({ error: '' });
-          }
+        if (Object.keys(errors).length === 0) {
+          this.props.store.dispatch(signin, { login: login.value, password: password.value });
         }
       },
-      onInput: (event: FocusEvent) => {
-        const target = event.target as HTMLInputElement;
-        const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
 
-        this.refs[target.name].getRefs().errorRef.setProps({ error: errors[target.name] });
-      },
-      onFocus: (event: FocusEvent) => {
-        const target = event.target as HTMLInputElement;
-        const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
-
-        this.refs[target.name].getRefs().errorRef.setProps({ error: errors[target.name] });
+      navigateToSignup: () => {
+        this.props.router.go('/signup');
       },
     });
   }
   render() {
+    const isLoading = this.props.store.getState().isLoading;
     // language=hbs
     return `
         <main class="main">
-            <h1>Chatterbox</h1>
+          {{#if ${isLoading}}}
+            {{{Preloader}}}
+          {{/if}}
+
+          <h1>Chatterbox</h1>
+
           <form class="login-form" action="./main.html">
                 <div class="login-form__group">
-                    <h3>Sign in</h3>
+                    <h2>Sign in</h2>
                     {{{ControlledInput
                         onInput=onInput 
                         onFocus=onFocus 
                         type="text"
-                        inputName="login"
+                        inputName="Login"
                         ref="login"
                         childInputRef="login"
                         error=error
@@ -98,7 +90,7 @@ export default class SigninPage extends Block<SigninProps, SigninRefs> {
                         onFocus=onFocus 
                         onBlur=onBlur
                         type="password"
-                        inputName="password"
+                        inputName="Password"
                         error=error
                         value=''
                         ref="password"
@@ -110,10 +102,12 @@ export default class SigninPage extends Block<SigninProps, SigninRefs> {
 
                 <div class="login-form__bottom">
                     {{{Button title="Log in" onClick=onSubmit}}}
-                    {{{Link class="link" text="Create account" path="./signup"}}}
+                    {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup }}}
                 </div>
             </form>
         </main>
         `;
   }
 }
+
+export default WithRouter(WithStore(SigninPage));

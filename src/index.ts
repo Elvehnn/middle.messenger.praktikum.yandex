@@ -1,6 +1,6 @@
 require('babel-core/register');
 
-import { renderDOM, registerComponent } from './core';
+import { registerComponent } from './core';
 import './styles/style.scss';
 import Button from 'components/Button/Button';
 import Link from 'components/Link/Link';
@@ -15,20 +15,19 @@ import ControlledInput from 'components/ControlledInput/ControlledInput';
 import Label from 'components/Label/Label';
 import ErrorMessage from 'components/Error/Error';
 import ArrowRoundButton from 'components/ArrowRoundButton/ArrowRoundButton';
-import ChatMessage from 'components/ChatMessage/ChatMessage';
 import MessageInput from 'components/MessageInput/MessageInput';
 import Avatar from 'components/Avatar/Avatar';
-import { inputs } from 'constants/inputs';
-import { chats } from './data/chats';
-import { userData } from './data/userData';
-import StartPage from 'pages/start/start';
-import SignupPage from 'pages/signup/signup';
-import SigninPage from 'pages/signin/signin';
-import MainPage from 'pages/main/main';
-import Profile from 'pages/profile/profile';
-import ChangeUserData from 'pages/changeUserData/changeUserData';
-import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
-import ChangeUserAvatar from 'pages/changeUserAvatar/changeUserAvatar';
+import CreateChatForm from 'components/Forms/CreateChatForm/CreateChatForm';
+import ChangeAvatar from 'components/Forms/ChangeAvatar/ChangeAvatar';
+import AddUserToChatForm from 'components/Forms/AddUserToChatForm/AddUserToChatForm';
+import DeleteUserFromChatForm from 'components/Forms/DeleteUserFromChatForm/DeleteUserFromChatForm';
+import ChatMenu from 'components/ChatMenu/ChatMenu';
+import Router from 'core/Router';
+import { initRouter } from 'services/initRouter';
+import store, { Store } from './store/Store';
+import { startApp } from 'services/startApp';
+import SocketController from 'core/SocketController';
+import Preloader from 'components/Preloader/Preloader';
 
 registerComponent(Button);
 registerComponent(Link);
@@ -43,27 +42,40 @@ registerComponent(ControlledInput);
 registerComponent(Label);
 registerComponent(ErrorMessage);
 registerComponent(ArrowRoundButton);
-registerComponent(ChatMessage);
+registerComponent(Preloader);
 registerComponent(MessageInput);
 registerComponent(Avatar);
+registerComponent(CreateChatForm);
+registerComponent(AddUserToChatForm);
+registerComponent(DeleteUserFromChatForm);
+registerComponent(ChangeAvatar);
+registerComponent(ChatMenu);
 
-type PagesMap = { [key: string]: any };
-
-const currentLocation: string = window.location.pathname;
-
-const pagesMap: PagesMap = {
-  '/': [StartPage, null],
-  '/signin': [SigninPage, null],
-  '/signup': [SignupPage, { inputs }],
-  '/main': [MainPage, { chats }],
-  '/profile': [Profile, { userData }],
-  '/changeUserData': [ChangeUserData, { userData }],
-  '/changeUserPassword': [ChangeUserPassword, null],
-  '/changeUserAvatar': [ChangeUserAvatar, null],
-};
-
-const [pageToRender, props] = pagesMap[currentLocation];
+declare global {
+  interface Window {
+    router: Router;
+    store: Store<AppState>;
+    socketController: SocketController;
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderDOM(new pageToRender(props));
+  const router = new Router();
+  window.router = router;
+  window.store = store;
+
+  const socketController = new SocketController();
+  window.socketController = socketController;
+
+  //TODO: добавить стартовый экран на запуск приложения
+  // renderDOM(new StartPage({ router }));
+
+  store.on('updated', (prevState, nextState) => {
+    if (process.env.DEBUG) {
+      console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
+    }
+  });
+
+  initRouter(router, store);
+  store.dispatch(startApp);
 });

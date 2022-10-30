@@ -1,26 +1,45 @@
+import { WebSocketMessage } from 'API/typesAPI';
 import Block from 'core/Block';
+import { deleteChat, getChatInfo } from 'services/chats';
+import { Store } from 'store/Store';
+import { WithStore } from 'utils/HOCS/WithStore';
 import './ChatItem.scss';
 
-export interface ChatItemPreview {
-  name: string;
-  message: string;
-  time: string;
-  unread: string;
+export interface ChatItemPreviewProps {
+  store: Store<AppState>;
+  chat: ChatType;
 }
 
-type ChatItemProps = ChatItemPreview & {
+type ChatItemProps = ChatItemPreviewProps & {
+  deleteChatHandler: () => void;
   events: {
-    click: () => void;
+    click: (event: Event) => void;
   };
 };
 
-export default class ChatItem extends Block<ChatItemProps> {
+class ChatItem extends Block<ChatItemProps> {
   static componentName: string = 'ChatItem';
+  unreadCount: number = 0;
+  messagesArray: Array<WebSocketMessage> = [];
 
-  constructor({ name, message, time, unread }: ChatItemPreview) {
-    const onChatItemClick = () => console.log('chat click!');
+  constructor(props: ChatItemPreviewProps) {
+    const onChatItemClick = async (event: Event) => {
+      if ((event.target as HTMLElement).tagName === 'BUTTON') {
+        return;
+      }
 
-    super({ name, message, time, unread, events: { click: onChatItemClick } });
+      this.props.store.dispatch({ isLoading: true });
+
+      this.props.store.dispatch(getChatInfo, this.props.chat);
+    };
+
+    super({
+      ...props,
+      events: { click: onChatItemClick },
+      deleteChatHandler: () => {
+        this.props.store.dispatch(deleteChat, { chatId: this.props.chat.id });
+      },
+    });
   }
 
   protected render(): string {
@@ -33,15 +52,13 @@ export default class ChatItem extends Block<ChatItemProps> {
                 </div>
 
                 <div class='chat-item__text'>
-                    <h4 class='chat-item__name'>{{name}}</h4>
-                    <p class='chat-item__message'>{{message}}</p>
+                    <h4 class='chat-item__name'>{{chat.title}}</h4>
                 </div>
 
                 <div class='chat-item__info'>
-                    <button class='chat-item__delete'>X</button>
+                    {{{Button class='chat-item__delete' title="X" onClick=deleteChatHandler}}}
                     <div class='chat-item__notifications'>
-                        <time class='chat-item__time'>{{time}}</time>
-                        <p class='chat-item__unread'>{{unread}}</p>
+                        <p class='chat-item__unread'>{{chat.unreadCount}}</p>
                     </div>
                 </div>
             </div>
@@ -49,3 +66,7 @@ export default class ChatItem extends Block<ChatItemProps> {
     `;
   }
 }
+
+export default WithStore(ChatItem);
+
+// <time class='chat-item__time'>{{time}}</time>

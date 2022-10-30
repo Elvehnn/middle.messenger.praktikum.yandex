@@ -4,6 +4,11 @@ import Handlebars from 'handlebars';
 
 type Events = Values<typeof Block.EVENTS>;
 
+export interface BlockClass<P extends Record<string, any>> extends Function {
+  new (props: P): Block<P>;
+  componentName?: string;
+}
+
 export default class Block<
   P extends Record<string, any>,
   Refs extends Record<string, Block<any>> = {}
@@ -23,7 +28,7 @@ export default class Block<
   protected readonly props: P;
   protected children: { [id: string]: Block<{}> } = {};
 
-  _eventBus: EventBus<Events>;
+  private _eventBus: EventBus<Events>;
 
   // @ts-expect-error Тип {} не соответствует типу Record<string, Block<any>
   protected refs: Refs = {} as { [key: string]: Block };
@@ -38,7 +43,7 @@ export default class Block<
     this._eventBus.emit(Block.EVENTS.INIT, this.props);
   }
 
-  _registerEvents(eventBus: EventBus<Events>) {
+  private _registerEvents(eventBus: EventBus<Events>) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -49,7 +54,7 @@ export default class Block<
     this._eventBus.emit(Block.EVENTS.FLOW_RENDER, this.props);
   }
 
-  _componentDidMount(props: P) {
+  private _componentDidMount(props: P) {
     this.componentDidMount(props);
   }
 
@@ -62,7 +67,7 @@ export default class Block<
     this._eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: P, newProps: P) {
+  private _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps);
 
     if (!response) {
@@ -72,6 +77,8 @@ export default class Block<
   }
 
   componentDidUpdate(oldProps: P, newProps: P) {
+    this.children = {};
+
     return true;
   }
 
@@ -95,7 +102,7 @@ export default class Block<
     return this._element;
   }
 
-  _render() {
+  private _render() {
     const fragment = this._compile();
     const newElement = fragment.firstElementChild!;
 
@@ -125,9 +132,7 @@ export default class Block<
     return this.element!;
   }
 
-  _makePropsProxy(props: any): any {
-    // Можно и так передать this
-    // Такой способ больше не применяется с приходом ES6+
+  private _makePropsProxy(props: any): any {
     const self = this;
 
     return new Proxy(props as unknown as object, {
@@ -151,7 +156,7 @@ export default class Block<
     }) as unknown as P;
   }
 
-  _removeEvents() {
+  private _removeEvents() {
     const events: Record<string, () => void> = (this.props as any).events;
 
     if (!events || !this._element) {
@@ -163,7 +168,7 @@ export default class Block<
     });
   }
 
-  _addEvents() {
+  private _addEvents() {
     const events: Record<string, () => void> = (this.props as any).events;
 
     if (!events) {
@@ -175,7 +180,7 @@ export default class Block<
     });
   }
 
-  _compile(): DocumentFragment {
+  private _compile(): DocumentFragment {
     const fragment = document.createElement('template');
 
     /**

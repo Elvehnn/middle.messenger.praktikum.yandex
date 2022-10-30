@@ -3,50 +3,35 @@ import 'components/User/User.scss';
 import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
-import { validateForm, ValidateType } from 'utils/validateForm';
 import { ChangeProfileProps } from 'pages/changeUserData/changeUserData';
+import { getChildInputRefs } from 'utils/getChildInputRefs';
+import { getErrorsObject } from 'utils/getErrorsObject';
+import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithUser } from 'utils/HOCS/WithUser';
+import { changeUserPassword } from 'services/userData';
+import { navigateTo } from 'utils/navigateTo';
 
-type changeUserPasswordRefs = {
-  [key: string]: UserDataInput;
-};
+type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
-export type refsObject = {
-  [key: string]: HTMLInputElement;
-};
-export default class changeUserPassword extends Block<ChangeProfileProps, changeUserPasswordRefs> {
+export type RefsObject = Record<string, HTMLInputElement>;
+class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserPassword';
 
-  constructor() {
-    super();
+  constructor(props: ChangeProfileProps) {
+    super(props);
 
     this.setProps({
-      onClick: () => (window.location.pathname = './profile'),
+      userLogin: this.props.store.getState().user?.login,
+      avatarSrc: this.props.store.getState().user?.avatar,
       onSubmit: () => {
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getRefs()[key].getContent() as HTMLInputElement;
-          return acc;
-        }, {} as refsObject);
+        const refs = getChildInputRefs(this.refs);
+        const errors = getErrorsObject(refs);
 
-        const { newPassword, repeatNewPassword } = refs;
-        const errors = Object.entries(refs).reduce((acc, [key, input]) => {
-          const errorMessage = validateForm([{ type: ValidateType.Password, value: input.value }])[
-            ValidateType.Password
-          ];
+        setChildErrorsProps(errors, this.refs);
 
-          if (errorMessage) {
-            acc[key] = errorMessage;
-          }
-
-          return acc;
-        }, {} as { [key: string]: string });
-
-        if (Object.entries(errors).length !== 0) {
-          Object.entries(errors).forEach(([key, value]) =>
-            this.refs[key].getRefs().errorRef.setProps({ error: value })
-          );
-
-          return;
-        }
+        const { oldPassword, newPassword, repeatNewPassword } = refs;
 
         if (newPassword.value !== repeatNewPassword.value) {
           Object.values(this.refs).forEach((value) => {
@@ -56,36 +41,42 @@ export default class changeUserPassword extends Block<ChangeProfileProps, change
           return;
         }
 
-        console.log('New password', newPassword.value);
-
-        Object.values(this.refs).forEach((value) => {
-          value.getRefs().errorRef.setProps({ error: '' });
-        });
+        if (Object.keys(errors).length === 0) {
+          const newData = { oldPassword: oldPassword.value, newPassword: newPassword.value };
+          this.props.store.dispatch(changeUserPassword, newData);
+        }
       },
+      navigateBack: () => navigateTo('profile'),
     });
   }
 
   render() {
+    const isLoading = this.props.store.getState().isLoading;
     // language=hbs
     return `
         <main class='main'>
+            {{#if ${isLoading}}}
+              {{{Preloader}}}
+            {{/if}}
+
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ ArrowRoundButton  class="arrow" onClick=onClick}}}
+                    {{{ArrowRoundButton onClick=navigateBack}}}
                 </div>
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
-                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
+                        {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
-                            {{{UserDataInput title="Enter old password" type="password" data='' inputName='password'}}}
+                            {{{UserDataInput ref="oldPassword" childRef="oldPassword" title="Enter old password" type="password" inputName='password'}}}
                             {{{UserDataInput ref="newPassword" childRef="newPassword" title="Enter new password" type="password" inputName='password'}}}
                             {{{UserDataInput ref="repeatNewPassword" childRef="repeatNewPassword" title="Repeat new password" type="password" inputName='password'}}}
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{ Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack}}}
                         </div>
                     </form>
                 </section>
@@ -94,3 +85,5 @@ export default class changeUserPassword extends Block<ChangeProfileProps, change
         `;
   }
 }
+
+export default WithStore(WithRouter(WithUser(ChangeUserPassword)));

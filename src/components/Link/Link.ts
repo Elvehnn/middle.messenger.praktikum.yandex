@@ -1,27 +1,18 @@
 import Block from 'core/Block';
 import './Link.scss';
 
-type IncomingLinkProps = {
+type LinkProps = {
   text: string;
   path: string;
   class: string;
+  onClick?: (event: MouseEvent) => void;
 };
 
-type LinkProps = IncomingLinkProps & {
-  onClick: (event: MouseEvent) => void;
-};
-
-export default class Link extends Block<LinkProps> {
+export default class Link extends Block<Record<string, any>> {
   static componentName: string = 'Link';
 
-  constructor(props: IncomingLinkProps) {
-    const onClick = (event: MouseEvent) => {
-      console.log('going to...');
-
-      event.preventDefault();
-    };
-
-    super({ ...props, onClick });
+  constructor(props: LinkProps) {
+    super({ ...props, events: { click: props.onClick } });
   }
 
   render() {

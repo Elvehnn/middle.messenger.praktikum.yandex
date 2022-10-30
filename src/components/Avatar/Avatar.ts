@@ -1,21 +1,28 @@
 import Block from 'core/Block';
+import Router from 'core/Router';
+import { WithRouter } from 'utils/HOCS/WithRouter';
 import './Avatar.scss';
 
-type IncomingAvatarProps = {
+type AvatarProps = {
+  router: Router;
   imageSrc: string;
   name: string;
   isEditable: boolean;
-};
-
-type AvatarProps = IncomingAvatarProps & {
   image?: HTMLImageElement;
+  showChangeAvatarForm: () => void;
 };
 
-export default class Avatar extends Block<AvatarProps> {
+class Avatar extends Block<AvatarProps> {
   static componentName: string = 'Avatar';
 
-  constructor({ imageSrc, name, isEditable }: IncomingAvatarProps) {
-    super({ imageSrc, name, isEditable });
+  constructor(props: AvatarProps) {
+    super(props);
+
+    this.setProps({
+      showChangeAvatarForm: () => {
+        document.querySelector('#changeAvatar')?.classList.add('form-container_shown');
+      },
+    });
   }
 
   render() {
@@ -23,13 +30,15 @@ export default class Avatar extends Block<AvatarProps> {
     return `
 		<div class='avatar'>
       {{#if isEditable}}
-        {{{Link class='avatar__change' path='./changeUserAvatar' text='Change avatar'}}}
+        {{{Button class='avatar__change' title='Change avatar' onClick=showChangeAvatarForm}}}
       {{/if}}
 			
-			<img src="{{imageSrc}}" class="user__image" alt="avatar" />
+			<img src="{{imageSrc}}" class="avatar__image" alt="avatar" />
             
 			<h3>{{name}}</h3>
 		</div>
     `;
   }
 }
+
+export default WithRouter(Avatar);
