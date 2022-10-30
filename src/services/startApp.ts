@@ -1,11 +1,11 @@
 import { Dispatch } from 'store/Store';
-import AuthAPI from 'API/AuthAPI';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
 import { ChatFromServer, UserFromServer } from 'API/typesAPI';
 import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import { getAvatar } from './userData';
+import AuthAPI from 'API/AuthorizationAPI';
 
 const authApi = new AuthAPI();
 const chatsApi = new ChatsAPI();
