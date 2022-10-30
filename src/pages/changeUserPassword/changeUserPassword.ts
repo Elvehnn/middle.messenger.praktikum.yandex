@@ -11,6 +11,7 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithUser } from 'utils/HOCS/WithUser';
 import { changeUserPassword } from 'services/userData';
+import { navigateBack } from 'utils/navigateTo';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
@@ -43,6 +44,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
           this.props.store.dispatch(changeUserPassword, newData);
         }
       },
+      navigateBack: () => navigateBack(),
     });
   }
 
@@ -52,7 +54,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ArrowRoundButton }}}
+                    {{{ArrowRoundButton onClick=navigateBack}}}
                 </div>
                 
                 <section class='profile__container'>
@@ -67,6 +69,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
 
                         <div class="login-form__bottom">
                             {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack}}}
                         </div>
                     </form>
                 </section>

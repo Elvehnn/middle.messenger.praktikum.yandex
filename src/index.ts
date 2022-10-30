@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const socketController = new SocketController();
   window.socketController = socketController;
 
-  renderDOM(new StartPage({ router }));
+  // renderDOM(new StartPage({ router }));
 
   store.on('updated', (prevState, nextState) => {
     if (process.env.DEBUG) {
@@ -79,3 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRouter(router, store);
   store.dispatch(startApp);
 });
+
+// window.onunload = () => {
+//   localStorage.removeItem('lastView');
+// };

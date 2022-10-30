@@ -8,13 +8,15 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
   ROUTS.forEach((route) => {
     router.use(route, () => {
       console.log(route);
-      store.dispatch({ view: route.view });
 
       if (!store.getState().view) {
         store.dispatch({ view: StartPage });
 
         return;
       }
+
+      store.dispatch({ view: route.view });
+      localStorage.setItem('lastView', route.pathname || '/');
     });
   });
 

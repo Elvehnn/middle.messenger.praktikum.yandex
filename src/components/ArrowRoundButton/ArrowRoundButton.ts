@@ -23,7 +23,7 @@ class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
   render() {
     // language=hbs
     return `
-        {{{Button class=blockClass onClick=onClick type='submit'}}}
+        {{{Button class=blockClass onClick=onClick}}}
     `;
   }
 }

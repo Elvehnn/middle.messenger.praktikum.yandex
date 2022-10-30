@@ -12,10 +12,12 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { changeUserProfile } from 'services/userData';
 import { WithStore } from 'utils/HOCS/WithStore';
+import { navigateBack } from 'utils/navigateTo';
 
 export type ChangeProfileProps = ProfileProps & {
   userData: Array<any>;
   onSubmit: (event: SubmitEvent) => void;
+  navigateBack: () => void;
 };
 
 type ChangeUserPasswordRefs = {
@@ -52,6 +54,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
           this.props.store.dispatch(changeUserProfile, newData);
         }
       },
+      navigateBack: () => navigateBack(),
     });
   }
 
@@ -61,7 +64,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
         <main class='main'>
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ArrowRoundButton}}}
+                    {{{ArrowRoundButton onClick=navigateBack}}}
                 </div>
                 
                 <section class='profile__container'>
@@ -77,7 +80,8 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{ Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack}}}
                         </div>
                     </form>
                 </section>
