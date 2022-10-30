@@ -12,7 +12,7 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { changeUserProfile } from 'services/userData';
 import { WithStore } from 'utils/HOCS/WithStore';
-import { navigateBack } from 'utils/navigateTo';
+import { navigateTo } from 'utils/navigateTo';
 
 export type ChangeProfileProps = ProfileProps & {
   userData: Array<any>;
@@ -58,7 +58,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
           this.props.store.dispatch(changeUserProfile, newData);
         }
       },
-      navigateBack: () => navigateBack(),
+      navigateBack: () => navigateTo('profile'),
     });
   }
 

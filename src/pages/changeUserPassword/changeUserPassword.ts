@@ -11,7 +11,7 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithUser } from 'utils/HOCS/WithUser';
 import { changeUserPassword } from 'services/userData';
-import { navigateBack } from 'utils/navigateTo';
+import { navigateTo } from 'utils/navigateTo';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
@@ -23,6 +23,8 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
     super(props);
 
     this.setProps({
+      userLogin: this.props.store.getState().user?.login,
+      avatarSrc: this.props.store.getState().user?.avatar,
       onSubmit: () => {
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
@@ -44,7 +46,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
           this.props.store.dispatch(changeUserPassword, newData);
         }
       },
-      navigateBack: () => navigateBack(),
+      navigateBack: () => navigateTo('profile'),
     });
   }
 
@@ -64,7 +66,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
                 
                 <section class='profile__container'>
                     <form class='user' action="./profile.html">
-                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
+                        {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
                             {{{UserDataInput ref="oldPassword" childRef="oldPassword" title="Enter old password" type="password" inputName='password'}}}

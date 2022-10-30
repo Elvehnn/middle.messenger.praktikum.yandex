@@ -46,8 +46,11 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
 
         if (Object.keys(errors).length === 0) {
           this.props.store.dispatch(createChat, { title: chatName.value });
-          this.props.store.dispatch({ isPopupShown: false });
+          document.querySelector('#createChat')?.classList.remove('form-container_shown');
         }
+      },
+      onCancel: () => {
+        document.querySelector('#createChat')?.classList.remove('form-container_shown');
       },
     });
   }
