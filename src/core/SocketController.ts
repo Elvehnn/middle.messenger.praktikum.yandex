@@ -1,4 +1,5 @@
 import { WebSocketMessage } from 'API/typesAPI';
+import { PATH } from 'constants/pathsAPI';
 import { addDOMMessageElement } from 'utils/createMessageElement';
 
 export interface SocketControllerProps {
@@ -17,7 +18,7 @@ export default class SocketController implements SocketControllerProps {
 
   createSocket(userId: number, chat: ChatType) {
     const { id, chatToken } = chat;
-    const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${chatToken}`);
+    const socket = new WebSocket(`${PATH.WEBSOCKET}/chats/${userId}/${id}/${chatToken}`);
 
     this.setHandlers(socket, userId, chat);
     this.socketsMap.set(String(id), { socket: socket, oldMessagesArray: [] });

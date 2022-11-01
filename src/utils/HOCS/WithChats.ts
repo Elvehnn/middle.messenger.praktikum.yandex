@@ -12,7 +12,7 @@ export function WithChats<P extends WithChatsProps>(WrappedBlock: BlockClass<P>)
       super({ ...props, chats: window.store.getState().chats });
     }
 
-    __onChangeUserCallback = (prevState: AppState, nextState: AppState) => {
+    private __onChangeUserCallback = (prevState: AppState, nextState: AppState) => {
       if (deepEqual(prevState, nextState)) {
         // @ts-expect-error this is not typed
         this.setProps({ ...this.props, chats: nextState.chats });

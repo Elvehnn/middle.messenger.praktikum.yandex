@@ -24,17 +24,6 @@ export default class Popup extends Block<PopupProps, PopupRefs> {
     this.setProps({
       onSubmit: (event) => {
         event.preventDefault();
-        console.log('ok');
-      },
-      onInput: () => {
-        // const target = event.target as HTMLInputElement;
-        // const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
-        // this.refs[target.name].getRefs().errorRef.setProps({ error: errors[target.name] });
-      },
-      onFocus: () => {
-        //     const target = event.target as HTMLInputElement;
-        //     const errors = validateForm([{ type: target.name as ValidateType, value: target.value }]);
-        //     this.refs[target.name].getRefs().errorRef.setProps({ error: errors[target.name] });
       },
     });
   }

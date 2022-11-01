@@ -48,11 +48,13 @@ export const signin = async (
     return;
   }
 
-  user.avatar = await getAvatar(user);
+  const avatar = await getAvatar(user);
+  const modifiedUser = { ...user, avatar };
+
   const chats = (await chatsApi.getChats()) as ChatFromServer[];
 
   dispatch({
-    user: transformUserObject(user),
+    user: transformUserObject(modifiedUser),
     chats: chats.map((chat) => transformChatsObject(chat)),
     isLoading: false,
     loginFormError: null,

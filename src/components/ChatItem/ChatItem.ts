@@ -23,7 +23,7 @@ class ChatItem extends Block<ChatItemProps> {
   messagesArray: Array<WebSocketMessage> = [];
 
   constructor(props: ChatItemPreviewProps) {
-    const onChatItemClick = async (event: Event) => {
+    const onChatItemClick = (event: Event) => {
       if ((event.target as HTMLElement).tagName === 'BUTTON') {
         return;
       }
@@ -68,5 +68,3 @@ class ChatItem extends Block<ChatItemProps> {
 }
 
 export default WithStore(ChatItem);
-
-// <time class='chat-item__time'>{{time}}</time>

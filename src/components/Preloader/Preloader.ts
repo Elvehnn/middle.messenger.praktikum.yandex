@@ -8,7 +8,6 @@ export default class Preloader extends Block<PreloaderProps> {
 
   constructor(props: PreloaderProps) {
     super(props);
-    this.setProps({});
   }
   render() {
     // language=hbs

@@ -2,9 +2,6 @@ import HTTPTransport from 'core/HttpTransport';
 import { LoginRequestData, ResponseData, SignupRequestData } from 'API/typesAPI';
 
 export default class AuthAPI extends HTTPTransport {
-  constructor() {
-    super();
-  }
   signin = async (data: LoginRequestData): Promise<ResponseData> =>
     this.post('auth/signin', { data }) as Promise<ResponseData>;
 

@@ -54,6 +54,8 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
     });
   }
   render() {
+    //TODO:  Застилить label и убрать стандартный инпут
+
     // language=hbs
     return `
 
@@ -62,6 +64,7 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
 
         <form class='avatar-form' id='formElem'>
           {{{Button class='avatar-form__close' onClick=onCancel title='X'}}}
+          
 
           {{{Input ref='avatar' id='avatar' inputName='avatar' class="avatar-form__upload" type="file" accept="image/*" }}}
           <p class='avatar-form__warning'>Need to select any file</p>
@@ -77,5 +80,3 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
 }
 
 export default WithStore(ChangeAvatar);
-// Застилиnm label и убрать стандартный инпут
-// {{{Label class='avatar-form__label' for='avatar' label="Select file to upload"}}}

@@ -145,7 +145,7 @@ export default class Block<
         target[prop] = value;
 
         // Запускаем обновление компоненты
-        // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
+        // Плохой cloneDeep
         self._eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
         return true;
       },

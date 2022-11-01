@@ -12,7 +12,7 @@ export function WithUser<P extends WithUserProps>(WrappedBlock: BlockClass<P>) {
       super({ ...props, user: window.store.getState().user });
     }
 
-    __onChangeUserCallback = (prevState: AppState, nextState: AppState) => {
+    private __onChangeUserCallback = (prevState: AppState, nextState: AppState) => {
       if (deepEqual(prevState, nextState)) {
         // @ts-expect-error this is not typed
         this.setProps({ ...this.props, user: nextState.user });

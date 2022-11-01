@@ -19,15 +19,13 @@ type AddUserToChatFormProps = {
   onCancel: () => void;
 };
 
-type AddUserToChatFormPropsRefs = {
-  [key: string]: ControlledInput;
-};
+type AddUserToChatFormRefs = Record<string, ControlledInput>;
 
 interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormPropsRefs> {
+class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormRefs> {
   static componentName: string = 'AddUserToChatForm';
 
   constructor(props: AddUserToChatFormProps) {

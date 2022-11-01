@@ -1,11 +1,11 @@
 import { PartialRouteProps } from 'constants/routes';
 import Route from './Route';
 
-interface RouterProps {
+interface IRouter {
   routes: Array<Route>;
 }
 
-export default class Router implements RouterProps {
+export default class Router implements IRouter {
   routes: Array<Route> = [];
   static __instance: Router;
 
