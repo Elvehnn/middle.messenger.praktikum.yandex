@@ -62,6 +62,11 @@ export type DeleteChatRequestData = {
   chatId: number;
 };
 
+export type DeleteChatResponseData = {
+  userId: number;
+  result: Record<string, unknown>;
+};
+
 export type UserToChatRequestData = {
   users: number[];
   chat: ChatType;
@@ -72,11 +77,19 @@ export type UserToChatData = {
   chat: ChatType;
 };
 
-export type getChatUsersRequestData = {
+export type ChatUsersRequestData = {
   chatId: number;
 };
 
+export type UnreadCountResponseData = {
+  unread_count: number;
+};
+
 export type ResponseData = {} | APIError;
+
+export enum ResponseStatus {
+  OK = 'ok',
+}
 
 export type WebSocketMessage = {
   chat_id: number;
