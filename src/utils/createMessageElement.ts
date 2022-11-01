@@ -36,6 +36,18 @@ export const addDOMMessageElement = (webSocketMessage: WebSocketMessage, userId:
     const messageData = { content, time };
     const messageElement = createMessageElement(messageData, messageStatus);
 
-    document.querySelector('.conversation')?.prepend(messageElement);
+    document.querySelector('.conversation')?.append(messageElement);
   }
+};
+
+export const updateDOMMessagesContainer = (wsMessagesArray: WebSocketMessage[], userId: number) => {
+  const container = document.querySelector('.conversation');
+
+  if (container) {
+    container.innerHTML = '';
+  }
+
+  wsMessagesArray.forEach((message) => {
+    addDOMMessageElement(message, userId);
+  });
 };

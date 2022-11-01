@@ -1,6 +1,7 @@
 import { WebSocketMessage } from 'API/typesAPI';
 import { PATH } from 'constants/pathsAPI';
-import { addDOMMessageElement } from 'utils/createMessageElement';
+import { addDOMMessageElement, updateDOMMessagesContainer } from 'utils/createMessageElement';
+import { sortMessagesByTime } from 'utils/sortMessagesByTime';
 
 export interface SocketControllerProps {
   socketsMap: Map<string, SocketData>;
@@ -57,25 +58,33 @@ export default class SocketController implements SocketControllerProps {
     socket.addEventListener('message', (event) => {
       console.log('Получены данные', event.data);
 
-      const data = JSON.parse(event.data);
+      try {
+        const data = JSON.parse(event.data);
 
-      if (Array.isArray(data)) {
-        const socketData = this.socketsMap.get(String(chat.id)) as SocketData;
-        socketData.oldMessagesArray = [...socketData.oldMessagesArray, ...data];
+        if (Array.isArray(data)) {
+          const socketData = this.socketsMap.get(String(chat.id)) as SocketData;
 
-        this.socketsMap.set(String(chat.id), {
-          socket: socketData.socket,
-          oldMessagesArray: socketData.oldMessagesArray,
-        });
+          const messagesArray = [...socketData.oldMessagesArray, ...data];
 
-        data.forEach((message: WebSocketMessage) => {
-          addDOMMessageElement(message, userId);
-        });
+          const updatedSocketData = {
+            ...socketData,
+            oldMessagesArray: sortMessagesByTime(messagesArray),
+          };
 
-        return;
+          this.socketsMap.set(String(chat.id), {
+            socket: updatedSocketData.socket,
+            oldMessagesArray: updatedSocketData.oldMessagesArray,
+          });
+
+          updateDOMMessagesContainer(updatedSocketData.oldMessagesArray, userId);
+
+          return;
+        }
+
+        addDOMMessageElement(data, userId);
+      } catch {
+        (error: Error) => console.log(error.message);
       }
-
-      addDOMMessageElement(data, userId);
     });
 
     socket.addEventListener('error', (event) => {
