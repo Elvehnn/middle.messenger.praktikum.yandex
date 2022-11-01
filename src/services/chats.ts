@@ -3,10 +3,11 @@ import {
   ChatFromServer,
   CreateChatRequestData,
   DeleteChatRequestData,
+  UnreadCountResponseData,
   UserFromServer,
   UserToChatData,
 } from 'API/typesAPI';
-import { Dispatch } from 'store/Store';
+import { Dispatch, Store } from 'store/Store';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
@@ -14,22 +15,23 @@ import { getUserByLogin } from './userData';
 
 const api = new ChatsAPI();
 
-export const getChats = async (dispatch: Dispatch<AppState>) => {
-  dispatch({ isLoading: true });
+export const getChats = async (store: Store<AppState>) => {
+  store.setState({ isLoading: true });
 
   const response = (await api.getChats()) as ChatFromServer[];
 
   if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    store.setState({ isLoading: false, loginFormError: response.reason });
 
     return;
   }
 
-  dispatch({
+  store.setState({
     chats: response.map((item) => transformChatsObject(item)),
     isLoading: false,
     loginFormError: null,
   });
+
   return response.map((item) => transformChatsObject(item));
 };
 
@@ -48,7 +50,7 @@ export const createChat = async (
     return;
   }
 
-  dispatch(getChats);
+  getChats(window.store);
   dispatch({ isLoading: false, loginFormError: null });
 };
 
@@ -67,7 +69,7 @@ export const deleteChat = async (
     return;
   }
 
-  dispatch(getChats);
+  getChats(window.store);
   dispatch({ isLoading: false, loginFormError: null });
 };
 
@@ -78,7 +80,7 @@ export const addUserToChat = async (
 ) => {
   const user = await getUserByLogin(action.login);
 
-  if (user.length === 0) {
+  if (!user || user.length === 0) {
     dispatch({ isLoading: false, loginFormError: 'User not found' });
 
     return;
@@ -115,7 +117,7 @@ export const deleteUserFromChat = async (
 ) => {
   const user = await getUserByLogin(action.login);
 
-  if (user.length === 0) {
+  if (!user || user.length === 0) {
     dispatch({ isLoading: false, loginFormError: 'User not found' });
 
     return;
@@ -200,5 +202,5 @@ export const sendMessage = (message: string, chat: ChatType) => {
 };
 
 export const getUnreadMessagesCount = async (action: ChatType) => {
-  return (await api.getUnreadMessagesCount({ chatId: action.id })) as number;
+  return (await api.getUnreadMessagesCount({ chatId: action.id })) as UnreadCountResponseData;
 };

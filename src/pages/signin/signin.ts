@@ -23,17 +23,13 @@ type SigninProps = IncomingSigninProps & {
   navigateToSignup: () => void;
 };
 
-type SigninRefs = {
-  [key: string]: ControlledInput;
-};
+type SigninRefs = Record<string, ControlledInput>;
 
 interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-export type refsObject = {
-  [key: string]: HTMLInputElement;
-};
+export type refsObject = Record<string, HTMLInputElement>;
 class SigninPage extends Block<SigninProps, SigninRefs> {
   static componentName: string = 'SigninPage';
 
@@ -41,7 +37,8 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
     super(props);
 
     this.setProps({
-      onSubmit: async () => {
+      onSubmit: async (event: SubmitEvent) => {
+        event.preventDefault();
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
@@ -50,7 +47,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          this.props.store.dispatch(signin, { login: login.value, password: password.value });
+          signin(this.props.store, { login: login.value, password: password.value });
         }
       },
 
@@ -70,7 +67,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
           <h1>Chatterbox</h1>
 
-          <form class="login-form" action="./main.html">
+          <form class="login-form" action="#">
                 <div class="login-form__group">
                     <h2>Sign in</h2>
                     {{{ControlledInput

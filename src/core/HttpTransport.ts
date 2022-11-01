@@ -42,7 +42,7 @@ export default class HTTPTransport {
 
       xhr.open(method, url);
       xhr.responseType = options?.responseType || 'json';
-      xhr.setRequestHeader('Content-Type', options?.contentType || 'application/json');
+      options?.contentType && xhr.setRequestHeader('Content-Type', options.contentType);
       xhr.timeout = options?.timeout || 5000;
       xhr.withCredentials = true;
 

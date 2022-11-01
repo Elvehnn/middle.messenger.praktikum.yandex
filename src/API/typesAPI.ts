@@ -3,29 +3,9 @@ export type APIError = {
   status: string;
 };
 
-export type UserFromServer = {
-  id: number;
-  login: string;
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  avatar: string;
-  phone: string;
-  email: string;
-};
-
 export type LoginRequestData = {
   login: string;
   password: string;
-};
-
-export type ChangeProfileRequestData = {
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  login: string;
-  email: string;
-  phone: string;
 };
 
 export type ChangePasswordRequestData = {
@@ -106,4 +86,30 @@ export type WebSocketMessage = {
     content_size: number;
     upload_date: string;
   };
+};
+
+export type UserKeys =
+  | 'login'
+  | 'firstName'
+  | 'secondName'
+  | 'avatar'
+  | 'phone'
+  | 'email'
+  | 'displayName';
+
+export type ChangeProfileKeys =
+  | 'login'
+  | 'first_name'
+  | 'second_name'
+  | 'phone'
+  | 'email'
+  | 'display_name';
+
+export type SignupData = Record<UserKeys, string>;
+
+export type ChangeProfileRequestData = Record<ChangeProfileKeys, string>;
+
+export type UserFromServer = ChangeProfileRequestData & {
+  id: number;
+  avatar: string;
 };

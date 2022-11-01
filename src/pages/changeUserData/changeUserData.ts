@@ -13,6 +13,8 @@ import { getUserDataArray } from 'utils/getUserDataArray';
 import { changeUserProfile } from 'services/userData';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { navigateTo } from 'utils/navigateTo';
+import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
+import { SignupData, UserKeys } from 'API/typesAPI';
 
 export type ChangeProfileProps = ProfileProps & {
   userData: Array<any>;
@@ -22,9 +24,7 @@ export type ChangeProfileProps = ProfileProps & {
   navigateBack: () => void;
 };
 
-type ChangeUserPasswordRefs = {
-  [key: string]: UserDataInput;
-};
+type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
 class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserData';
@@ -32,30 +32,32 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   constructor(props: ChangeProfileProps) {
     super(props);
 
-    const data = props.user ? getUserDataArray(props.user) : [];
+    const { user } = this.props.store.getState();
+    const { login, avatar } = user || {};
+
+    const data = user ? getUserDataArray(user) : [];
 
     this.setProps({
       userData: data,
-      userLogin: this.props.store.getState().user?.login,
-      avatarSrc: this.props.store.getState().user?.avatar,
+      userLogin: login,
+      avatarSrc: avatar,
 
-      onSubmit: async () => {
+      onSubmit: async (event: SubmitEvent) => {
+        event.preventDefault();
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const newData = {
-            login: refs.login.value,
-            first_name: refs.firstName.value,
-            second_name: refs.secondName.value,
-            display_name: refs.displayName.value,
-            phone: refs.phone.value,
-            email: refs.email.value,
-          };
+          const userDataValues = Object.entries(refs).reduce((acc, [key, input]) => {
+            acc[key as UserKeys] = input.value;
+            return acc;
+          }, {} as Partial<SignupData>);
 
-          this.props.store.dispatch(changeUserProfile, newData);
+          const newData = transformRefsToUser(userDataValues);
+
+          changeUserProfile(this.props.store, newData);
         }
       },
       navigateBack: () => navigateTo('profile'),
@@ -78,7 +80,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                 </div>
                 
                 <section class='profile__container'>
-                    <form class='user' action="./profile.html">
+                    <form class='user' action="#">
                     {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
@@ -90,8 +92,8 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
-                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit type='submit'}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack type='button'}}}
                         </div>
                     </form>
                 </section>

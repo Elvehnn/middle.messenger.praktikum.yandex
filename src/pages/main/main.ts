@@ -6,7 +6,6 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
-import { WithChats } from 'utils/HOCS/WithChats';
 import { navigateTo } from 'utils/navigateTo';
 import { validateForm, ValidateType } from 'utils/checkers and validators/validateForm';
 import { sendMessage } from 'services/chats';
@@ -41,6 +40,7 @@ class MainPage extends Block<MainPageProps, Refs> {
     super(props);
 
     this.setProps({
+      chats: this.props.store.getState().chats,
       onSubmit: (event: SubmitEvent) => {
         // TODO: добавить обработку прикрепленных файлов
         event.preventDefault();
@@ -164,4 +164,4 @@ class MainPage extends Block<MainPageProps, Refs> {
   }
 }
 
-export default WithRouter(WithStore(WithChats(MainPage)));
+export default WithRouter(WithStore(MainPage));

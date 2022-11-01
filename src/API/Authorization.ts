@@ -1,11 +1,5 @@
 import HTTPTransport from 'core/HttpTransport';
-import {
-  APIError,
-  LoginRequestData,
-  ResponseStatus,
-  SignupRequestData,
-  UserFromServer,
-} from 'API/typesAPI';
+import { APIError, LoginRequestData, ResponseStatus, UserFromServer } from 'API/typesAPI';
 
 export default class AuthAPI extends HTTPTransport {
   signin = async (data: LoginRequestData): Promise<ResponseStatus | APIError> =>
@@ -17,6 +11,6 @@ export default class AuthAPI extends HTTPTransport {
   signout = (): Promise<ResponseStatus | APIError> =>
     this.post('auth/logout') as Promise<ResponseStatus | APIError>;
 
-  signup = async (data: SignupRequestData): Promise<Record<string, number> | APIError> =>
-    this.post('auth/signup', { data }) as Promise<Record<string, number> | APIError>;
+  signup = async (data: Partial<UserFromServer>): Promise<{ id: number } | APIError> =>
+    this.post('auth/signup', { data }) as Promise<{ id: number } | APIError>;
 }

@@ -32,7 +32,7 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         event.preventDefault();
         document
           .querySelector('.avatar-form__warning')
-          ?.classList.toggle('avatar-form__warning_show');
+          ?.classList.remove('avatar-form__warning_show');
 
         const form = document.querySelector('form');
         const formData = new FormData(form as HTMLFormElement);
@@ -40,7 +40,11 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         //TODO: Здесь будет правильная валидация данных
 
         if ((document.querySelector('#avatar') as HTMLInputElement).value) {
-          this.props.store.dispatch(changeAvatar, formData);
+          document
+            .querySelector('.avatar-form__warning')
+            ?.classList.remove('avatar-form__warning_show');
+
+          changeAvatar(this.props.store, formData);
           document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
 
           return;
@@ -63,7 +67,7 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         <div class='overlay'></div>
 
         <form class='avatar-form' id='formElem'>
-          {{{Button class='avatar-form__close' onClick=onCancel title='X'}}}
+          {{{Button class='avatar-form__close' onClick=onCancel title='X' type='button'}}}
           
 
           {{{Input ref='avatar' id='avatar' inputName='avatar' class="avatar-form__upload" type="file" accept="image/*" }}}
@@ -71,7 +75,7 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
 
           <div class="avatar-form__footer">
             {{{Button title='Change avatar' class='button button_confirm' onClick=onSubmit type='submit'}}}
-            {{{Button title='Cancel' class='button button_redirect' onClick=onCancel}}}
+            {{{Button title='Cancel' class='button button_redirect' type='button' onClick=onCancel}}}
           </div>
         </form>
     </div>

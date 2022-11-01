@@ -1,5 +1,5 @@
 import { BlockClass } from 'core/Block';
-import deepEqual from 'utils/checkers and validators/deepEqual';
+import { deepEqual } from 'utils/checkers and validators/deepEqual';
 
 type WithUserProps = { user: Nullable<UserType> };
 

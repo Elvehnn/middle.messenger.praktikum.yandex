@@ -18,7 +18,8 @@
         "utils": "./src/utils",
         "constants": "./src/constants",
         "services": "./src/services",
-        "API": "./src/API"
+        "API": "./src/API",
+        "store": "./src/store"
     },
     "repository": {
         "type": "git",
