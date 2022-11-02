@@ -3,7 +3,7 @@ import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedE
 import { transformUserObject } from 'utils/transformers/transformUserObject';
 import { UserFromServer } from 'API/typesAPI';
 import { getAvatar } from './userData';
-import AuthAPI from 'API/Authorization';
+import AuthAPI from 'API/AuthorizationAPI';
 import MainPage from 'pages/main/main';
 import SigninPage from 'pages/signin/signin';
 import { ROUTS } from 'constants/routes';
@@ -34,7 +34,7 @@ export async function startApp(router: Router, store: Store<AppState>) {
   const isPrivate = ROUTS.find((route) => route.pathname === lastView)?.isPrivate;
 
   console.log('isPrivate', isPrivate);
-  console.log('isPrivate', isPrivate);
+
   if (isPrivate) {
     try {
       let avatar = await getAvatar(user);

@@ -99,7 +99,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
                 <div class="login-form__bottom">
                     {{{Button title="Log in" onClick=onSubmit}}}
-                    {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup }}}
+                    {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup type="button"}}}
                 </div>
             </form>
         </main>

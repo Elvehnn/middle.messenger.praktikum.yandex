@@ -42,7 +42,12 @@ export default class HTTPTransport {
 
       xhr.open(method, url);
       xhr.responseType = options?.responseType || 'json';
-      options?.contentType && xhr.setRequestHeader('Content-Type', options.contentType);
+
+      if (options?.contentType) {
+        xhr.setRequestHeader('Content-Type', options?.contentType);
+      }
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
       xhr.timeout = options?.timeout || 5000;
       xhr.withCredentials = true;
 
@@ -63,6 +68,8 @@ export default class HTTPTransport {
         xhr.send(options.data);
         return;
       }
+
+      console.log(options);
 
       xhr.send(JSON.stringify(options.data));
     });

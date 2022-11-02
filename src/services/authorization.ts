@@ -6,7 +6,8 @@ import type { Store } from '../store/Store';
 import { getAvatar } from './userData';
 import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
-import AuthAPI from 'API/Authorization';
+import AuthAPI from 'API/AuthorizationAPI';
+import { startApp } from './startApp';
 
 export type LoginPayload = {
   login: string;
@@ -70,6 +71,7 @@ export const signout = async (store: Store<AppState>) => {
     return;
   }
 
+  localStorage.removeItem('lastView');
   store.setState({
     isLoading: false,
     view: SigninPage,
@@ -81,7 +83,7 @@ export const signout = async (store: Store<AppState>) => {
     foundUsers: [],
   });
 
-  window.router.go('/signin');
+  startApp(window.router, store);
 };
 
 export const signup = async (store: Store<AppState>, action: Partial<UserFromServer>) => {
