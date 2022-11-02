@@ -29,85 +29,101 @@ const chatsApi = new ChatsAPI();
 export const signin = async (store: Store<AppState>, action: LoginPayload) => {
   store.setState({ isLoading: true });
 
-  const response = await api.signin(action);
+  try {
+    const response = await api.signin(action);
 
-  if (isApiReturnedError(response)) {
-    store.setState({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    const user = (await api.getUserInfo()) as UserFromServer;
+
+    if (isApiReturnedError(user)) {
+      throw new Error(user.reason);
+    }
+
+    const avatar = await getAvatar(user);
+    const modifiedUser = { ...user, avatar };
+
+    const chats = (await chatsApi.getChats()) as ChatFromServer[];
+
+    if (isApiReturnedError(chats)) {
+      throw new Error(chats.reason);
+    }
+
+    store.setState({
+      user: transformUserObject(modifiedUser),
+      chats: chats.map((chat) => transformChatsObject(chat)),
+      isLoading: false,
+      loginFormError: null,
+    });
+
+    window.router.go('/main');
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+    window.router.go('/signin');
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const user = (await api.getUserInfo()) as UserFromServer;
-
-  if (isApiReturnedError(user)) {
-    await api.signout();
-
-    return;
-  }
-
-  const avatar = await getAvatar(user);
-  const modifiedUser = { ...user, avatar };
-
-  const chats = (await chatsApi.getChats()) as ChatFromServer[];
-
-  store.setState({
-    user: transformUserObject(modifiedUser),
-    chats: chats.map((chat) => transformChatsObject(chat)),
-    isLoading: false,
-    loginFormError: null,
-  });
-
-  window.router.go('/main');
 };
 
 export const signout = async (store: Store<AppState>) => {
   store.setState({ isLoading: true });
 
-  const response = await api.signout();
+  try {
+    const response = await api.signout();
 
-  if (isApiReturnedError(response)) {
-    await api.signout();
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    localStorage.removeItem('lastView');
 
-    return;
+    store.setState({
+      isLoading: false,
+      view: SigninPage,
+      loginFormError: '',
+      user: null,
+      chats: [],
+      selectedChat: null,
+      isPopupShown: false,
+      foundUsers: [],
+    });
+
+    startApp(window.router, store);
   }
-
-  localStorage.removeItem('lastView');
-  store.setState({
-    isLoading: false,
-    view: SigninPage,
-    loginFormError: null,
-    user: null,
-    chats: null,
-    selectedChat: null,
-    isPopupShown: false,
-    foundUsers: [],
-  });
-
-  startApp(window.router, store);
 };
 
 export const signup = async (store: Store<AppState>, action: Partial<UserFromServer>) => {
   store.setState({ isLoading: true });
 
-  const response = await api.signup(action);
+  try {
+    const response = await api.signup(action);
 
-  if (isApiReturnedError(response)) {
-    store.setState({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    const user = { ...action, ...response, display_name: '', avatar: '' } as UserFromServer;
+    const chats = (await chatsApi.getChats()) as ChatFromServer[];
+
+    if (isApiReturnedError(chats)) {
+      throw new Error(chats.reason);
+    }
+
+    store.setState({
+      user: transformUserObject(user),
+      chats: chats.map((chat) => transformChatsObject(chat)),
+      isLoading: false,
+      loginFormError: null,
+    });
+
+    window.router.go('/main');
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const user = { ...action, ...response, display_name: '', avatar: '' } as UserFromServer;
-  const chats = (await chatsApi.getChats()) as ChatFromServer[];
-
-  store.setState({
-    user: transformUserObject(user),
-    chats: chats.map((chat) => transformChatsObject(chat)),
-    isLoading: false,
-    loginFormError: null,
-  });
-
-  console.log(store.getState());
-
-  window.router.go('/main');
 };

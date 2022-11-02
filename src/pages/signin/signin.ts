@@ -57,7 +57,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
     });
   }
   render() {
-    const isLoading = this.props.store.getState().isLoading;
+    const { isLoading, loginFormError } = this.props.store.getState();
     // language=hbs
     return `
         <main class="main">
@@ -98,6 +98,8 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
                 </div>
 
                 <div class="login-form__bottom">
+                    <p class='form-submit__warning'>${loginFormError}</p>
+
                     {{{Button title="Log in" onClick=onSubmit}}}
                     {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup type="button"}}}
                 </div>
