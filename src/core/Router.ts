@@ -35,14 +35,15 @@ export default class Router implements IRouter {
 
   private _onRouteChange(pathname: string = window.location.pathname) {
     console.log(pathname);
-    const route = this.getRoute(pathname);
+    let route = this.getRoute(pathname);
 
     if (!route) {
-      console.log('no route');
-      return;
+      route = this.getRoute('/404');
     }
 
-    route.callback();
+    window.store.setState({ view: route?.view });
+
+    route?.callback();
   }
 
   go(pathname: string) {

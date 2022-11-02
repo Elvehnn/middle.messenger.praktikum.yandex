@@ -11,7 +11,6 @@ export class Store<State extends Record<string, any>> extends EventBus {
     super();
 
     this.state = defaultState;
-    this.setState(defaultState);
   }
 
   public getState() {

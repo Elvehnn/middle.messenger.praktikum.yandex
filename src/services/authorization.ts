@@ -87,7 +87,6 @@ export const signout = async (store: Store<AppState>) => {
       chats: [],
       selectedChat: null,
       isPopupShown: false,
-      foundUsers: [],
     });
 
     startApp(window.router, store);
@@ -121,5 +120,22 @@ export const signup = async (store: Store<AppState>, action: Partial<UserFromSer
     store.setState({ loginFormError: (error as Error).message });
   } finally {
     store.setState({ isLoading: false });
+  }
+};
+
+export const getUserInfo = async () => {
+  try {
+    const user = await api.getUserInfo();
+
+    if (isApiReturnedError(user)) {
+      if (user.reason === 'Cookie is not valid') {
+        throw new Error('You are not logged in');
+      }
+      throw new Error(user.reason);
+    }
+
+    return user;
+  } catch (error) {
+    window.store.setState({ loginFormError: (error as Error).message });
   }
 };

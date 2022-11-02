@@ -3,6 +3,7 @@ import SigninPage from 'pages/signin/signin';
 import SignupPage from 'pages/signup/signup';
 import MainPage from 'pages/main/main';
 import Profile from 'pages/profile/profile';
+import NotFound404 from 'pages/notFound404/notFound404';
 import ChangeUserData from 'pages/changeUserData/changeUserData';
 import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
 
@@ -14,6 +15,7 @@ export const ROUTS: Array<PartialRouteProps> = [
     view: SigninPage,
     isPrivate: false,
   },
+
   {
     pathname: '/signin',
     view: SigninPage,
@@ -43,5 +45,10 @@ export const ROUTS: Array<PartialRouteProps> = [
     pathname: '/changeUserPassword',
     view: ChangeUserPassword,
     isPrivate: true,
+  },
+  {
+    pathname: '/404',
+    view: NotFound404,
+    isPrivate: false,
   },
 ];
