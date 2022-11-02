@@ -1,86 +1,29 @@
 import { Store } from 'store/Store';
-import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
 import { UserFromServer } from 'API/typesAPI';
+import { getUserInfo } from './authorization';
 import { getAvatar } from './userData';
-import AuthAPI from 'API/AuthorizationAPI';
-import MainPage from 'pages/main/main';
-import SigninPage from 'pages/signin/signin';
-import { ROUTS } from 'constants/routes';
 import { getChats } from './chats';
-import Router from 'core/Router';
+import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 
-const authApi = new AuthAPI();
+export async function startApp(store: Store<AppState>) {
+  try {
+    store.setState({ isLoading: true });
 
-export async function startApp(router: Router, store: Store<AppState>) {
-  const lastView = localStorage.getItem('lastView');
-  console.log('lastView', lastView);
-  console.log('store', store);
+    const user = (await getUserInfo()) as UserFromServer;
 
-  if (!lastView) {
-    store.setState({ isAppStarted: true });
-    router.go('/signin');
-    return;
-  }
-
-  const user = (await authApi.getUserInfo()) as UserFromServer;
-  console.log(user);
-
-  if (isApiReturnedError(user)) {
-    store.setState({ view: SigninPage });
-    router.go('/signin');
-  }
-
-  const isPrivate = ROUTS.find((route) => route.pathname === lastView)?.isPrivate;
-
-  console.log('isPrivate', isPrivate);
-
-  if (isPrivate) {
-    try {
-      let avatar = await getAvatar(user);
-
-      if (isApiReturnedError(avatar)) {
-        router.go('/signin');
-      }
-
-      const fullUser = { ...user, avatar };
-      const chats = await getChats(window.store);
-
-      console.log(fullUser);
-
-      store.setState({
-        user: transformUserObject(fullUser),
-        chats,
-      });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      store.setState({ isAppStarted: true });
-      router.go(lastView);
+    if (isApiReturnedError(user)) {
+      throw new Error(user.reason);
     }
-  }
 
-  if (!isPrivate && user) {
-    try {
-      let avatar = await getAvatar(user);
+    const avatar = await getAvatar(user);
+    const modifiedUser = { ...user, avatar };
+    const chats = await getChats(store);
 
-      if (isApiReturnedError(avatar)) {
-        router.go('/signin');
-      }
-
-      const fullUser = { ...user, avatar };
-      const chats = await getChats(store);
-
-      store.setState({
-        user: transformUserObject(fullUser),
-        chats,
-        view: MainPage,
-      });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      store.setState({ isAppStarted: true });
-      router.go('/main');
-    }
+    modifiedUser && chats && store.setState({ user: transformUserObject(modifiedUser), chats });
+  } catch (error) {
+    console.log((error as Error).message);
+  } finally {
+    store.setState({ isLoading: false, isAppStarted: true });
   }
 }

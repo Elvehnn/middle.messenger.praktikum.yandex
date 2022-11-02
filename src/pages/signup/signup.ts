@@ -59,7 +59,10 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
         }
       },
 
-      navigateToSignin: () => this.props.router.go('/signin'),
+      navigateToSignin: () => {
+        this.props.store.setState({ loginFormError: '' });
+        this.props.router.go('/signin');
+      },
     });
   }
   render() {

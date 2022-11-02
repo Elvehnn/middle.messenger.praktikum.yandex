@@ -2,27 +2,21 @@ import { ROUTS } from 'constants/routes';
 import renderDOM from 'core/RenderDOM';
 import Router from 'core/Router';
 import SigninPage from 'pages/signin/signin';
-import MainPage from 'pages/main/main';
 import { Store } from 'store/Store';
 
 export const initRouter = (router: Router, store: Store<AppState>) => {
   ROUTS.forEach((route) => {
     router.use(route, () => {
-      console.log(route);
+      const isAuthorized = store.getState().user;
 
-      if (!store.getState().view) {
-        const lastView = localStorage.getItem('lastView');
-        const view = ROUTS.find((route) => route.pathname === lastView)?.view;
-        console.log(store.getState().view);
-
-        const newView = view || SigninPage;
-        store.setState({ view: newView });
-
+      if (isAuthorized || !route.isPrivate) {
+        store.setState({ view: route.view });
         return;
       }
 
-      store.setState({ view: route.view });
-      localStorage.setItem('lastView', route.pathname || '/');
+      if (!store.getState().view) {
+        store.setState({ view: SigninPage });
+      }
     });
   });
 
@@ -39,11 +33,6 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
       document.title = `App / ${Page.componentName}`;
 
       return;
-    }
-
-    if (prevState.chats.length !== nextState.chats.length) {
-      renderDOM(new MainPage({}));
-      document.title = `App / ${MainPage.componentName}`;
     }
   });
 };
