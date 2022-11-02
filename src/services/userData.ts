@@ -13,25 +13,28 @@ export const changeUserProfile = async (
 ) => {
   store.setState({ isLoading: true });
 
-  const response = await api.changeProfile(action);
+  try {
+    const response = await api.changeProfile(action);
 
-  if (isApiReturnedError(response)) {
-    store.setState({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    const avatar = store.getState()?.user?.avatar || DEFAULT_AVATAR;
+
+    const updatedUser = { ...transformUserObject(response as UserFromServer), avatar };
+
+    store.setState({
+      user: updatedUser,
+      loginFormError: null,
+    });
+
+    window.router.back();
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const avatar = store.getState()?.user?.avatar || DEFAULT_AVATAR;
-
-  const updatedUser = { ...transformUserObject(response as UserFromServer), avatar };
-
-  store.setState({
-    user: updatedUser,
-    isLoading: false,
-    loginFormError: null,
-  });
-
-  window.router.back();
 };
 
 export const changeUserPassword = async (
@@ -40,41 +43,63 @@ export const changeUserPassword = async (
 ) => {
   store.setState({ isLoading: true });
 
-  const response = await api.changePassword(action);
+  try {
+    const response = await api.changePassword(action);
 
-  if (isApiReturnedError(response)) {
-    store.setState({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    store.setState({
+      loginFormError: null,
+    });
+
+    window.router.back();
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  store.setState({
-    isLoading: false,
-    loginFormError: null,
-  });
-
-  window.router.back();
 };
 
 export const getUserByLogin = async (login: string) => {
-  const users = await api.getUserByLogin({ login });
+  try {
+    const users = await api.getUserByLogin({ login });
 
-  if (isApiReturnedError(users)) {
-    window.store.setState({ isLoading: false, loginFormError: users.reason });
+    if (isApiReturnedError(users)) {
+      throw new Error(users.reason);
+    }
 
-    return;
+    return users as UserFromServer[];
+  } catch (error) {
+    window.store.setState({ loginFormError: (error as Error).message });
   }
-
-  return users as UserFromServer[];
 };
 
 export const changeAvatar = async (store: Store<AppState>, action: FormData) => {
   store.setState({ isLoading: true });
 
-  const newUser = (await api.changeAvatar(action)) as UserFromServer;
-  newUser.avatar = await getAvatar(newUser);
+  try {
+    let newUser = (await api.changeAvatar(action)) as UserFromServer;
 
-  store.setState({ user: transformUserObject(newUser), isLoading: false });
+    if (isApiReturnedError(newUser)) {
+      throw new Error(newUser.reason);
+    }
+
+    const avatar = await getAvatar(newUser);
+
+    if (isApiReturnedError(avatar)) {
+      throw new Error(avatar.reason);
+    }
+
+    newUser = { ...newUser, avatar };
+
+    store.setState({ user: transformUserObject(newUser) });
+  } catch (error) {
+    window.store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
+  }
 };
 
 export const getAvatar = async (user: UserFromServer | UserType) => {

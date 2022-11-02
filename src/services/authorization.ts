@@ -54,7 +54,6 @@ export const signin = async (store: Store<AppState>, action: LoginPayload) => {
     store.setState({
       user: transformUserObject(modifiedUser),
       chats: chats.map((chat) => transformChatsObject(chat)),
-      isLoading: false,
       loginFormError: null,
     });
 
@@ -116,7 +115,6 @@ export const signup = async (store: Store<AppState>, action: Partial<UserFromSer
     store.setState({
       user: transformUserObject(user),
       chats: chats.map((chat) => transformChatsObject(chat)),
-      isLoading: false,
       loginFormError: null,
     });
 
