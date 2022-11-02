@@ -52,6 +52,7 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
   }
 
   render() {
+    const { loginFormError } = this.props.store.getState();
     // language=hbs
     return `
       <div class='form-container' id='addUser'>
@@ -76,6 +77,8 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
                 }}}
                 
                 <div class="createChatForm__footer">
+                    <p class='form-submit__warning'>${loginFormError}</p>
+
                     {{{ Button  title='Add user' class='button button_confirm' onClick=onSubmit type='submit'}}}
                     {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
                     

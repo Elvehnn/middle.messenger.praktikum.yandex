@@ -26,7 +26,6 @@ export const changeUserProfile = async (
 
     store.setState({
       user: updatedUser,
-      loginFormError: null,
     });
 
     window.router.back();
@@ -49,10 +48,6 @@ export const changeUserPassword = async (
     if (isApiReturnedError(response)) {
       throw new Error(response.reason);
     }
-
-    store.setState({
-      loginFormError: null,
-    });
 
     window.router.back();
   } catch (error) {

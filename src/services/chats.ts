@@ -27,7 +27,6 @@ export const getChats = async (store: Store<AppState>) => {
 
     store.setState({
       chats: response.map((item) => transformChatsObject(item)),
-      loginFormError: null,
     });
 
     return response.map((item) => transformChatsObject(item));
