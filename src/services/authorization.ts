@@ -7,7 +7,6 @@ import { getAvatar } from './userData';
 import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import AuthAPI from 'API/AuthorizationAPI';
-import { startApp } from './startApp';
 
 export type LoginPayload = {
   login: string;
@@ -89,7 +88,7 @@ export const signout = async (store: Store<AppState>) => {
       isPopupShown: false,
     });
 
-    startApp(window.router, store);
+    window.router.go('/signin');
   }
 };
 

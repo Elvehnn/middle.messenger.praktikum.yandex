@@ -29,7 +29,7 @@ export class NotFound404 extends Block<NotFound404Props> {
           <h2 class="start">NOT FOUND</h2>
           <h2 class="start">404</h2>
 
-          {{{Button title='Go back' onClick=navigateBack class='button button_redirect}}}
+          {{{Button title='Go back' onClick=navigateBack class='button button_redirect'}}}
           
         </main>
         `;

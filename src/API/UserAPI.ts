@@ -9,7 +9,7 @@ export default class UserAPI extends HTTPTransport {
   changeAvatar = async (data: FormData): Promise<UserFromServer | APIError> =>
     this.put('user/profile/avatar', {
       data,
-      contentType: undefined,
+      contentType: '',
     }) as Promise<UserFromServer | APIError>;
 
   getAvatar = async (path: string) =>

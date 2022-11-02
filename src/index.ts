@@ -69,14 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //TODO: добавить стартовый экран на запуск приложения
 
-  store.on('updated', (prevState, nextState) => {
+  store.on('updated', (nextState) => {
     if (process.env.DEBUG) {
       console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
     }
   });
 
-  console.log(store, router);
-
   initRouter(router, store);
-  startApp(router, store);
+  startApp(store);
 });
