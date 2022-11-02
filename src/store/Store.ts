@@ -1,12 +1,8 @@
 import EventBus from 'core/EventBus';
+import { deepEqual } from 'utils/checkers and validators/deepEqual';
 import { defaultState } from './defaultState';
 
-export type Dispatch<State> = (
-  nextStateOrAction: Partial<State> | Action<State>,
-  payload?: any
-) => void;
-
-export type Action<State> = (dispatch: Dispatch<State>, state: State, payload: any) => void;
+export type Action<State> = (state: State, payload: any) => void;
 
 export class Store<State extends Record<string, any>> extends EventBus {
   private state = {} as State;
@@ -22,18 +18,14 @@ export class Store<State extends Record<string, any>> extends EventBus {
     return this.state;
   }
 
-  public setState(nextState: Partial<State>) {
-    const prevState = { ...this.state };
+  public setState(newState: Partial<State>) {
+    const nextState = { ...this.state, ...newState };
 
-    this.state = { ...this.state, ...nextState };
-    this.emit('updated', prevState, nextState);
-  }
+    if (!deepEqual(this.state, nextState)) {
+      const prevState = this.state;
 
-  dispatch(nextStateOrAction: Partial<State> | Action<State>, payload?: any) {
-    if (typeof nextStateOrAction === 'function') {
-      nextStateOrAction(this.dispatch.bind(this), this.state, payload);
-    } else {
-      this.setState({ ...this.state, ...nextStateOrAction });
+      this.state = { ...nextState };
+      this.emit('updated', prevState, nextState);
     }
   }
 }

@@ -36,7 +36,7 @@ class DeleteUserFromChatForm extends Block<
   constructor(props: DeleteUserFromChatFormProps) {
     super(props);
     this.setProps({
-      onSubmit: async (event) => {
+      onSubmit: async (event: SubmitEvent) => {
         event.preventDefault();
 
         const refs = getChildInputRefs(this.refs);
@@ -47,24 +47,23 @@ class DeleteUserFromChatForm extends Block<
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          this.props.store.dispatch({ isLoading: true });
-
           const chat = this.props.store.getState().selectedChat;
 
-          this.props.store.dispatch(deleteUserFromChat, { login: login.value, chat });
+          chat && deleteUserFromChat(this.props.store, { login: login.value, chat });
         }
       },
     });
   }
 
   render() {
+    const { loginFormError } = this.props.store.getState();
     // language=hbs
     return `
       <div class='form-container' id='deleteUser'>
         <div class='overlay'></div>
         
         <form class='addUserToChatForm' action='#'>
-                {{{Button class='addUserToChatForm__close' onClick=onCancel title='X'}}}
+                {{{Button class='addUserToChatForm__close' onClick=onCancel title='X' type='button'}}}
 
                 <h3>Enter user login to delete</h3>
 
@@ -82,8 +81,10 @@ class DeleteUserFromChatForm extends Block<
                 }}}
                 
                 <div class="createChatForm__footer">
-                    {{{ Button  title='Delete user' class='button button_confirm' onClick=onSubmit}}}
-                    {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel}}}
+                    <p class='form-submit__warning'>${loginFormError}</p>
+
+                    {{{ Button  title='Delete user' class='button button_confirm' onClick=onSubmit type='submit'}}}
+                    {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
                     
                 </div>
             </form>

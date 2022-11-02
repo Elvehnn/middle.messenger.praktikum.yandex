@@ -6,22 +6,22 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
-import { WithChats } from 'utils/HOCS/WithChats';
 import { navigateTo } from 'utils/navigateTo';
 import { validateForm, ValidateType } from 'utils/checkers and validators/validateForm';
 import { sendMessage } from 'services/chats';
+import { reduceObjectToString } from 'utils/transformers/reduceObjectToString';
 
 type MainPageProps = {
   router: Router;
   store: Store<AppState>;
-  chats: Nullable<Array<ChatType>>;
-  onSubmit: (event: SubmitEvent) => void;
-  navigateToProfile: () => void;
-  toggleCreateChatForm: () => void;
-  toggleShowChatMenu: () => void;
-  toggleShowAddUserForm: () => void;
-  toggleShowDeleteUserForm: () => void;
-  addMessage: (message: string) => void;
+  chats?: Nullable<Array<ChatType>>;
+  onSubmit?: (event: SubmitEvent) => void;
+  navigateToProfile?: () => void;
+  toggleCreateChatForm?: () => void;
+  toggleShowChatMenu?: () => void;
+  toggleShowAddUserForm?: () => void;
+  toggleShowDeleteUserForm?: () => void;
+  addMessage?: (message: string) => void;
 };
 
 type Refs = {
@@ -40,6 +40,7 @@ class MainPage extends Block<MainPageProps, Refs> {
     super(props);
 
     this.setProps({
+      chats: this.props.store.getState().chats,
       onSubmit: (event: SubmitEvent) => {
         // TODO: добавить обработку прикрепленных файлов
         event.preventDefault();
@@ -86,13 +87,9 @@ class MainPage extends Block<MainPageProps, Refs> {
   }
 
   render() {
-    const isLoading = this.props.store.getState().isLoading;
-    const id = this.props.store.getState().selectedChat?.id;
-    const title = this.props.store.getState().selectedChat?.title;
-    const chatUsers = this.props.store.getState().selectedChat?.chatUsers?.reduce((acc, user) => {
-      acc += `${user.login}, `;
-      return acc;
-    }, '');
+    const { isLoading, selectedChat } = this.props.store.getState();
+    const { id, title, chatUsers = [] } = selectedChat || {};
+    const chatUsersToString = reduceObjectToString(chatUsers, 'login');
 
     // language=hbs
     return `
@@ -129,7 +126,7 @@ class MainPage extends Block<MainPageProps, Refs> {
                       </div>
                         
                       <h4 class='chat-info__name'>${title}</h4>
-                      <p>${chatUsers?.slice(0, chatUsers.length - 2)}</p>
+                      <p>${chatUsersToString?.slice(0, chatUsersToString.length - 2)}</p>
                     </div>
 
                     <div class='chat__menu'>
@@ -167,4 +164,4 @@ class MainPage extends Block<MainPageProps, Refs> {
   }
 }
 
-export default WithRouter(WithStore(WithChats(MainPage)));
+export default WithRouter(WithStore(MainPage));

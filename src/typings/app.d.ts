@@ -40,6 +40,8 @@ declare global {
     chatUsers?: Array<UserType>;
     chatToken?: string;
   };
+
+  export type RefsObject = Record<string, HTMLInputElement>;
 }
 
 export {};

@@ -1,7 +1,8 @@
 import { ROUTS } from 'constants/routes';
 import renderDOM from 'core/RenderDOM';
 import Router from 'core/Router';
-import { StartPage } from 'pages/start/start';
+import SigninPage from 'pages/signin/signin';
+import MainPage from 'pages/main/main';
 import { Store } from 'store/Store';
 
 export const initRouter = (router: Router, store: Store<AppState>) => {
@@ -10,12 +11,17 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
       console.log(route);
 
       if (!store.getState().view) {
-        store.dispatch({ view: StartPage });
+        const lastView = localStorage.getItem('lastView');
+        const view = ROUTS.find((route) => route.pathname === lastView)?.view;
+        console.log(store.getState().view);
+
+        const newView = view || SigninPage;
+        store.setState({ view: newView });
 
         return;
       }
 
-      store.dispatch({ view: route.view });
+      store.setState({ view: route.view });
       localStorage.setItem('lastView', route.pathname || '/');
     });
   });
@@ -31,6 +37,13 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
 
       renderDOM(newPage);
       document.title = `App / ${Page.componentName}`;
+
+      return;
+    }
+
+    if (prevState.chats.length !== nextState.chats.length) {
+      renderDOM(new MainPage({}));
+      document.title = `App / ${MainPage.componentName}`;
     }
   });
 };

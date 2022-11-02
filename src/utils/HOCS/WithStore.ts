@@ -12,7 +12,7 @@ export function WithStore<P extends WithStateProps>(Block: BlockClass<P>) {
       super({ ...props, store: window.store });
     }
 
-    __onChangeStoreCallback = () => {
+    private __onChangeStoreCallback = () => {
       /**
        * TODO: проверить что стор реально обновлен
        * и прокидывать не целый стор, а необходимые поля

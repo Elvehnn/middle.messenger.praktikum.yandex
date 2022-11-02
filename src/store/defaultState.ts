@@ -1,10 +1,10 @@
 export const defaultState: AppState = {
   isLoading: false,
   view: null,
-  loginFormError: null,
+  loginFormError: '',
   user: null,
   isAppStarted: false,
-  chats: null,
+  chats: [],
   selectedChat: null,
   isPopupShown: false,
   foundUsers: [],

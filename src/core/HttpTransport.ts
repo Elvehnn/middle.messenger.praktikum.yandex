@@ -19,43 +19,36 @@ type Options = {
 export default class HTTPTransport {
   get = (url: string, queryParams?: Record<string, string>, options?: Options) => {
     const urlWithParams = queryParams ? url + queryStringify(queryParams) : url;
+    const getRequestOptions = { responseType: options?.responseType };
 
-    return this.request(
-      PATH.BASE + urlWithParams,
-      Methods.Get,
-      undefined,
-      undefined,
-      options?.responseType
-    );
+    return this.request(PATH.BASE + urlWithParams, Methods.Get, getRequestOptions);
   };
 
   post = (url: string, options?: Options) => {
-    return this.request(PATH.BASE + url, Methods.Post, options?.data);
+    return this.request(PATH.BASE + url, Methods.Post, options);
   };
 
   put = (url: string, options: Options) => {
-    return this.request(PATH.BASE + url, Methods.Put, options.data, options?.contentType);
+    return this.request(PATH.BASE + url, Methods.Put, options);
   };
 
   delete = (url: string, options: Options) => {
-    return this.request(PATH.BASE + url, Methods.Delete, options.data);
+    return this.request(PATH.BASE + url, Methods.Delete, options);
   };
 
-  request = <T extends any>(
-    url: string,
-    method: Methods,
-    data?: Record<string, string> | FormData,
-    contentType: string = 'application/json',
-    responseType: XMLHttpRequestResponseType = 'json',
-    timeout: number = 5000
-  ): Promise<T> => {
+  request = <T extends any>(url: string, method: Methods, options?: Options): Promise<T> => {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
       xhr.open(method, url);
-      xhr.responseType = responseType;
-      contentType && xhr.setRequestHeader('Content-Type', contentType);
-      xhr.timeout = timeout;
+      xhr.responseType = options?.responseType || 'json';
+
+      if (options?.contentType) {
+        xhr.setRequestHeader('Content-Type', options?.contentType);
+      }
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.timeout = options?.timeout || 5000;
       xhr.withCredentials = true;
 
       xhr.onload = () => {
@@ -66,17 +59,17 @@ export default class HTTPTransport {
       xhr.onabort = reject;
       xhr.ontimeout = reject;
 
-      if (method === Methods.Get || !data) {
+      if (method === Methods.Get || !options?.data) {
         xhr.send();
         return;
       }
 
-      if (data instanceof FormData) {
-        xhr.send(data);
+      if (options.data instanceof FormData) {
+        xhr.send(options.data);
         return;
       }
 
-      xhr.send(JSON.stringify(data));
+      xhr.send(JSON.stringify(options.data));
     });
   };
 }

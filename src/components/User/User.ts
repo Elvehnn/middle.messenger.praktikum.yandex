@@ -39,7 +39,7 @@ class User extends Block<UserProps> {
         const path = (event.target as HTMLButtonElement).textContent || '';
         navigateTo(`${stringToCamelCase(path)}`);
       },
-      signout: () => this.props.store.dispatch(signout),
+      signout: () => signout(this.props.store),
     });
   }
 

@@ -23,21 +23,19 @@ class ChatItem extends Block<ChatItemProps> {
   messagesArray: Array<WebSocketMessage> = [];
 
   constructor(props: ChatItemPreviewProps) {
-    const onChatItemClick = async (event: Event) => {
+    const onChatItemClick = (event: Event) => {
       if ((event.target as HTMLElement).tagName === 'BUTTON') {
         return;
       }
 
-      this.props.store.dispatch({ isLoading: true });
-
-      this.props.store.dispatch(getChatInfo, this.props.chat);
+      getChatInfo(this.props.store, this.props.chat);
     };
 
     super({
       ...props,
       events: { click: onChatItemClick },
       deleteChatHandler: () => {
-        this.props.store.dispatch(deleteChat, { chatId: this.props.chat.id });
+        deleteChat(this.props.store, { chatId: this.props.chat.id });
       },
     });
   }
@@ -68,5 +66,3 @@ class ChatItem extends Block<ChatItemProps> {
 }
 
 export default WithStore(ChatItem);
-
-// <time class='chat-item__time'>{{time}}</time>

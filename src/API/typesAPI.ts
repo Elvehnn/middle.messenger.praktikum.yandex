@@ -3,29 +3,9 @@ export type APIError = {
   status: string;
 };
 
-export type UserFromServer = {
-  id: number;
-  login: string;
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  avatar: string;
-  phone: string;
-  email: string;
-};
-
 export type LoginRequestData = {
   login: string;
   password: string;
-};
-
-export type ChangeProfileRequestData = {
-  first_name: string;
-  second_name: string;
-  display_name: string;
-  login: string;
-  email: string;
-  phone: string;
 };
 
 export type ChangePasswordRequestData = {
@@ -62,6 +42,11 @@ export type DeleteChatRequestData = {
   chatId: number;
 };
 
+export type DeleteChatResponseData = {
+  userId: number;
+  result: Record<string, unknown>;
+};
+
 export type UserToChatRequestData = {
   users: number[];
   chat: ChatType;
@@ -72,11 +57,19 @@ export type UserToChatData = {
   chat: ChatType;
 };
 
-export type getChatUsersRequestData = {
+export type ChatUsersRequestData = {
   chatId: number;
 };
 
+export type UnreadCountResponseData = {
+  unread_count: number;
+};
+
 export type ResponseData = {} | APIError;
+
+export enum ResponseStatus {
+  OK = 'ok',
+}
 
 export type WebSocketMessage = {
   chat_id: number;
@@ -93,4 +86,30 @@ export type WebSocketMessage = {
     content_size: number;
     upload_date: string;
   };
+};
+
+export type UserKeys =
+  | 'login'
+  | 'firstName'
+  | 'secondName'
+  | 'avatar'
+  | 'phone'
+  | 'email'
+  | 'displayName';
+
+export type ChangeProfileKeys =
+  | 'login'
+  | 'first_name'
+  | 'second_name'
+  | 'phone'
+  | 'email'
+  | 'display_name';
+
+export type SignupData = Record<UserKeys, string>;
+
+export type ChangeProfileRequestData = Record<ChangeProfileKeys, string>;
+
+export type UserFromServer = ChangeProfileRequestData & {
+  id: number;
+  avatar: string;
 };

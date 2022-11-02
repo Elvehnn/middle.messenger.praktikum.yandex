@@ -1,27 +1,23 @@
 import HTTPTransport from 'core/HttpTransport';
-import { ChangePasswordRequestData, ChangeProfileRequestData, ResponseData } from 'API/typesAPI';
+import { APIError, ChangePasswordRequestData, ResponseStatus, UserFromServer } from 'API/typesAPI';
 
 export default class UserAPI extends HTTPTransport {
-  constructor() {
-    super();
-  }
-  changeProfile = async (data: ChangeProfileRequestData): Promise<ResponseData> =>
-    this.put('user/profile', { data }) as Promise<ResponseData>;
+  changeProfile = async (data: Partial<UserFromServer>): Promise<UserFromServer | APIError> => {
+    return this.put('user/profile', { data }) as Promise<UserFromServer | APIError>;
+  };
 
-  changeAvatar = async (data: FormData): Promise<ResponseData> =>
+  changeAvatar = async (data: FormData): Promise<UserFromServer | APIError> =>
     this.put('user/profile/avatar', {
       data,
-      contentType: '',
-    }) as Promise<ResponseData>;
+      contentType: undefined,
+    }) as Promise<UserFromServer | APIError>;
 
   getAvatar = async (path: string) =>
     this.get(`resources/${path.slice(1)}`, {}, { responseType: 'blob' });
 
-  changePassword = async (data: ChangePasswordRequestData): Promise<ResponseData> =>
-    this.put('user/password', { data }) as Promise<ResponseData>;
+  changePassword = async (data: ChangePasswordRequestData): Promise<ResponseStatus | APIError> =>
+    this.put('user/password', { data }) as Promise<ResponseStatus | APIError>;
 
-  getUserById = () => {};
-
-  getUserByLogin = async (data: Record<string, string>): Promise<ResponseData> =>
-    this.post('user/search', { data }) as Promise<ResponseData>;
+  getUserByLogin = async (data: Record<string, string>): Promise<UserFromServer[] | APIError> =>
+    this.post('user/search', { data }) as Promise<UserFromServer[] | APIError>;
 }

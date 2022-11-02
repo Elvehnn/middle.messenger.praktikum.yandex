@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.socketController = socketController;
 
   //TODO: добавить стартовый экран на запуск приложения
-  // renderDOM(new StartPage({ router }));
 
   store.on('updated', (prevState, nextState) => {
     if (process.env.DEBUG) {
@@ -77,5 +76,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   initRouter(router, store);
-  store.dispatch(startApp);
+  startApp(router, store);
 });

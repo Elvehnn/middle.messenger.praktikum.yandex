@@ -15,7 +15,6 @@ import { navigateTo } from 'utils/navigateTo';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
-export type RefsObject = Record<string, HTMLInputElement>;
 class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserPassword';
 
@@ -25,7 +24,9 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
     this.setProps({
       userLogin: this.props.store.getState().user?.login,
       avatarSrc: this.props.store.getState().user?.avatar,
-      onSubmit: () => {
+      onSubmit: (event: SubmitEvent) => {
+        event.preventDefault();
+
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
@@ -43,7 +44,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
 
         if (Object.keys(errors).length === 0) {
           const newData = { oldPassword: oldPassword.value, newPassword: newPassword.value };
-          this.props.store.dispatch(changeUserPassword, newData);
+          changeUserPassword(this.props.store, newData);
         }
       },
       navigateBack: () => navigateTo('profile'),
@@ -65,7 +66,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
                 </div>
                 
                 <section class='profile__container'>
-                    <form class='user' action="./profile.html">
+                    <form class='user' action="#">
                         {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
@@ -75,8 +76,8 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
-                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit type='submit'}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack type='button'}}}
                         </div>
                     </form>
                 </section>

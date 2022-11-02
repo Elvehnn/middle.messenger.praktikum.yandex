@@ -3,10 +3,11 @@ import {
   ChatFromServer,
   CreateChatRequestData,
   DeleteChatRequestData,
+  UnreadCountResponseData,
   UserFromServer,
   UserToChatData,
 } from 'API/typesAPI';
-import { Dispatch } from 'store/Store';
+import { Store } from 'store/Store';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
@@ -14,169 +15,176 @@ import { getUserByLogin } from './userData';
 
 const api = new ChatsAPI();
 
-export const getChats = async (dispatch: Dispatch<AppState>) => {
-  dispatch({ isLoading: true });
+export const getChats = async (store: Store<AppState>) => {
+  store.setState({ isLoading: true });
 
-  const response = (await api.getChats()) as ChatFromServer[];
+  try {
+    const response = (await api.getChats()) as ChatFromServer[];
 
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    store.setState({
+      chats: response.map((item) => transformChatsObject(item)),
+    });
+
+    return response.map((item) => transformChatsObject(item));
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  dispatch({
-    chats: response.map((item) => transformChatsObject(item)),
-    isLoading: false,
-    loginFormError: null,
-  });
-  return response.map((item) => transformChatsObject(item));
 };
 
-export const createChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: CreateChatRequestData
-) => {
-  dispatch({ isLoading: true });
+export const createChat = async (store: Store<AppState>, action: CreateChatRequestData) => {
+  store.setState({ isLoading: true });
 
-  const response = await api.createChat(action);
+  try {
+    const response = await api.createChat(action);
 
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    getChats(store);
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  dispatch(getChats);
-  dispatch({ isLoading: false, loginFormError: null });
 };
 
-export const deleteChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: DeleteChatRequestData
-) => {
-  dispatch({ isLoading: true });
+export const deleteChat = async (store: Store<AppState>, action: DeleteChatRequestData) => {
+  store.setState({ isLoading: true });
 
-  const response = await api.deleteChat(action);
+  try {
+    const response = await api.deleteChat(action);
 
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    getChats(store);
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  dispatch(getChats);
-  dispatch({ isLoading: false, loginFormError: null });
 };
 
-export const addUserToChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: UserToChatData
-) => {
-  const user = await getUserByLogin(action.login);
+export const addUserToChat = async (store: Store<AppState>, action: UserToChatData) => {
+  store.setState({ isLoading: true });
 
-  if (user.length === 0) {
-    dispatch({ isLoading: false, loginFormError: 'User not found' });
+  try {
+    const user = await getUserByLogin(action.login);
 
-    return;
+    if (isApiReturnedError(user)) {
+      throw new Error(user.reason);
+    }
+
+    if (!user || user?.length === 0) {
+      throw new Error('User not found');
+    }
+
+    const response = await api.addUserToChat({ users: [user[0].id], chat: action.chat });
+
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+
+    const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
+
+    if (isApiReturnedError(users)) {
+      throw new Error(users.reason);
+    }
+
+    const selectedChat = {
+      ...action.chat,
+      chatUsers: users.map((user) => transformUserObject(user)),
+    };
+
+    store.setState({ selectedChat: selectedChat });
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const response = await api.addUserToChat({ users: [user[0].id], chat: action.chat });
-
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
-
-    return;
-  }
-
-  const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
-
-  if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
-
-    return;
-  }
-
-  const selectedChat = {
-    ...action.chat,
-    chatUsers: users.map((user) => transformUserObject(user)),
-  };
-
-  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
-export const deleteUserFromChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: UserToChatData
-) => {
-  const user = await getUserByLogin(action.login);
+export const deleteUserFromChat = async (store: Store<AppState>, action: UserToChatData) => {
+  store.setState({ isLoading: true });
 
-  if (user.length === 0) {
-    dispatch({ isLoading: false, loginFormError: 'User not found' });
+  try {
+    const user = await getUserByLogin(action.login);
 
-    return;
+    if (isApiReturnedError(user)) {
+      throw new Error(user.reason);
+    }
+
+    if (!user || user?.length === 0) {
+      throw new Error('User not found');
+    }
+
+    const response = await api.deleteUserFromChat({ users: [user[0].id], chat: action.chat });
+
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+
+    const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
+
+    if (isApiReturnedError(users)) {
+      throw new Error(users.reason);
+    }
+
+    const selectedChat = {
+      ...action.chat,
+      chatUsers: users.map((user) => transformUserObject(user)),
+    };
+
+    store.setState({ selectedChat: selectedChat });
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const response = await api.deleteUserFromChat({ users: [user[0].id], chat: action.chat });
-
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
-
-    return;
-  }
-
-  const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
-
-  if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
-
-    return;
-  }
-
-  const selectedChat = {
-    ...action.chat,
-    chatUsers: users.map((user) => transformUserObject(user)),
-  };
-
-  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
-export const getChatInfo = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: ChatType
-) => {
-  const token = (await api.getChatToken(action.id)).token;
+export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
+  store.setState({ isLoading: true });
 
-  if (isApiReturnedError(token)) {
-    dispatch({ isLoading: false, loginFormError: token.reason });
+  try {
+    const token = (await api.getChatToken(action.id)).token;
 
-    return;
+    if (isApiReturnedError(token)) {
+      throw new Error(token.reason);
+    }
+
+    const users = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
+
+    if (isApiReturnedError(users)) {
+      throw new Error(users.reason);
+    }
+
+    const selectedChat = {
+      ...action,
+      chatUsers: users.map((user) => transformUserObject(user)),
+      chatToken: token as string,
+    };
+
+    const { user } = store.getState();
+
+    if (user) {
+      openSocket(user.id, selectedChat);
+    }
+
+    store.setState({ selectedChat: selectedChat });
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const users = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
-
-  if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
-
-    return;
-  }
-
-  const selectedChat = {
-    ...action,
-    chatUsers: users.map((user) => transformUserObject(user)),
-    chatToken: token as string,
-  };
-
-  if (state.user) {
-    openSocket(state.user.id, selectedChat);
-  }
-
-  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
 export const openSocket = (id: number, chat: ChatType) => {
@@ -200,5 +208,14 @@ export const sendMessage = (message: string, chat: ChatType) => {
 };
 
 export const getUnreadMessagesCount = async (action: ChatType) => {
-  return (await api.getUnreadMessagesCount({ chatId: action.id })) as number;
+  try {
+    const unreadCount = await api.getUnreadMessagesCount({ chatId: action.id });
+
+    if (isApiReturnedError(unreadCount)) {
+      throw new Error(unreadCount.reason);
+    }
+    return unreadCount as UnreadCountResponseData;
+  } catch (error) {
+    window.store.setState({ loginFormError: (error as Error).message });
+  }
 };

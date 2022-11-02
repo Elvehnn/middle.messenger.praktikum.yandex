@@ -11,6 +11,8 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import { signup } from 'services/authorization';
+import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
+import { SignupData, UserKeys } from 'API/typesAPI';
 
 type IncomingSignupProps = {
   router: Router;
@@ -18,7 +20,7 @@ type IncomingSignupProps = {
 };
 
 type SignupProps = IncomingSignupProps & {
-  onSubmit?: (event: SubmitEvent) => void;
+  onSubmit: (event: SubmitEvent) => void;
   inputs: Array<Record<string, string>>;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
@@ -39,28 +41,21 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
 
     this.setProps({
       inputs: INPUTS,
-      onSubmit: () => {
+      onSubmit: (event: SubmitEvent) => {
+        event.preventDefault();
+
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const newData = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[stringToCamelCase(key)] = input.value;
+          const signupData = Object.entries(refs).reduce((acc, [key, input]) => {
+            acc[stringToCamelCase(key) as Partial<UserKeys>] = input.value;
             return acc;
-          }, {} as Record<string, string>);
+          }, {} as Partial<SignupData>);
 
-          const user = {
-            login: newData.login,
-            first_name: newData.firstName,
-            second_name: newData.secondName,
-            password: newData.password,
-            phone: newData.phone,
-            email: newData.email,
-          };
-
-          this.props.store.dispatch(signup, user);
+          signup(this.props.store, transformRefsToUser(signupData));
         }
       },
 
@@ -68,7 +63,8 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
     });
   }
   render() {
-    const isLoading = this.props.store.getState().isLoading;
+    const { isLoading, loginFormError } = this.props.store.getState();
+
     // language=hbs
     return `
         <main class="main">
@@ -77,31 +73,35 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
           {{/if}}
           
             <h1>Chatterbox</h1>
-            <form class="login-form" action="./main.html">
-                <div class="login-form__group">
-                    <h2>Sign up</h2>
-                    {{#each inputs}}
-                        {{#with this}}
-                          {{{ControlledInput
-                            onInput=../onInput
-                            onFocus=../onFocus 
-                            type=type
-                            inputName=text
-                            ref=text
-                            childInputRef=text
-                            error=error
-                            value=''
-                            placeholder=text
-                           }}}
-                        {{/with}}
-                    {{/each}}
-                </div>
 
-                <div class="login-form__bottom">
+            <form class="login-form" action='#'>
+                  <div class="login-form__group">
+                      <h2>Sign up</h2>
+                      {{#each inputs}}
+                          {{#with this}}
+                            {{{ControlledInput
+                              onInput=../onInput
+                              onFocus=../onFocus 
+                              type=type
+                              inputName=text
+                              ref=text
+                              childInputRef=text
+                              error=error
+                              value=''
+                              placeholder=text
+                            }}}
+                          {{/with}}
+                      {{/each}}
+                  </div>
+
+                  <div class="login-form__bottom">
+                    <p class='form-submit__warning'>${loginFormError}</p>
+                 
                     {{{Button title="Sign up" onClick=onSubmit}}}
                     {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin}}}
-                </div>
+                  </div>
             </form>
+    
         </main>
         `;
   }

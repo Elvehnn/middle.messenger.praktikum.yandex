@@ -1,117 +1,125 @@
 import { ChatFromServer, UserFromServer } from 'API/typesAPI';
-import SigninPage from '../pages/signin/signin';
+import SigninPage from 'pages/signin/signin';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
-import type { Dispatch } from '../store/Store';
+import type { Store } from '../store/Store';
 import { getAvatar } from './userData';
 import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import AuthAPI from 'API/AuthorizationAPI';
+import { startApp } from './startApp';
 
-type LoginPayload = {
+export type LoginPayload = {
   login: string;
   password: string;
 };
 
-type SignupPayload = {
-  login: 'string';
-  password: 'string';
-  first_name: 'string';
-  second_name: 'string';
-  email: 'string';
-  phone: 'string';
+export type SignupPayload = {
+  login: string;
+  password: string;
+  first_name: string;
+  second_name: string;
+  email: string;
+  phone: string;
 };
 
 const api = new AuthAPI();
 const chatsApi = new ChatsAPI();
 
-export const signin = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: LoginPayload
-) => {
-  dispatch({ isLoading: true });
+export const signin = async (store: Store<AppState>, action: LoginPayload) => {
+  store.setState({ isLoading: true });
 
-  const response = await api.signin(action);
+  try {
+    const response = await api.signin(action);
 
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    const user = (await api.getUserInfo()) as UserFromServer;
+
+    if (isApiReturnedError(user)) {
+      throw new Error(user.reason);
+    }
+
+    const avatar = await getAvatar(user);
+    const modifiedUser = { ...user, avatar };
+
+    const chats = (await chatsApi.getChats()) as ChatFromServer[];
+
+    if (isApiReturnedError(chats)) {
+      throw new Error(chats.reason);
+    }
+
+    store.setState({
+      user: transformUserObject(modifiedUser),
+      chats: chats.map((chat) => transformChatsObject(chat)),
+    });
+
+    window.router.go('/main');
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+    window.router.go('/signin');
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const user = (await api.getUserInfo()) as UserFromServer;
-
-  if (isApiReturnedError(user)) {
-    dispatch(signout);
-
-    return;
-  }
-
-  user.avatar = await getAvatar(user);
-  const chats = (await chatsApi.getChats()) as ChatFromServer[];
-
-  dispatch({
-    user: transformUserObject(user),
-    chats: chats.map((chat) => transformChatsObject(chat)),
-    isLoading: false,
-    loginFormError: null,
-  });
-
-  window.router.go('/main');
 };
 
-export const signout = async (dispatch: Dispatch<AppState>) => {
-  dispatch({ isLoading: true });
+export const signout = async (store: Store<AppState>) => {
+  store.setState({ isLoading: true });
 
-  await api.signout();
+  try {
+    const response = await api.signout();
 
-  dispatch({
-    isLoading: false,
-    view: SigninPage,
-    loginFormError: null,
-    user: null,
-    chats: null,
-    selectedChat: null,
-    isPopupShown: false,
-    foundUsers: [],
-  });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    localStorage.removeItem('lastView');
 
-  window.router.go('/signin');
+    store.setState({
+      isLoading: false,
+      view: SigninPage,
+      loginFormError: '',
+      user: null,
+      chats: [],
+      selectedChat: null,
+      isPopupShown: false,
+      foundUsers: [],
+    });
+
+    startApp(window.router, store);
+  }
 };
 
-export const signup = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: SignupPayload
-) => {
-  dispatch({ isLoading: true });
+export const signup = async (store: Store<AppState>, action: Partial<UserFromServer>) => {
+  store.setState({ isLoading: true });
 
-  const response = await api.signup(action);
+  try {
+    const response = await api.signup(action);
 
-  if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
 
-    return;
+    const user = { ...action, ...response, display_name: '', avatar: '' } as UserFromServer;
+    const chats = (await chatsApi.getChats()) as ChatFromServer[];
+
+    if (isApiReturnedError(chats)) {
+      throw new Error(chats.reason);
+    }
+
+    store.setState({
+      user: transformUserObject(user),
+      chats: chats.map((chat) => transformChatsObject(chat)),
+    });
+
+    window.router.go('/main');
+  } catch (error) {
+    store.setState({ loginFormError: (error as Error).message });
+  } finally {
+    store.setState({ isLoading: false });
   }
-
-  const user = (await api.getUserInfo()) as UserFromServer;
-
-  if (isApiReturnedError(user)) {
-    dispatch(signout);
-
-    return;
-  }
-
-  user.avatar = await getAvatar(user);
-  const chats = (await chatsApi.getChats()) as ChatFromServer[];
-
-  dispatch({
-    user: transformUserObject(user),
-    chats: chats.map((chat) => transformChatsObject(chat)),
-    isLoading: false,
-    loginFormError: null,
-  });
-
-  window.router.go('/main');
 };

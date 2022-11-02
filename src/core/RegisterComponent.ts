@@ -41,7 +41,6 @@ export default function registerComponent<
 
       if (ref) {
         refs[ref] = component;
-        // refs[ref] = component.getContent();
       }
 
       const contents = fn ? fn(this) : '';
