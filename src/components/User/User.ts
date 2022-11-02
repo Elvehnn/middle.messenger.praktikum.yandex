@@ -5,7 +5,6 @@ import { Store } from 'store/Store';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithStore } from 'utils/HOCS/WithStore';
-import { navigateTo } from 'utils/navigateTo';
 import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import './User.scss';
 
@@ -37,7 +36,7 @@ class User extends Block<UserProps> {
       avatarSrc: this.props.store.getState().user?.avatar,
       navigateTo: (event: PointerEvent) => {
         const path = (event.target as HTMLButtonElement).textContent || '';
-        navigateTo(`${stringToCamelCase(path)}`);
+        this.props.router.go(`/${stringToCamelCase(path)}`);
       },
       signout: () => signout(this.props.store),
     });
@@ -58,7 +57,7 @@ class User extends Block<UserProps> {
 				</div>
 
 				<div class='user__actions'>
-					{{{Button class='button button_navigate' title='Change user data' onClick=navigateTo}}} 
+					{{{Button class='button button_navigate' title='Change user data' onClick=navigateTo type='button'}}} 
 			    {{{Button class='button button_navigate' title='Change user password' onClick=navigateTo}}} 
 	        {{{Button class='button button_navigate action-item__title_warning' title='Log out' onClick=signout}}} 
 				</div>
