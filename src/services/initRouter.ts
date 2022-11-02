@@ -2,6 +2,7 @@ import { ROUTS } from 'constants/routes';
 import renderDOM from 'core/RenderDOM';
 import Router from 'core/Router';
 import SigninPage from 'pages/signin/signin';
+import MainPage from 'pages/main/main';
 import { Store } from 'store/Store';
 
 export const initRouter = (router: Router, store: Store<AppState>) => {
@@ -31,12 +32,18 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
     }
 
     if (prevState.view !== nextState.view) {
-      console.log(prevState.view, nextState.view);
       const Page = nextState.view;
       const newPage = new Page({});
 
       renderDOM(newPage);
       document.title = `App / ${Page.componentName}`;
+
+      return;
+    }
+
+    if (prevState.chats.length !== nextState.chats.length) {
+      renderDOM(new MainPage({}));
+      document.title = `App / ${MainPage.componentName}`;
     }
   });
 };

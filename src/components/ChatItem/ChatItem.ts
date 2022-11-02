@@ -28,16 +28,14 @@ class ChatItem extends Block<ChatItemProps> {
         return;
       }
 
-      this.props.store.dispatch({ isLoading: true });
-
-      this.props.store.dispatch(getChatInfo, this.props.chat);
+      getChatInfo(this.props.store, this.props.chat);
     };
 
     super({
       ...props,
       events: { click: onChatItemClick },
       deleteChatHandler: () => {
-        this.props.store.dispatch(deleteChat, { chatId: this.props.chat.id });
+        deleteChat(this.props.store, { chatId: this.props.chat.id });
       },
     });
   }

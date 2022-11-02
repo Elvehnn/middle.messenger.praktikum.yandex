@@ -14,14 +14,14 @@ import { reduceObjectToString } from 'utils/transformers/reduceObjectToString';
 type MainPageProps = {
   router: Router;
   store: Store<AppState>;
-  chats: Nullable<Array<ChatType>>;
-  onSubmit: (event: SubmitEvent) => void;
-  navigateToProfile: () => void;
-  toggleCreateChatForm: () => void;
-  toggleShowChatMenu: () => void;
-  toggleShowAddUserForm: () => void;
-  toggleShowDeleteUserForm: () => void;
-  addMessage: (message: string) => void;
+  chats?: Nullable<Array<ChatType>>;
+  onSubmit?: (event: SubmitEvent) => void;
+  navigateToProfile?: () => void;
+  toggleCreateChatForm?: () => void;
+  toggleShowChatMenu?: () => void;
+  toggleShowAddUserForm?: () => void;
+  toggleShowDeleteUserForm?: () => void;
+  addMessage?: (message: string) => void;
 };
 
 type Refs = {

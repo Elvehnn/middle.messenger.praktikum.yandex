@@ -69,8 +69,6 @@ export default class HTTPTransport {
         return;
       }
 
-      console.log(options);
-
       xhr.send(JSON.stringify(options.data));
     });
   };

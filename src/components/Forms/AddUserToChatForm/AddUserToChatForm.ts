@@ -31,22 +31,21 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
   constructor(props: AddUserToChatFormProps) {
     super(props);
     this.setProps({
-      onSubmit: async (event) => {
+      onSubmit: async (event: SubmitEvent) => {
         event.preventDefault();
 
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
-
         const { login } = refs;
 
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          this.props.store.dispatch({ isLoading: true });
+          this.props.store.setState({ isLoading: true });
 
           const chat = this.props.store.getState().selectedChat;
 
-          this.props.store.dispatch(addUserToChat, { login: login.value, chat });
+          chat && addUserToChat(this.props.store, { login: login.value, chat });
         }
       },
     });
@@ -59,7 +58,7 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
         <div class='overlay'></div>
         
         <form class='addUserToChatForm' action='#'>
-                {{{Button class='addUserToChatForm__close' onClick=onCancel title='X'}}}
+                {{{Button class='addUserToChatForm__close' type='button' onClick=onCancel title='X'}}}
 
                 <h3>Enter user login to add</h3>
 
@@ -77,8 +76,8 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
                 }}}
                 
                 <div class="createChatForm__footer">
-                    {{{ Button  title='Add user' class='button button_confirm' onClick=onSubmit}}}
-                    {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel}}}
+                    {{{ Button  title='Add user' class='button button_confirm' onClick=onSubmit type='submit'}}}
+                    {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
                     
                 </div>
             </form>

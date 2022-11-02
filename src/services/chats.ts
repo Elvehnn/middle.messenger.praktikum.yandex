@@ -7,7 +7,7 @@ import {
   UserFromServer,
   UserToChatData,
 } from 'API/typesAPI';
-import { Dispatch, Store } from 'store/Store';
+import { Store } from 'store/Store';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
@@ -35,53 +35,42 @@ export const getChats = async (store: Store<AppState>) => {
   return response.map((item) => transformChatsObject(item));
 };
 
-export const createChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: CreateChatRequestData
-) => {
-  dispatch({ isLoading: true });
+export const createChat = async (store: Store<AppState>, action: CreateChatRequestData) => {
+  store.setState({ isLoading: true });
 
   const response = await api.createChat(action);
 
   if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    store.setState({ isLoading: false, loginFormError: response.reason });
 
     return;
   }
 
-  getChats(window.store);
-  dispatch({ isLoading: false, loginFormError: null });
+  getChats(store);
 };
 
-export const deleteChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: DeleteChatRequestData
-) => {
-  dispatch({ isLoading: true });
+export const deleteChat = async (store: Store<AppState>, action: DeleteChatRequestData) => {
+  store.setState({ isLoading: true });
 
   const response = await api.deleteChat(action);
 
   if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    store.setState({ isLoading: false, loginFormError: response.reason });
 
     return;
   }
 
-  getChats(window.store);
-  dispatch({ isLoading: false, loginFormError: null });
+  getChats(store);
+  store.setState({ isLoading: false, loginFormError: null });
 };
 
-export const addUserToChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: UserToChatData
-) => {
+export const addUserToChat = async (store: Store<AppState>, action: UserToChatData) => {
+  store.setState({ isLoading: true });
+
   const user = await getUserByLogin(action.login);
 
   if (!user || user.length === 0) {
-    dispatch({ isLoading: false, loginFormError: 'User not found' });
+    store.setState({ isLoading: false, loginFormError: 'User not found' });
 
     return;
   }
@@ -89,7 +78,7 @@ export const addUserToChat = async (
   const response = await api.addUserToChat({ users: [user[0].id], chat: action.chat });
 
   if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    store.setState({ isLoading: false, loginFormError: response.reason });
 
     return;
   }
@@ -97,7 +86,7 @@ export const addUserToChat = async (
   const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
 
   if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
+    store.setState({ isLoading: false, loginFormError: users.reason });
 
     return;
   }
@@ -107,18 +96,16 @@ export const addUserToChat = async (
     chatUsers: users.map((user) => transformUserObject(user)),
   };
 
-  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
+  store.setState({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
-export const deleteUserFromChat = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: UserToChatData
-) => {
+export const deleteUserFromChat = async (store: Store<AppState>, action: UserToChatData) => {
+  store.setState({ isLoading: true });
+
   const user = await getUserByLogin(action.login);
 
   if (!user || user.length === 0) {
-    dispatch({ isLoading: false, loginFormError: 'User not found' });
+    store.setState({ isLoading: false, loginFormError: 'User not found' });
 
     return;
   }
@@ -126,7 +113,7 @@ export const deleteUserFromChat = async (
   const response = await api.deleteUserFromChat({ users: [user[0].id], chat: action.chat });
 
   if (isApiReturnedError(response)) {
-    dispatch({ isLoading: false, loginFormError: response.reason });
+    store.setState({ isLoading: false, loginFormError: response.reason });
 
     return;
   }
@@ -134,7 +121,7 @@ export const deleteUserFromChat = async (
   const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
 
   if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
+    store.setState({ isLoading: false, loginFormError: users.reason });
 
     return;
   }
@@ -144,18 +131,16 @@ export const deleteUserFromChat = async (
     chatUsers: users.map((user) => transformUserObject(user)),
   };
 
-  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
+  store.setState({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
-export const getChatInfo = async (
-  dispatch: Dispatch<AppState>,
-  state: AppState,
-  action: ChatType
-) => {
+export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
+  store.setState({ isLoading: true });
+
   const token = (await api.getChatToken(action.id)).token;
 
   if (isApiReturnedError(token)) {
-    dispatch({ isLoading: false, loginFormError: token.reason });
+    store.setState({ isLoading: false, loginFormError: token.reason });
 
     return;
   }
@@ -163,7 +148,7 @@ export const getChatInfo = async (
   const users = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
 
   if (isApiReturnedError(users)) {
-    dispatch({ isLoading: false, loginFormError: users.reason });
+    store.setState({ isLoading: false, loginFormError: users.reason });
 
     return;
   }
@@ -174,11 +159,13 @@ export const getChatInfo = async (
     chatToken: token as string,
   };
 
-  if (state.user) {
-    openSocket(state.user.id, selectedChat);
+  const { user } = store.getState();
+
+  if (user) {
+    openSocket(user.id, selectedChat);
   }
 
-  dispatch({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
+  store.setState({ selectedChat: selectedChat, isLoading: false, loginFormError: null });
 };
 
 export const openSocket = (id: number, chat: ChatType) => {

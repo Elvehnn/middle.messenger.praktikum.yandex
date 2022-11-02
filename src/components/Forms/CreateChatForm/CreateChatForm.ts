@@ -45,7 +45,7 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          this.props.store.dispatch(createChat, { title: chatName.value });
+          createChat(this.props.store, { title: chatName.value });
           document.querySelector('#createChat')?.classList.remove('form-container_shown');
         }
       },
@@ -61,7 +61,7 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
           <div class='overlay'></div>
 
           <form class='createChatForm' action='#'>
-          {{{Button class='createChatForm__close' onClick=onCancel title='X'}}}
+          {{{Button class='createChatForm__close' onClick=onCancel title='X' type='button'}}}
 
           <h3>Enter the name for the new chat</h3>
 
@@ -79,8 +79,8 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
           }}}
           
           <div class="createChatForm__footer">
-              {{{ Button  title='Create chat' class='button button_confirm' onClick=onSubmit}}}
-              {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel}}}
+              {{{ Button  title='Create chat' class='button button_confirm' onClick=onSubmit type='submit'}}}
+              {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
           </div>
       </form>
       </div>
