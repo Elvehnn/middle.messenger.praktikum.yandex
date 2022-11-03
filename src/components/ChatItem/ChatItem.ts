@@ -1,6 +1,6 @@
 import { WebSocketMessage } from 'API/typesAPI';
 import Block from 'core/Block';
-import { deleteChat, getChatInfo } from 'services/chats';
+import { deleteChat, getChatInfo, openSocket } from 'services/chats';
 import { Store } from 'store/Store';
 import { WithStore } from 'utils/HOCS/WithStore';
 import './ChatItem.scss';
@@ -23,12 +23,18 @@ class ChatItem extends Block<ChatItemProps> {
   messagesArray: Array<WebSocketMessage> = [];
 
   constructor(props: ChatItemPreviewProps) {
-    const onChatItemClick = (event: Event) => {
+    const onChatItemClick = async (event: Event) => {
       if ((event.target as HTMLElement).tagName === 'BUTTON') {
         return;
       }
 
-      getChatInfo(this.props.store, this.props.chat);
+      await getChatInfo(this.props.store, this.props.chat);
+
+      const { user, selectedChat } = this.props.store.getState();
+
+      if (user && selectedChat) {
+        openSocket(user.id, selectedChat);
+      }
     };
 
     super({

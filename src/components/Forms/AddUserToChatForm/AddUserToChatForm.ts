@@ -41,8 +41,6 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          this.props.store.setState({ isLoading: true });
-
           const chat = this.props.store.getState().selectedChat;
 
           chat && addUserToChat(this.props.store, { login: login.value, chat });

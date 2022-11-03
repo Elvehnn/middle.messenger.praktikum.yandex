@@ -4,7 +4,6 @@ import { Store } from 'store/Store';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { WithUser } from 'utils/HOCS/WithUser';
-import { navigateTo } from 'utils/navigateTo';
 import './profile.scss';
 
 export interface ProfileProps {
@@ -19,7 +18,7 @@ class Profile extends Block<ProfileProps> {
 
   constructor(props: ProfileProps) {
     super(props);
-    this.setProps({ navigateBack: () => navigateTo('main') });
+    this.setProps({ navigateBack: () => this.props.router.go('/main') });
   }
   render() {
     const isLoading = this.props.store.getState().isLoading;

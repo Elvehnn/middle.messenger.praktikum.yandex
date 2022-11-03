@@ -7,12 +7,12 @@ import UserDataInput from 'components/UserDataInput/UserDataInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
-import { WithUser } from 'utils/HOCS/WithUser';
+import { WithStore } from 'utils/HOCS/WithStore';
 import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithUser } from 'utils/HOCS/WithUser';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { changeUserProfile } from 'services/userData';
-import { WithStore } from 'utils/HOCS/WithStore';
-import { navigateTo } from 'utils/navigateTo';
+
 import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
 import { SignupData, UserKeys } from 'API/typesAPI';
 
@@ -60,7 +60,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
           changeUserProfile(this.props.store, newData);
         }
       },
-      navigateBack: () => navigateTo('profile'),
+      navigateBack: () => this.props.router.go('/profile'),
     });
   }
 

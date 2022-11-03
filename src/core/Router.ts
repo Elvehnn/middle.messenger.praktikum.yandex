@@ -1,4 +1,5 @@
 import { PartialRouteProps } from 'constants/routes';
+import renderDOM from './RenderDOM';
 import Route from './Route';
 
 interface IRouter {
@@ -49,6 +50,13 @@ export default class Router implements IRouter {
   go(pathname: string) {
     window.history.pushState({}, '', pathname);
     this._onRouteChange(pathname);
+  }
+
+  reload() {
+    const Page = window.store.getState().view;
+
+    renderDOM(new Page({}));
+    document.title = `App / ${Page.componentName}`;
   }
 
   back() {

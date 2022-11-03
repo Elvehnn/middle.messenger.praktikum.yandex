@@ -6,7 +6,6 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
-import { navigateTo } from 'utils/navigateTo';
 import { validateForm, ValidateType } from 'utils/checkers and validators/validateForm';
 import { sendMessage } from 'services/chats';
 import { reduceObjectToString } from 'utils/transformers/reduceObjectToString';
@@ -67,7 +66,7 @@ class MainPage extends Block<MainPageProps, Refs> {
         }
       },
       navigateToProfile: async () => {
-        navigateTo('profile');
+        this.props.router.go('/profile');
       },
       toggleCreateChatForm: () => {
         document.querySelector('#createChat')?.classList.toggle('form-container_shown');
