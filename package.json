@@ -65,7 +65,8 @@
         "dotenv": "^16.0.2",
         "express": "4.18.1",
         "nanoid": "^4.0.0",
-        "parcel": "2.7.0"
+        "parcel": "2.7.0",
+        "handlebars": "4.7.7"
     },
     "staticFiles": {
         "staticPath": "./static/images"
