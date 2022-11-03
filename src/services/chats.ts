@@ -4,7 +4,6 @@ import {
   CreateChatRequestData,
   DeleteChatRequestData,
   UnreadCountResponseData,
-  UserFromServer,
   UserToChatData,
 } from 'API/typesAPI';
 import { Store } from 'store/Store';
@@ -47,7 +46,8 @@ export const createChat = async (store: Store<AppState>, action: CreateChatReque
       throw new Error(response.reason);
     }
 
-    getChats(store);
+    await getChats(store);
+    window.router.reload();
   } catch (error) {
     store.setState({ loginFormError: (error as Error).message });
   } finally {
@@ -65,7 +65,8 @@ export const deleteChat = async (store: Store<AppState>, action: DeleteChatReque
       throw new Error(response.reason);
     }
 
-    getChats(store);
+    await getChats(store);
+    window.router.reload();
   } catch (error) {
     store.setState({ loginFormError: (error as Error).message });
   } finally {
@@ -93,15 +94,12 @@ export const addUserToChat = async (store: Store<AppState>, action: UserToChatDa
       throw new Error(response.reason);
     }
 
-    const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
-
-    if (isApiReturnedError(users)) {
-      throw new Error(users.reason);
-    }
+    let chatUsers = action.chat.chatUsers;
+    chatUsers = chatUsers && [...chatUsers, transformUserObject(user[0])];
 
     const selectedChat = {
       ...action.chat,
-      chatUsers: users.map((user) => transformUserObject(user)),
+      chatUsers,
     };
 
     store.setState({ selectedChat: selectedChat });
@@ -132,15 +130,13 @@ export const deleteUserFromChat = async (store: Store<AppState>, action: UserToC
       throw new Error(response.reason);
     }
 
-    const users = (await api.getChatUsers({ chatId: action.chat.id })) as UserFromServer[];
-
-    if (isApiReturnedError(users)) {
-      throw new Error(users.reason);
-    }
+    let chatUsers = action.chat.chatUsers;
+    chatUsers =
+      chatUsers && chatUsers.filter((item) => item.id !== transformUserObject(user[0]).id);
 
     const selectedChat = {
       ...action.chat,
-      chatUsers: users.map((user) => transformUserObject(user)),
+      chatUsers,
     };
 
     store.setState({ selectedChat: selectedChat });
@@ -161,7 +157,7 @@ export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
       throw new Error(token.reason);
     }
 
-    const users = (await api.getChatUsers({ chatId: action.id })) as UserFromServer[];
+    const users = await api.getChatUsers({ chatId: action.id });
 
     if (isApiReturnedError(users)) {
       throw new Error(users.reason);
@@ -170,14 +166,8 @@ export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
     const selectedChat = {
       ...action,
       chatUsers: users.map((user) => transformUserObject(user)),
-      chatToken: token as string,
+      chatToken: token,
     };
-
-    const { user } = store.getState();
-
-    if (user) {
-      openSocket(user.id, selectedChat);
-    }
 
     store.setState({ selectedChat: selectedChat });
   } catch (error) {

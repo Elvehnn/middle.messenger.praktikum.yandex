@@ -1,5 +1,4 @@
 import { ChatFromServer, UserFromServer } from 'API/typesAPI';
-import SigninPage from 'pages/signin/signin';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
 import type { Store } from '../store/Store';
@@ -76,11 +75,8 @@ export const signout = async (store: Store<AppState>) => {
   } catch (error) {
     store.setState({ loginFormError: (error as Error).message });
   } finally {
-    localStorage.removeItem('lastView');
-
     store.setState({
       isLoading: false,
-      view: SigninPage,
       loginFormError: '',
       user: null,
       chats: [],

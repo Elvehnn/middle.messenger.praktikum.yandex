@@ -11,7 +11,6 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithUser } from 'utils/HOCS/WithUser';
 import { changeUserPassword } from 'services/userData';
-import { navigateTo } from 'utils/navigateTo';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
@@ -47,7 +46,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
           changeUserPassword(this.props.store, newData);
         }
       },
-      navigateBack: () => navigateTo('profile'),
+      navigateBack: () => this.props.router.go('/profile'),
     });
   }
 
