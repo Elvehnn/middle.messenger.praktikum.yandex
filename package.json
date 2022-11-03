@@ -67,9 +67,5 @@
         "nanoid": "^4.0.0",
         "parcel": "2.7.0",
         "handlebars": "4.7.7"
-    },
-    "staticFiles": {
-        "staticPath": "./static/images"
-       
-      }
+    }
 }
