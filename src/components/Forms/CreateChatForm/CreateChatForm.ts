@@ -55,7 +55,7 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
     });
   }
   render() {
-    const { loginFormError } = this.props.store.getState();
+    const { errorMessage } = this.props.store.getState();
     // language=hbs
     return `
       <div class='form-container' id='createChat'>
@@ -80,7 +80,7 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
           }}}
           
           <div class="createChatForm__footer">
-              <p class='form-submit__warning'>${loginFormError}</p>
+              <p class='form-submit__warning'>${errorMessage}</p>
 
               {{{ Button  title='Create chat' class='button button_confirm' onClick=onSubmit type='submit'}}}
               {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}

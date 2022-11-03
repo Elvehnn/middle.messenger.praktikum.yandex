@@ -86,17 +86,15 @@ class MainPage extends Block<MainPageProps, Refs> {
   }
 
   render() {
-    const { isLoading, selectedChat } = this.props.store.getState();
+    const { selectedChat } = this.props.store.getState();
     const { id, title, chatUsers = [] } = selectedChat || {};
     const chatUsersToString = reduceObjectToString(chatUsers, 'login');
 
     // language=hbs
     return `
         <main class="main">
-          {{#if ${isLoading}}}
-            {{{Preloader}}}
-          {{/if}}
-
+          {{{Preloader}}}
+         
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}
           {{{DeleteUserFromChatForm onCancel=toggleShowDeleteUserForm}}}
           {{{AddUserToChatForm onCancel=toggleShowAddUserForm}}}

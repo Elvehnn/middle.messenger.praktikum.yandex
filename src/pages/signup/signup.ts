@@ -60,21 +60,19 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
       },
 
       navigateToSignin: () => {
-        this.props.store.setState({ loginFormError: '' });
+        this.props.store.setState({ errorMessage: '' });
         this.props.router.go('/signin');
       },
     });
   }
   render() {
-    const { isLoading, loginFormError } = this.props.store.getState();
+    const { errorMessage } = this.props.store.getState();
 
     // language=hbs
     return `
         <main class="main">
-          {{#if ${isLoading}}}
-            {{{Preloader}}}
-          {{/if}}
-          
+          {{{Preloader}}}
+       
             <h1>Chatterbox</h1>
 
             <form class="login-form" action='#'>
@@ -98,7 +96,7 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
                   </div>
 
                   <div class="login-form__bottom">
-                    <p class='form-submit__warning'>${loginFormError}</p>
+                    <p class='form-submit__warning'>${errorMessage}</p>
                  
                     {{{Button title="Sign up" onClick=onSubmit}}}
                     {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin}}}

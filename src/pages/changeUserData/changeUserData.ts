@@ -65,15 +65,11 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   }
 
   render() {
-    const isLoading = this.props.store.getState().isLoading;
-
     // language=hbs
     return `
         <main class='main'>
-            {{#if ${isLoading}}}
-              {{{Preloader}}}
-            {{/if}}
-
+            {{{Preloader}}}
+  
             <div class='profile'>
                 <div class="profile__aside">
                     {{{ArrowRoundButton onClick=navigateBack}}}
