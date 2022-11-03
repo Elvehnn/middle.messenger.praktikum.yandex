@@ -1,7 +1,7 @@
 export const defaultState: AppState = {
   isLoading: false,
   view: null,
-  loginFormError: '',
+  errorMessage: '',
   user: null,
   isAppStarted: false,
   chats: [],

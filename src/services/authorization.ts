@@ -6,6 +6,8 @@ import { getAvatar } from './userData';
 import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import AuthAPI from 'API/AuthorizationAPI';
+import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
+import { DEFAULT_AVATAR } from 'constants/imagesPaths';
 
 export type LoginPayload = {
   login: string;
@@ -25,7 +27,7 @@ const api = new AuthAPI();
 const chatsApi = new ChatsAPI();
 
 export const signin = async (store: Store<AppState>, action: LoginPayload) => {
-  store.setState({ isLoading: true });
+  showPreloader();
 
   try {
     const response = await api.signin(action);
@@ -52,44 +54,20 @@ export const signin = async (store: Store<AppState>, action: LoginPayload) => {
     store.setState({
       user: transformUserObject(modifiedUser),
       chats: chats.map((chat) => transformChatsObject(chat)),
+      errorMessage: '',
     });
 
     window.router.go('/main');
   } catch (error) {
-    store.setState({ loginFormError: (error as Error).message });
+    store.setState({ errorMessage: (error as Error).message });
     window.router.go('/signin');
   } finally {
-    store.setState({ isLoading: false });
-  }
-};
-
-export const signout = async (store: Store<AppState>) => {
-  store.setState({ isLoading: true });
-
-  try {
-    const response = await api.signout();
-
-    if (isApiReturnedError(response)) {
-      throw new Error(response.reason);
-    }
-  } catch (error) {
-    store.setState({ loginFormError: (error as Error).message });
-  } finally {
-    store.setState({
-      isLoading: false,
-      loginFormError: '',
-      user: null,
-      chats: [],
-      selectedChat: null,
-      isPopupShown: false,
-    });
-
-    window.router.go('/signin');
+    hidePreloader();
   }
 };
 
 export const signup = async (store: Store<AppState>, action: Partial<UserFromServer>) => {
-  store.setState({ isLoading: true });
+  showPreloader();
 
   try {
     const response = await api.signup(action);
@@ -98,7 +76,12 @@ export const signup = async (store: Store<AppState>, action: Partial<UserFromSer
       throw new Error(response.reason);
     }
 
-    const user = { ...action, ...response, display_name: '', avatar: '' } as UserFromServer;
+    const user = {
+      ...action,
+      ...response,
+      display_name: '',
+      avatar: DEFAULT_AVATAR,
+    } as UserFromServer;
     const chats = (await chatsApi.getChats()) as ChatFromServer[];
 
     if (isApiReturnedError(chats)) {
@@ -108,13 +91,37 @@ export const signup = async (store: Store<AppState>, action: Partial<UserFromSer
     store.setState({
       user: transformUserObject(user),
       chats: chats.map((chat) => transformChatsObject(chat)),
+      errorMessage: '',
     });
 
     window.router.go('/main');
   } catch (error) {
-    store.setState({ loginFormError: (error as Error).message });
+    store.setState({ errorMessage: (error as Error).message });
   } finally {
-    store.setState({ isLoading: false });
+    hidePreloader();
+  }
+};
+
+export const signout = async (store: Store<AppState>) => {
+  showPreloader();
+
+  try {
+    const response = await api.signout();
+
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+  } catch (error) {
+    store.setState({ errorMessage: (error as Error).message });
+  } finally {
+    hidePreloader();
+
+    store.setState({
+      user: null,
+      chats: [],
+    });
+
+    window.router.go('/signin');
   }
 };
 

@@ -34,7 +34,7 @@ export default class ControlledInput extends Block<ControlledInputProps, Control
       inputName,
       label,
       onInputEvent: (event: FocusEvent) => {
-        window.store.setState({ loginFormError: '' });
+        window.store.setState({ errorMessage: '' });
 
         const target = event.target as HTMLInputElement;
         const nameInPascalCase = stringToPascalCase(inputName);

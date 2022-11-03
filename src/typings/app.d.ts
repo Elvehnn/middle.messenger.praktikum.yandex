@@ -10,7 +10,7 @@ declare global {
   export type AppState = {
     view: BlockConstructable | null;
     isLoading: boolean;
-    loginFormError: string | null;
+    errorMessage: string | null;
     user: UserType | null;
     isAppStarted: boolean;
     chats: Nullable<Array<ChatType>>;

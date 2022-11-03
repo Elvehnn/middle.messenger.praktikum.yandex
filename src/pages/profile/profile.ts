@@ -21,13 +21,10 @@ class Profile extends Block<ProfileProps> {
     this.setProps({ navigateBack: () => this.props.router.go('/main') });
   }
   render() {
-    const isLoading = this.props.store.getState().isLoading;
     // language=hbs
     return `
         <main class="main">
-            {{#if ${isLoading}}}
-              {{{Preloader}}}
-            {{/if}}
+            {{{Preloader}}}
 
             <div class='profile'>
               <div class="profile__aside">

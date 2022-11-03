@@ -5,10 +5,11 @@ import { getUserInfo } from './authorization';
 import { getAvatar } from './userData';
 import { getChats } from './chats';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
+import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 
 export async function startApp(store: Store<AppState>) {
   try {
-    store.setState({ isLoading: true });
+    showPreloader();
 
     const user = (await getUserInfo()) as UserFromServer;
 
@@ -24,6 +25,7 @@ export async function startApp(store: Store<AppState>) {
   } catch (error) {
     console.log((error as Error).message);
   } finally {
-    store.setState({ isLoading: false, isAppStarted: true });
+    hidePreloader();
+    store.setState({ isAppStarted: true });
   }
 }

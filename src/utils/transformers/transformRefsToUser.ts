@@ -9,6 +9,7 @@ export const userKeysMap = new Map(
     phone: 'phone',
     email: 'email',
     displayName: 'display_name',
+    password: 'password',
   })
 );
 
