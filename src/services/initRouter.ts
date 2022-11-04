@@ -9,6 +9,16 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
     router.use(route, () => {
       const isAuthorized = store.getState().user;
 
+      if (!isAuthorized && route.isPrivate) {
+        router.go('/signin');
+        return;
+      }
+
+      if (isAuthorized && !route.isPrivate) {
+        router.go('/main');
+        return;
+      }
+
       if (isAuthorized || !route.isPrivate) {
         store.setState({ view: route.view });
         return;

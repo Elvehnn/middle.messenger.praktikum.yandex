@@ -36,11 +36,9 @@ export default class Router implements IRouter {
 
   private _onRouteChange(pathname: string = window.location.pathname) {
     console.log(pathname);
-    let route = this.getRoute(pathname);
+    const route = this.getRoute(pathname) || this.getRoute('/404');
 
-    if (!route) {
-      route = this.getRoute('/404');
-    }
+    console.log(route);
 
     window.store.setState({ view: route?.view });
 
