@@ -8,7 +8,7 @@ export type NotFound404Props = {
 };
 
 export class NotFound404 extends Block<NotFound404Props> {
-  static componentName: string = 'StartPage';
+  static componentName: string = 'NotFound404';
 
   constructor(props: NotFound404Props) {
     super(props);
