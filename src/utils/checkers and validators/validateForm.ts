@@ -10,8 +10,8 @@ import {
   ONLY_LETTERS_AND_DASH,
   PHONE_SYMBOLS,
   SPECIAL_CHARACTERS,
-} from '../constants/validateRegExpressions';
-import { lowerCaseFirstLetter } from './lowerCaseFirstLetter';
+} from '../../constants/validateRegExpressions';
+import { lowerCaseFirstLetter } from '../transformers/lowerCaseFirstLetter';
 
 export enum ValidateType {
   Login = 'login',
@@ -23,8 +23,11 @@ export enum ValidateType {
   Attach = 'attach',
   Message = 'message',
   File = 'file',
+  OldPassword = 'oldPassword',
   NewPassword = 'newPassword',
   RepeatNewPassword = 'repeatNewPassword',
+  DisplayName = 'displayName',
+  ChatName = 'chatName',
 }
 
 export type ValidateRule = {
@@ -40,6 +43,15 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
     const { value } = input;
 
     switch (lowerCaseFirstLetter(name)) {
+      case ValidateType.ChatName:
+        if (!value.length) {
+          errors[name] = 'Name can not be empty';
+          return;
+        }
+        if (value.length > 20 || value.length < 3) {
+          errors[name] = 'Name must contain from 3 to 20 symbols';
+          return;
+        }
       case ValidateType.Login:
         if (!value.length) {
           errors[name] = 'Login can not be empty';
@@ -76,6 +88,7 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
       case ValidateType.Password:
       case ValidateType.NewPassword:
       case ValidateType.RepeatNewPassword:
+      case ValidateType.OldPassword:
         if (!value.length) {
           errors[name] = 'Password can not be empty';
           return;
@@ -131,6 +144,7 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
       case ValidateType.FirstName:
       case ValidateType.SecondName:
+      case ValidateType.DisplayName:
         if (!value.length) {
           errors[name] = 'Name can not be empty';
           return;

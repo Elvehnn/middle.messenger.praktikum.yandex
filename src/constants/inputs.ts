@@ -1,4 +1,4 @@
-export const inputs = [
+export const INPUTS = [
   { type: 'text', text: 'Login' },
   { type: 'password', text: 'Password' },
   { type: 'text', text: 'First name' },

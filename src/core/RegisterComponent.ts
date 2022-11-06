@@ -1,9 +1,9 @@
 import Block from './Block';
 import Handlebars, { HelperOptions } from 'handlebars';
 
-interface BlockConstructable<Props extends Record<string, any> = any, IncomingProps = any> {
+export interface BlockConstructable<Props extends Record<string, any> = any, IncomingProps = any> {
   new (props: IncomingProps): Block<Props>;
-  componentName: string;
+  componentName?: string;
 }
 
 export type AnyProps = Record<string, any>;
@@ -41,7 +41,6 @@ export default function registerComponent<
 
       if (ref) {
         refs[ref] = component;
-        // refs[ref] = component.getContent();
       }
 
       const contents = fn ? fn(this) : '';

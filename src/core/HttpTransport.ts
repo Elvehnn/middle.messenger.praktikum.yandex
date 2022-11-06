@@ -1,3 +1,6 @@
+import { PATH } from 'constants/pathsAPI';
+import queryStringify from 'utils/transformers/queryStringify';
+
 enum Methods {
   Get = 'GET',
   Post = 'POST',
@@ -6,47 +9,51 @@ enum Methods {
 }
 
 type Options = {
-  method: Methods;
   timeout?: number;
-  data?: { [key: string]: string };
-  headers?: { [key: string]: string };
+  data?: Record<string, any> | FormData;
+  headers?: Record<string, string>;
+  contentType?: string;
+  responseType?: XMLHttpRequestResponseType;
 };
 
-class HTTPTransport {
-  get = (url: string, options: Options) => {
-    const urlWithParams = options.data ? url + queryStringify(options.data) : url;
+export default class HTTPTransport {
+  get = (url: string, queryParams?: Record<string, string>, options?: Options) => {
+    const urlWithParams = queryParams ? url + queryStringify(queryParams) : url;
+    const getRequestOptions = { responseType: options?.responseType };
 
-    return this.request(urlWithParams, { ...options, method: Methods.Get });
+    return this.request(PATH.BASE + urlWithParams, Methods.Get, getRequestOptions);
   };
 
-  post = (url: string, options: Options) => {
-    return this.request(url, { ...options, method: Methods.Post });
+  post = (url: string, options?: Options) => {
+    return this.request(PATH.BASE + url, Methods.Post, options);
   };
 
   put = (url: string, options: Options) => {
-    return this.request(url, { ...options, method: Methods.Put });
+    return this.request(PATH.BASE + url, Methods.Put, options);
   };
 
   delete = (url: string, options: Options) => {
-    return this.request(url, { ...options, method: Methods.Delete });
+    return this.request(PATH.BASE + url, Methods.Delete, options);
   };
 
-  request = (url: string, options: Options): Promise<XMLHttpRequest> => {
-    const { method, data, headers = {}, timeout = 5000 } = options;
+  request = <T extends any>(url: string, method: Methods, options?: Options): Promise<T> => {
+    const {
+      timeout = 5000,
+      responseType = 'json',
+      contentType = 'application/json',
+      data,
+    } = options || {};
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
 
       xhr.open(method, url);
-      xhr.responseType = 'json';
+      xhr.responseType = responseType;
 
-      const headersEntries = Object.entries(headers);
-
-      headersEntries.forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
-      });
+      contentType && xhr.setRequestHeader('Content-Type', contentType);
 
       xhr.timeout = timeout;
+      xhr.withCredentials = true;
 
       xhr.onload = () => {
         resolve(xhr.response);
@@ -58,9 +65,15 @@ class HTTPTransport {
 
       if (method === Methods.Get || !data) {
         xhr.send();
-      } else {
-        xhr.send(JSON.stringify(data));
+        return;
       }
+
+      if (data instanceof FormData) {
+        xhr.send(data);
+        return;
+      }
+
+      xhr.send(JSON.stringify(data));
     });
   };
 }

@@ -3,7 +3,7 @@ import { DataItemProps } from 'components/UserDataItem/UserDataItem';
 import Input from 'components/Input/Input';
 import './UserDataInput.scss';
 import ErrorMessage from 'components/Error/Error';
-import { validateForm, ValidateType } from 'utils/validateForm';
+import { validateForm, ValidateType } from 'utils/checkers and validators/validateForm';
 
 type IncomingUserDataInputProps = DataItemProps & {
   childRef: string;

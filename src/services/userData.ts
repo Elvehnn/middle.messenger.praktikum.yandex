@@ -1,0 +1,110 @@
+import { ChangePasswordRequestData, UserFromServer } from 'API/typesAPI';
+import UserAPI from 'API/UserAPI';
+import { DEFAULT_AVATAR } from 'constants/imagesPaths';
+import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
+import cloneDeep from 'utils/cloneDeep';
+import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
+import { transformUserObject } from 'utils/transformers/transformUserObject';
+import type { Store } from '../store/Store';
+
+const api = new UserAPI();
+
+export const changeUserProfile = async (
+  store: Store<AppState>,
+  action: Partial<UserFromServer>
+) => {
+  showPreloader();
+
+  try {
+    const response = await api.changeProfile(action);
+
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+
+    const avatar = store.getState()?.user?.avatar || DEFAULT_AVATAR;
+
+    const updatedUser = { ...transformUserObject(response as UserFromServer), avatar };
+
+    store.setState({
+      user: updatedUser,
+    });
+
+    window.router.back();
+  } catch (error) {
+    store.setState({ errorMessage: (error as Error).message });
+  } finally {
+    hidePreloader();
+  }
+};
+
+export const changeUserPassword = async (
+  store: Store<AppState>,
+  action: ChangePasswordRequestData
+) => {
+  showPreloader();
+
+  try {
+    const response = await api.changePassword(action);
+
+    if (isApiReturnedError(response)) {
+      throw new Error(response.reason);
+    }
+
+    window.router.back();
+  } catch (error) {
+    store.setState({ errorMessage: (error as Error).message });
+  } finally {
+    hidePreloader();
+  }
+};
+
+export const getUserByLogin = async (login: string) => {
+  try {
+    const users = await api.getUserByLogin({ login });
+
+    if (isApiReturnedError(users)) {
+      throw new Error(users.reason);
+    }
+
+    return users as UserFromServer[];
+  } catch (error) {
+    window.store.setState({ errorMessage: (error as Error).message });
+  }
+};
+
+export const changeAvatar = async (store: Store<AppState>, action: FormData) => {
+  showPreloader();
+
+  try {
+    let newUser = (await api.changeAvatar(action)) as UserFromServer;
+
+    if (isApiReturnedError(newUser)) {
+      throw new Error(newUser.reason);
+    }
+
+    const avatar = await getAvatar(newUser);
+
+    if (isApiReturnedError(avatar)) {
+      throw new Error(avatar.reason);
+    }
+
+    newUser = { ...cloneDeep(newUser), avatar };
+
+    store.setState({ user: transformUserObject(newUser) });
+  } catch (error) {
+    window.store.setState({ errorMessage: (error as Error).message });
+  } finally {
+    hidePreloader();
+  }
+};
+
+export const getAvatar = async (user: UserFromServer | UserType) => {
+  if (!user.avatar) {
+    return DEFAULT_AVATAR;
+  }
+
+  const blob = (await api.getAvatar(user.avatar)) as Blob;
+
+  return URL.createObjectURL(blob);
+};

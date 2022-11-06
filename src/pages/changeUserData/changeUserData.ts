@@ -7,40 +7,60 @@ import UserDataInput from 'components/UserDataInput/UserDataInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithUser } from 'utils/HOCS/WithUser';
+import { getUserDataArray } from 'utils/getUserDataArray';
+import { changeUserProfile } from 'services/userData';
+
+import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
+import { SignupData, UserKeys } from 'API/typesAPI';
 
 export type ChangeProfileProps = ProfileProps & {
+  userData: Array<any>;
+  userLogin: string;
+  avatarSrc: string;
   onSubmit: (event: SubmitEvent) => void;
+  navigateBack: () => void;
 };
 
-type ChangeUserPasswordRefs = {
-  [key: string]: UserDataInput;
-};
+type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
-export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
+class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserData';
 
-  constructor({ userData }: ProfileProps) {
-    super({
-      userData,
-      onClick: () => {
-        window.location.pathname = './profile';
-      },
+  constructor(props: ChangeProfileProps) {
+    super(props);
 
-      onSubmit: () => {
+    const { user } = this.props.store.getState();
+    const { login, avatar } = user || {};
+
+    const data = user ? getUserDataArray(user) : [];
+
+    this.setProps({
+      userData: data,
+      userLogin: login,
+      avatarSrc: avatar,
+
+      onSubmit: async (event: SubmitEvent) => {
+        event.preventDefault();
         const refs = getChildInputRefs(this.refs);
         const errors = getErrorsObject(refs);
 
         setChildErrorsProps(errors, this.refs);
 
         if (Object.keys(errors).length === 0) {
-          const newData = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[key] = input.value;
+          const userDataValues = Object.entries(refs).reduce((acc, [key, input]) => {
+            acc[key as UserKeys] = input.value;
             return acc;
-          }, {} as Record<string, string>);
+          }, {} as Partial<SignupData>);
 
-          console.log(newData);
+          const newData = transformRefsToUser(userDataValues);
+
+          changeUserProfile(this.props.store, newData);
         }
       },
+      navigateBack: () => this.props.router.go('/profile'),
     });
   }
 
@@ -48,14 +68,16 @@ export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUser
     // language=hbs
     return `
         <main class='main'>
+            {{{Preloader}}}
+  
             <div class='profile'>
                 <div class="profile__aside">
-                    {{{ArrowRoundButton class="arrow" onClick=onClick}}}
+                    {{{ArrowRoundButton onClick=navigateBack}}}
                 </div>
                 
                 <section class='profile__container'>
-                    <form class='user' action="./profile.html">
-                        {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=false}}}
+                    <form class='user' action="#">
+                    {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
                             {{#each userData}}
@@ -66,7 +88,8 @@ export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUser
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{ Button title='Save changes' class='button button_confirm' onClick=onSubmit}}}
+                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit type='submit'}}}
+                            {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack type='button'}}}
                         </div>
                     </form>
                 </section>
@@ -75,3 +98,5 @@ export default class ChangeUserData extends Block<ChangeProfileProps, ChangeUser
         `;
   }
 }
+
+export default WithStore(WithRouter(WithUser(ChangeUserData)));

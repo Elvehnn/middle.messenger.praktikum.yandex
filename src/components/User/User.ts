@@ -1,19 +1,52 @@
 import Block from 'core/Block';
-import { ProfileProps } from 'pages/profile/profile';
+import Router from 'core/Router';
+import { signout } from 'services/authorization';
+import { Store } from 'store/Store';
+import { getUserDataArray } from 'utils/getUserDataArray';
+import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import './User.scss';
 
-export default class User extends Block<Partial<ProfileProps>> {
-  static componentName: string = 'User';
+export type UserProps = {
+  router: Router;
+  store: Store<AppState>;
+  user: Nullable<UserType>;
+  userData: Array<any>;
+  userLogin: string;
+  avatarSrc: string;
+  navigateTo: (event: PointerEvent) => void;
+  signout: () => void;
+  getAvatarSrc: (path: string) => void;
+};
 
-  constructor({ userData }: ProfileProps) {
-    super({ userData });
+class User extends Block<UserProps> {
+  static componentName: string = 'User';
+  avatarSrc: string = '';
+
+  constructor(props: UserProps) {
+    super(props);
+
+    const data = props.user ? getUserDataArray(props.user) : [];
+    const userLogin = props.user?.login;
+
+    this.setProps({
+      userData: data,
+      userLogin: userLogin,
+      avatarSrc: this.props.store.getState().user?.avatar,
+      navigateTo: (event: PointerEvent) => {
+        const path = (event.target as HTMLButtonElement).textContent || '';
+        this.props.router.go(`/${stringToCamelCase(path)}`);
+      },
+      signout: () => signout(this.props.store),
+    });
   }
 
   render() {
     // language=hbs
     return `
         <div class='user'>
-				  {{{Avatar name="Vadim" imageSrc="./images/avatar_template.jpg" isEditable=true}}}
+				  {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=true}}}
 
           <div class='user__data'>
 					  {{#each userData}}
@@ -24,18 +57,14 @@ export default class User extends Block<Partial<ProfileProps>> {
 				</div>
 
 				<div class='user__actions'>
-					<div class='action-item'>
-						{{{Link class='action-item__title' path='./changeUserData' text='Change user data'}}} 
-					</div>
-					<div class='action-item'>
-            {{{Link class='action-item__title' path='./changeUserPassword' text='Change password'}}} 
-					</div>
-					<div class='action-item'>
-            {{{Link class='action-item__title action-item__title_warning' path='/' text='Log out'}}} 
-					</div>
+					{{{Button class='button button_navigate' title='Change user data' onClick=navigateTo type='button'}}} 
+			    {{{Button class='button button_navigate' title='Change user password' onClick=navigateTo}}} 
+	        {{{Button class='button button_navigate action-item__title_warning' title='Log out' onClick=signout}}} 
 				</div>
 			</div>
 
         `;
   }
 }
+
+export default WithStore(WithRouter(User));
