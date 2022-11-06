@@ -27,8 +27,6 @@ export default class SocketController implements SocketControllerProps {
 
   setHandlers(socket: WebSocket, userId: number, chat: ChatType) {
     socket.addEventListener('open', () => {
-      console.log('Соединение установлено');
-
       let currentMessageNumber = 0;
 
       while (currentMessageNumber < chat.unreadCount) {
@@ -56,8 +54,6 @@ export default class SocketController implements SocketControllerProps {
     });
 
     socket.addEventListener('message', (event) => {
-      console.log('Получены данные', event.data);
-
       try {
         const data = JSON.parse(event.data);
 

@@ -5,8 +5,6 @@ export function cloneDeep<T extends object = object>(obj: T) {
 
   for (let i in obj) {
     if (isObject(obj[i])) {
-      console.log(obj[i]);
-
       clone[i] = cloneDeep(obj[i] as T) as T[Extract<keyof T, string>];
     } else {
       clone[i] = obj[i];

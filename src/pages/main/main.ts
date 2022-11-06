@@ -53,9 +53,7 @@ class MainPage extends Block<MainPageProps, Refs> {
 
         const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
 
-        if (Object.keys(errors).length !== 0) {
-          Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
-        } else {
+        if (Object.keys(errors).length === 0) {
           const chat = this.props.store.getState().selectedChat;
 
           if (chat) {

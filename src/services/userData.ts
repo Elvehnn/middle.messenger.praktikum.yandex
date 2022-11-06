@@ -2,6 +2,7 @@ import { ChangePasswordRequestData, UserFromServer } from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
 import { DEFAULT_AVATAR } from 'constants/imagesPaths';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
+import cloneDeep from 'utils/cloneDeep';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
 import type { Store } from '../store/Store';
@@ -68,7 +69,7 @@ export const getUserByLogin = async (login: string) => {
 
     return users as UserFromServer[];
   } catch (error) {
-    window.store.setState({ loginFormError: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   }
 };
 
@@ -88,11 +89,11 @@ export const changeAvatar = async (store: Store<AppState>, action: FormData) => 
       throw new Error(avatar.reason);
     }
 
-    newUser = { ...newUser, avatar };
+    newUser = { ...cloneDeep(newUser), avatar };
 
     store.setState({ user: transformUserObject(newUser) });
   } catch (error) {
-    window.store.setState({ loginFormError: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
