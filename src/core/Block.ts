@@ -1,6 +1,7 @@
 import EventBus from './EventBus';
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
+import { deepEqual } from 'utils/checkers and validators/deepEqual';
 
 type Events = Values<typeof Block.EVENTS>;
 
@@ -77,6 +78,10 @@ export default class Block<
   }
 
   componentDidUpdate(oldProps: P, newProps: P) {
+    if (deepEqual(newProps, oldProps)) {
+      return false;
+    }
+
     this.children = {};
 
     return true;

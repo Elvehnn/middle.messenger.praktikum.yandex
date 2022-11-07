@@ -1,5 +1,3 @@
-require('babel-core/register');
-
 import { registerComponent } from './core';
 import './styles/style.scss';
 import Button from 'components/Button/Button';
@@ -70,10 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
   //TODO: добавить стартовый экран на запуск приложения
 
   store.on('updated', (nextState) => {
-    if (process.env.DEBUG) {
-      console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
-    }
+    console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
   });
+  console.log(router, store);
 
   initRouter(router, store);
   startApp(store);

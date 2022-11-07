@@ -4,7 +4,6 @@ import { UserFromServer } from 'API/typesAPI';
 import { getUserInfo } from './authorization';
 import { getAvatar } from './userData';
 import { getChats } from './chats';
-import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 
 export async function startApp(store: Store<AppState>) {
@@ -13,17 +12,20 @@ export async function startApp(store: Store<AppState>) {
 
     const user = (await getUserInfo()) as UserFromServer;
 
-    if (isApiReturnedError(user)) {
-      throw new Error(user.reason);
+    console.log(user);
+
+    if (user) {
+      const avatar = await getAvatar(user);
+      const modifiedUser = { ...user, avatar };
+      const chats = await getChats(store);
+
+      modifiedUser && chats && store.setState({ user: transformUserObject(modifiedUser), chats });
+      return;
     }
 
-    const avatar = await getAvatar(user);
-    const modifiedUser = { ...user, avatar };
-    const chats = await getChats(store);
-
-    modifiedUser && chats && store.setState({ user: transformUserObject(modifiedUser), chats });
+    throw new Error('You are not logged in');
   } catch (error) {
-    console.log((error as Error).message);
+    console.log(error);
   } finally {
     hidePreloader();
     store.setState({ isAppStarted: true });

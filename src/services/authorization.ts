@@ -138,6 +138,6 @@ export const getUserInfo = async () => {
 
     return user;
   } catch (error) {
-    window.store.setState({ loginFormError: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   }
 };

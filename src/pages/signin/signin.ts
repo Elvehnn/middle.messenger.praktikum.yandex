@@ -29,7 +29,6 @@ interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
-export type refsObject = Record<string, HTMLInputElement>;
 class SigninPage extends Block<SigninProps, SigninRefs> {
   static componentName: string = 'SigninPage';
 
