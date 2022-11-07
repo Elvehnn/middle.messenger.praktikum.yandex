@@ -6,7 +6,8 @@
     "scss/at-rule-no-unknown": true
     },
     "ignoreFiles": [
-      "dist/*"
+      "dist/*",
+      "coverage/*"
     ],
     "plugins": [
         "stylelint-scss"
