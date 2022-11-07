@@ -1,4 +1,4 @@
-import { registerComponent } from './core';
+import { registerComponent } from 'core';
 import './styles/style.scss';
 import Button from 'components/Button/Button';
 import Link from 'components/Link/Link';
@@ -57,21 +57,20 @@ declare global {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const router = new Router();
-  window.router = router;
-  window.store = store;
+const router = new Router();
+window.router = router;
+window.store = store;
 
-  const socketController = new SocketController();
-  window.socketController = socketController;
+console.log(router, store);
 
-  //TODO: добавить стартовый экран на запуск приложения
+const socketController = new SocketController();
+window.socketController = socketController;
 
-  store.on('updated', (nextState) => {
-    console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
-  });
-  console.log(router, store);
+//TODO: добавить стартовый экран на запуск приложения
 
-  initRouter(router, store);
-  startApp(store);
+store.on('updated', (nextState) => {
+  console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
 });
+
+initRouter(router, store);
+startApp(store);

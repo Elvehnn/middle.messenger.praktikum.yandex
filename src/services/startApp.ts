@@ -12,8 +12,6 @@ export async function startApp(store: Store<AppState>) {
 
     const user = (await getUserInfo()) as UserFromServer;
 
-    console.log(user);
-
     if (user) {
       const avatar = await getAvatar(user);
       const modifiedUser = { ...user, avatar };

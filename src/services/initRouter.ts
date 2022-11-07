@@ -5,6 +5,7 @@ import SigninPage from 'pages/signin/signin';
 import { Store } from 'store/Store';
 
 export const initRouter = (router: Router, store: Store<AppState>) => {
+  console.log('init touter');
   ROUTS.forEach((route) => {
     router.use(route, () => {
       const isAuthorized = store.getState().user;
@@ -45,4 +46,6 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
       return;
     }
   });
+
+  router.go(window.location.pathname);
 };

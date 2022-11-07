@@ -14,16 +14,11 @@ import { signup } from 'services/authorization';
 import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
 import { SignupData, UserKeys } from 'API/typesAPI';
 
-type IncomingSignupProps = {
+type SignupProps = {
   router: Router;
   store: Store<AppState>;
-};
-
-type SignupProps = IncomingSignupProps & {
-  onSubmit: (event: SubmitEvent) => void;
+  events: {};
   inputs: Array<Record<string, string>>;
-  onInput: (event: FocusEvent) => void;
-  onFocus: (event: FocusEvent) => void;
   navigateToSignin?: () => void;
 };
 
@@ -37,27 +32,15 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
   static componentName: string = 'SignupPage';
 
   constructor(props: SignupProps) {
-    super(props);
+    super({
+      ...props,
+      events: {
+        submit: (event: SubmitEvent) => this.onSubmit(event),
+      },
+    });
 
     this.setProps({
       inputs: INPUTS,
-      onSubmit: (event: SubmitEvent) => {
-        event.preventDefault();
-
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
-
-        setChildErrorsProps(errors, this.refs);
-
-        if (Object.keys(errors).length === 0) {
-          const signupData = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[stringToCamelCase(key) as Partial<UserKeys>] = input.value;
-            return acc;
-          }, {} as Partial<SignupData>);
-
-          signup(this.props.store, transformRefsToUser(signupData));
-        }
-      },
 
       navigateToSignin: () => {
         this.props.store.setState({ errorMessage: '' });
@@ -65,6 +48,25 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
       },
     });
   }
+
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
+
+    setChildErrorsProps(errors, this.refs);
+
+    if (Object.keys(errors).length === 0) {
+      const signupData = Object.entries(refs).reduce((acc, [key, input]) => {
+        acc[stringToCamelCase(key) as Partial<UserKeys>] = input.value;
+        return acc;
+      }, {} as Partial<SignupData>);
+
+      signup(this.props.store, transformRefsToUser(signupData));
+    }
+  }
+
   render() {
     const { errorMessage } = this.props.store.getState();
 
@@ -75,7 +77,7 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
        
             <h1>Chatterbox</h1>
 
-            <form class="login-form" action='#'>
+            <form class="login-form">
                   <div class="login-form__group">
                       <h2>Sign up</h2>
                       {{#each inputs}}
@@ -98,7 +100,7 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
                   <div class="login-form__bottom">
                     <p class='form-submit__warning'>${errorMessage}</p>
                  
-                    {{{Button title="Sign up" onClick=onSubmit}}}
+                    {{{Button title="Sign up"}}}
                     {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin}}}
                   </div>
             </form>
