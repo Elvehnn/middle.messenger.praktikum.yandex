@@ -54,7 +54,7 @@ export default class ControlledInput extends Block<ControlledInputProps, Control
           {{{Input inputName=inputName type=type onInput=onInputEvent onFocus=onInputEvent class=class
             onBlur=onInputEvent ref=childInputRef placeholder=placeholder id=childInputRef}}}
           {{{Label label=label for=id}}}
-          {{{ErrorMessage ref="errorRef"}}}
+          {{{ErrorMessage ref="errorRef" error=error}}}
         </div>
     `;
   }

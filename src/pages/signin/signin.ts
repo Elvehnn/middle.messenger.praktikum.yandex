@@ -10,16 +10,11 @@ import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { signin } from 'services/authorization';
 
-type IncomingSigninProps = {
+type SigninProps = {
   router: Router;
   store: Store<AppState>;
   inputs: Array<{ text: string; type: string }>;
-};
-
-type SigninProps = IncomingSigninProps & {
-  onSubmit: (event: SubmitEvent) => void;
-  onInput: (event: FocusEvent) => void;
-  onFocus: (event: FocusEvent) => void;
+  events: {};
   navigateToSignup: () => void;
 };
 
@@ -32,32 +27,40 @@ interface SubmitEvent extends Event {
 class SigninPage extends Block<SigninProps, SigninRefs> {
   static componentName: string = 'SigninPage';
 
-  constructor(props?: SigninProps) {
-    super(props);
+  constructor(props: SigninProps) {
+    super({
+      ...props,
+      events: {
+        submit: (event: SubmitEvent) => this.onSubmit(event),
+      },
+    });
 
     this.setProps({
-      onSubmit: async (event: SubmitEvent) => {
-        event.preventDefault();
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
-
-        const { login, password } = refs;
-
-        setChildErrorsProps(errors, this.refs);
-
-        if (Object.keys(errors).length === 0) {
-          signin(this.props.store, { login: login.value, password: password.value });
-        }
-      },
-
       navigateToSignup: () => {
         this.props.store.setState({ errorMessage: '' });
         this.props.router.go('/signup');
       },
     });
   }
+
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    this.props.store.setState({ errorMessage: '' });
+
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
+    const { login, password } = refs;
+
+    setChildErrorsProps(errors, this.refs);
+
+    if (Object.keys(errors).length === 0) {
+      signin(this.props.store, { login: login.value, password: password.value });
+    }
+  }
+
   render() {
     const { errorMessage } = this.props.store.getState();
+
     // language=hbs
     return `
         <main class="main">
@@ -65,7 +68,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
           <h1>Chatterbox</h1>
 
-          <form class="login-form" action="#">
+          <form class="login-form" onSubmit={{onSubmit}}>
                 <div class="login-form__group">
                     <h2>Sign in</h2>
                     {{{ControlledInput
@@ -98,7 +101,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
                 <div class="login-form__bottom">
                     <p class='form-submit__warning'>${errorMessage}</p>
 
-                    {{{Button title="Log in" onClick=onSubmit}}}
+                    {{{Button title="Log in" type="submit"}}}
                     {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup type="button"}}}
                 </div>
             </form>

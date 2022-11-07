@@ -8,6 +8,10 @@ interface ErrorMessageProps {
 export default class ErrorMessage extends Block<ErrorMessageProps> {
   static componentName: string = 'ErrorMessage';
 
+  constructor(props: ErrorMessageProps) {
+    super(props);
+  }
+
   protected render(): string {
     // language=hbs
     return `

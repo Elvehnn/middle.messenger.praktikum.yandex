@@ -78,9 +78,7 @@ export default class Block<
   }
 
   componentDidUpdate(oldProps: P, newProps: P) {
-    if (deepEqual(newProps, oldProps)) {
-      return false;
-    }
+    const isUpdated = deepEqual(newProps, oldProps);
 
     this.children = {};
 
