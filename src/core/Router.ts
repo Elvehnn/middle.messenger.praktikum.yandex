@@ -1,4 +1,4 @@
-import { PartialRouteProps } from 'constants/routes';
+import { PartialRouteProps } from '../constants/routes';
 import renderDOM from './RenderDOM';
 import Route from './Route';
 

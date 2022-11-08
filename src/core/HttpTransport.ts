@@ -1,4 +1,4 @@
-import { PATH } from 'constants/pathsAPI';
+import { PATH } from '../constants/pathsAPI';
 import queryStringify from 'utils/transformers/queryStringify';
 
 enum Methods {

@@ -1,5 +1,5 @@
 import { WebSocketMessage } from 'API/typesAPI';
-import { PATH } from 'constants/pathsAPI';
+import { PATH } from '../constants/pathsAPI';
 import { addDOMMessageElement, updateDOMMessagesContainer } from 'utils/createMessageElement';
 import { sortMessagesByTime } from 'utils/sortMessagesByTime';
 

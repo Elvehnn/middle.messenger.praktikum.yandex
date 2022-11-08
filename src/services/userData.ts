@@ -1,6 +1,6 @@
 import { ChangePasswordRequestData, UserFromServer } from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
-import { DEFAULT_AVATAR } from 'constants/imagesPaths';
+import { DEFAULT_AVATAR } from '../constants/imagesPaths';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import cloneDeep from 'utils/cloneDeep';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';

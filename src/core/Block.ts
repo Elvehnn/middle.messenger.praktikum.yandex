@@ -10,10 +10,7 @@ export interface BlockClass<P extends Record<string, any>> extends Function {
   componentName?: string;
 }
 
-export default class Block<
-  P extends Record<string, any>,
-  Refs extends Record<string, Block<any>> = {}
-> {
+export default class Block<P extends Indexed<any>, Refs extends Record<string, Block<any>> = {}> {
   static componentName: string;
 
   static EVENTS = {
@@ -68,7 +65,7 @@ export default class Block<
     this._eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: P, newProps: P) {
+  private _componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
     const response = this.componentDidUpdate(oldProps, newProps);
 
     if (!response) {
@@ -77,7 +74,7 @@ export default class Block<
     this._render();
   }
 
-  componentDidUpdate(oldProps: P, newProps: P) {
+  componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
     const isUpdated = deepEqual(newProps, oldProps);
 
     this.children = {};

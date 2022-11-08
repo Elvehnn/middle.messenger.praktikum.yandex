@@ -1,4 +1,4 @@
-import { ROUTS } from 'constants/routes';
+import { ROUTS } from '../constants/routes';
 import renderDOM from 'core/RenderDOM';
 import Router from 'core/Router';
 import SigninPage from 'pages/signin/signin';

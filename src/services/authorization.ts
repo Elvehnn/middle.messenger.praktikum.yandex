@@ -7,7 +7,7 @@ import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import AuthAPI from 'API/AuthorizationAPI';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
-import { DEFAULT_AVATAR } from 'constants/imagesPaths';
+import { DEFAULT_AVATAR } from '../constants/imagesPaths';
 
 export type LoginPayload = {
   login: string;
