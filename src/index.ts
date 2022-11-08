@@ -34,4 +34,3 @@ store.on('updated', (nextState) => {
 });
 
 initRouter(router, store);
-startApp(store);

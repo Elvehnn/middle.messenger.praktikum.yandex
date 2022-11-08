@@ -22,6 +22,7 @@ describe('Store', () => {
       chats: [],
       selectedChat: null,
       isPopupShown: false,
+      currentRoutePathname: '/',
     };
 
     store.setState(newState);

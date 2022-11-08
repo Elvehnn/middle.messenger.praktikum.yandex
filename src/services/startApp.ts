@@ -18,12 +18,13 @@ export async function startApp(store: Store<AppState>) {
       const chats = await getChats();
 
       modifiedUser && chats && store.setState({ user: transformUserObject(modifiedUser), chats });
-      return;
+      return true;
     }
 
     throw new Error('You are not logged in');
   } catch (error) {
     console.log(error);
+    return false;
   } finally {
     hidePreloader();
     store.setState({ isAppStarted: true });

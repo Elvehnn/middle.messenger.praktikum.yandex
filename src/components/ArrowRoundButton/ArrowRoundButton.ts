@@ -5,25 +5,22 @@ import './ArrowRoundButton.scss';
 
 interface ArrowRoundButtonProps {
   router: Router;
-  onClick: () => void;
-  blockClass: string;
+  events: {};
+  onClick?: () => void;
+  dataTestid?: string;
 }
 
 class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
   static componentName: string = 'ArrowRoundButton';
 
-  constructor({ blockClass = 'arrow', router, onClick }: ArrowRoundButtonProps) {
-    super({
-      blockClass,
-      router,
-      onClick,
-    });
+  constructor({ router, dataTestid = 'arrow-btn', onClick }: ArrowRoundButtonProps) {
+    super({ router, dataTestid, events: { click: onClick } });
   }
 
   render() {
     // language=hbs
     return `
-        {{{Button class=blockClass onClick=onClick}}}
+    <button data-testid="{{dataTestid}}" class="arrow" type="button" onClick={{onClick}}></button>
     `;
   }
 }

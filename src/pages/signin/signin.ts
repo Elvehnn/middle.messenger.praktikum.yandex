@@ -60,7 +60,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
   render() {
     const { errorMessage } = this.props.store.getState();
-
+    // console.log(`%c Signin page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
     // language=hbs
     return `
         <main class="main">

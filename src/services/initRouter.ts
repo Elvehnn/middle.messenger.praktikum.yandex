@@ -4,11 +4,14 @@ import Router from 'core/Router';
 import SigninPage from 'pages/signin/signin';
 import { Store } from 'store/Store';
 
-export const initRouter = (router: Router, store: Store<AppState>) => {
-  console.log('init touter');
+import { startApp } from './startApp';
+
+export const initRouter = async (router: Router, store: Store<AppState>) => {
+  await startApp(store);
+
   ROUTS.forEach((route) => {
     router.use(route, () => {
-      const isAuthorized = store.getState().user;
+      const isAuthorized = !!store.getState().user;
 
       if (!isAuthorized && route.isPrivate) {
         router.go('/signin');
@@ -21,12 +24,12 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
       }
 
       if (isAuthorized || !route.isPrivate) {
-        store.setState({ view: route.view });
+        store.setState({ view: route.view, currentRoutePathname: route.pathname });
         return;
       }
 
       if (!store.getState().view) {
-        store.setState({ view: SigninPage });
+        store.setState({ view: SigninPage, currentRoutePathname: '/signin' });
       }
     });
   });
@@ -36,7 +39,7 @@ export const initRouter = (router: Router, store: Store<AppState>) => {
       router.start();
     }
 
-    if (prevState.view !== nextState.view) {
+    if (prevState.currentRoutePathname !== nextState.currentRoutePathname) {
       const Page = nextState.view;
       const newPage = new Page({});
 

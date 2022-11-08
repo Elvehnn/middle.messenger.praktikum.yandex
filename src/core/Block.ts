@@ -23,7 +23,7 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   public id = nanoid(6);
 
   protected _element: Nullable<HTMLElement> = null;
-  protected readonly props: P;
+  protected props: Readonly<P>;
   protected children: { [id: string]: Block<{}> } = {};
 
   private _eventBus: EventBus<Events>;
@@ -32,7 +32,7 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   protected refs: Refs = {} as { [key: string]: Block };
 
   public constructor(props?: P) {
-    this.props = this._makePropsProxy(props || ({} as P));
+    this.props = props || ({} as P);
 
     this._eventBus = new EventBus<Events>();
 
@@ -58,6 +58,7 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
 
   componentDidMount(props: P) {
     this.setProps(props);
+
     return true;
   }
 
@@ -71,23 +72,29 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
     if (!response) {
       return;
     }
+
     this._render();
   }
 
   componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
-    const isUpdated = deepEqual(newProps, oldProps);
-
     this.children = {};
 
     return true;
   }
 
-  setProps = (nextProps: Partial<P>) => {
-    if (!nextProps) {
+  setProps = (nextPartialProps: Partial<P>) => {
+    // console.log('set new prop', this.id, this.constructor.name, nextPartialProps);
+
+    if (!nextPartialProps) {
       return;
     }
 
-    Object.assign(this.props as Object, nextProps);
+    const prevProps = this.props;
+    const nextProps = { ...prevProps, ...nextPartialProps };
+
+    this.props = nextProps;
+
+    this._eventBus.emit(Block.EVENTS.FLOW_CDU, prevProps, nextProps);
   };
 
   getProps = () => {

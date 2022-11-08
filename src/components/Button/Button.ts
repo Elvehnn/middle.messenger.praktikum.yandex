@@ -26,6 +26,7 @@ export default class Button extends Block<ButtonProps> {
   }
 
   protected render(): string {
+    // console.log(`%c Button block render with id = ${this.id}`, 'background: #9f9af3; color: #fff');
     // language=hbs
     return `
         <button data-testid="{{dataTestid}}" class="{{class}}" type="{{type}}" onClick={{onClick}}>{{title}}</button>

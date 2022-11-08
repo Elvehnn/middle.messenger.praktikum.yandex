@@ -1,8 +1,6 @@
 import Block from 'core/Block';
 import Router from 'core/Router';
-import { Store } from 'store/Store';
 import { WithRouter } from 'utils/HOCS/WithRouter';
-import { WithStore } from 'utils/HOCS/WithStore';
 import { WithUser } from 'utils/HOCS/WithUser';
 import './profile.scss';
 
@@ -17,9 +15,12 @@ class Profile extends Block<ProfileProps> {
 
   constructor(props: ProfileProps) {
     super(props);
-    this.setProps({ navigateBack: () => this.props.router.go('/main') });
+
+    this.setProps({ navigateBack: () => window.router.go('/main') });
   }
+
   render() {
+    console.log(`%c Profile page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
     // language=hbs
     return `
         <main class="main">

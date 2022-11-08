@@ -8,6 +8,7 @@ declare global {
   };
 
   export type AppState = {
+    currentRoutePathname: string;
     view: BlockConstructable | null;
     isLoading: boolean;
     errorMessage: string | null;
