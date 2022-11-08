@@ -21,8 +21,8 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
     super(props);
 
     this.setProps({
-      userLogin: this.props.store.getState().user?.login,
-      avatarSrc: this.props.store.getState().user?.avatar,
+      userLogin: this.props.userLogin,
+      avatarSrc: this.props.avatarSrc,
       onSubmit: (event: SubmitEvent) => {
         event.preventDefault();
 
@@ -43,7 +43,7 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
 
         if (Object.keys(errors).length === 0) {
           const newData = { oldPassword: oldPassword.value, newPassword: newPassword.value };
-          changeUserPassword(this.props.store, newData);
+          changeUserPassword(newData);
         }
       },
       navigateBack: () => this.props.router.go('/profile'),
@@ -83,4 +83,4 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
   }
 }
 
-export default WithStore(WithRouter(WithUser(ChangeUserPassword)));
+export default WithRouter(WithUser(ChangeUserPassword));

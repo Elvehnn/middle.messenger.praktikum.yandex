@@ -45,10 +45,10 @@ class User extends Block<UserProps> {
   render() {
     // language=hbs
     return `
-        <div class='user'>
+        <div class='user' data-testid='user'>
 				  {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=true}}}
 
-          <div class='user__data'>
+          <div class='user__data' data-testid='user-data'>
 					  {{#each userData}}
               {{#with this}}
                 {{{UserDataItem title="{{title}}" data="{{data}}"}}}
@@ -57,9 +57,14 @@ class User extends Block<UserProps> {
 				</div>
 
 				<div class='user__actions'>
-					{{{Button class='button button_navigate' title='Change user data' onClick=navigateTo type='button'}}} 
-			    {{{Button class='button button_navigate' title='Change user password' onClick=navigateTo}}} 
-	        {{{Button class='button button_navigate action-item__title_warning' title='Log out' onClick=signout}}} 
+					{{{Button class='button button_navigate' title='Change user data' 
+            onClick=navigateTo type='button' dataTestid='change-user-data-btn'}}} 
+
+			    {{{Button class='button button_navigate' title='Change user password' 
+          onClick=navigateTo dataTestid='change-user-password-btn'}}} 
+          
+	        {{{Button class='button button_navigate action-item__title_warning' 
+          title='Log out' onClick=signout dataTestid='signout-btn'}}} 
 				</div>
 			</div>
 

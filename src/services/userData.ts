@@ -9,10 +9,7 @@ import type { Store } from '../store/Store';
 
 const api = new UserAPI();
 
-export const changeUserProfile = async (
-  store: Store<AppState>,
-  action: Partial<UserFromServer>
-) => {
+export const changeUserProfile = async (action: Partial<UserFromServer>) => {
   showPreloader();
 
   try {
@@ -22,26 +19,23 @@ export const changeUserProfile = async (
       throw new Error(response.reason);
     }
 
-    const avatar = store.getState()?.user?.avatar || DEFAULT_AVATAR;
+    const avatar = window.store.getState()?.user?.avatar || DEFAULT_AVATAR;
 
     const updatedUser = { ...transformUserObject(response as UserFromServer), avatar };
 
-    store.setState({
+    window.store.setState({
       user: updatedUser,
     });
 
     window.router.back();
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const changeUserPassword = async (
-  store: Store<AppState>,
-  action: ChangePasswordRequestData
-) => {
+export const changeUserPassword = async (action: ChangePasswordRequestData) => {
   showPreloader();
 
   try {
@@ -53,7 +47,7 @@ export const changeUserPassword = async (
 
     window.router.back();
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }

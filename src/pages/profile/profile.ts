@@ -8,9 +8,8 @@ import './profile.scss';
 
 export interface ProfileProps {
   user: Nullable<UserType>;
-  store: Store<AppState>;
   router: Router;
-  navigateBack: () => void;
+  navigateBack?: () => void;
 }
 
 class Profile extends Block<ProfileProps> {
@@ -26,19 +25,19 @@ class Profile extends Block<ProfileProps> {
         <main class="main">
             {{{Preloader}}}
 
-            <div class='profile'>
-              <div class="profile__aside">
+            <div class='profile' data-testid='profile'>
+              <div class="profile__aside" data-testid='aside'>
                 {{{ArrowRoundButton onClick=navigateBack}}}
-            </div>
-            
-            <section class='profile__container'>
-              {{{ChangeAvatar}}}
-              {{{User user=user}}}
-            </section>
+              </div>
+              
+              <section class='profile__container' data-testid='profile-container'>
+                {{{ChangeAvatar}}}
+                {{{User user=user}}}
+              </section>
             </div>
         </main>
         `;
   }
 }
 
-export default WithRouter(WithStore(WithUser(Profile)));
+export default WithRouter(WithUser(Profile));

@@ -5,7 +5,7 @@ import { initRouter } from 'services/initRouter';
 import * as components from 'components';
 import { Store } from 'store/Store';
 import { sleep } from './sleep';
-import { AnyProps } from 'core/RegisterComponent';
+import Router from 'core/Router';
 
 type RenderBlockParams<T extends Record<string, any>> = {
   Block: BlockClass<T>;
@@ -23,12 +23,15 @@ export async function renderBlock<T extends Record<string, any>>({
   });
 
   const store = new Store<AppState>({ ...defaultState, ...state });
-
   window.store = store;
+
+  const router = new Router();
+  window.router = router;
 
   document.body.innerHTML = '<div id="app"></div>';
 
   renderDOM(new Block(props));
+  // initRouter(router, store);
 
   await sleep();
 }

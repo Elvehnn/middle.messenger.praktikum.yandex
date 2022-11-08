@@ -90,6 +90,9 @@
             "^API(.*)$": "<rootDir>/src/API$1",
             "^store(.*)$": "<rootDir>/src/store$1",
             "^pages(.*)$": "<rootDir>/src/pages$1"
-        }
+        },
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/tests/setup.ts"
+          ]
     }
 }

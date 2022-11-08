@@ -6,7 +6,7 @@ import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
-import { INPUTS } from '../constants/inputs';
+import { INPUTS } from '../../constants/inputs';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';

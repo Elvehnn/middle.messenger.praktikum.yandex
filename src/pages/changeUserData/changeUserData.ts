@@ -32,7 +32,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   constructor(props: ChangeProfileProps) {
     super(props);
 
-    const { user } = this.props.store.getState();
+    const user = this.props.user;
     const { login, avatar } = user || {};
 
     const data = user ? getUserDataArray(user) : [];
@@ -57,7 +57,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
 
           const newData = transformRefsToUser(userDataValues);
 
-          changeUserProfile(this.props.store, newData);
+          changeUserProfile(newData);
         }
       },
       navigateBack: () => this.props.router.go('/profile'),
@@ -99,4 +99,4 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   }
 }
 
-export default WithStore(WithRouter(WithUser(ChangeUserData)));
+export default WithRouter(WithUser(ChangeUserData));

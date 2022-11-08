@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 import { registerComponent } from 'core';
 import * as components from 'components';
 import './styles/style.scss';
