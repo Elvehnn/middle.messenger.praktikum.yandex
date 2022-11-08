@@ -2,7 +2,7 @@ import { getByTestId, getAllByText, prettyDOM, getByText } from '@testing-librar
 import '@testing-library/jest-dom';
 import { Store } from 'store/Store';
 import { defaultState } from 'store/defaultState';
-import { renderBlock } from 'utils/renderBlock';
+import { renderBlock } from '../../tests/renderBlock';
 import { default as Profile } from './profile';
 import { sleep } from 'utils/sleep';
 

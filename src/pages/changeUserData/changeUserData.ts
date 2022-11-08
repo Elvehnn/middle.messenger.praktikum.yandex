@@ -7,7 +7,6 @@ import UserDataInput from 'components/UserDataInput/UserDataInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
-import { WithStore } from 'utils/HOCS/WithStore';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithUser } from 'utils/HOCS/WithUser';
 import { getUserDataArray } from 'utils/getUserDataArray';
@@ -20,7 +19,7 @@ export type ChangeProfileProps = ProfileProps & {
   userData: Array<any>;
   userLogin: string;
   avatarSrc: string;
-  onSubmit: (event: SubmitEvent) => void;
+  events: {};
   navigateBack: () => void;
 };
 
@@ -30,7 +29,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   static componentName: string = 'ChangeUserData';
 
   constructor(props: ChangeProfileProps) {
-    super(props);
+    super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
 
     const user = this.props.user;
     const { login, avatar } = user || {};
@@ -42,26 +41,27 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
       userLogin: login,
       avatarSrc: avatar,
 
-      onSubmit: async (event: SubmitEvent) => {
-        event.preventDefault();
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
-
-        setChildErrorsProps(errors, this.refs);
-
-        if (Object.keys(errors).length === 0) {
-          const userDataValues = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[key as UserKeys] = input.value;
-            return acc;
-          }, {} as Partial<SignupData>);
-
-          const newData = transformRefsToUser(userDataValues);
-
-          changeUserProfile(newData);
-        }
-      },
       navigateBack: () => this.props.router.go('/profile'),
     });
+  }
+
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
+
+    setChildErrorsProps(errors, this.refs);
+
+    if (Object.keys(errors).length === 0) {
+      const userDataValues = Object.entries(refs).reduce((acc, [key, input]) => {
+        acc[key as UserKeys] = input.value;
+        return acc;
+      }, {} as Partial<SignupData>);
+
+      const newData = transformRefsToUser(userDataValues);
+
+      await changeUserProfile(newData);
+    }
   }
 
   render() {
@@ -76,7 +76,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                 </div>
                 
                 <section class='profile__container'>
-                    <form class='user' action="#">
+                    <form class='user' onSubmit={{onSubmit}}>
                     {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
@@ -88,7 +88,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                         </div>
 
                         <div class="login-form__bottom">
-                            {{{Button title='Save changes' class='button button_confirm' onClick=onSubmit type='submit'}}}
+                            {{{Button title='Save changes' class='button button_confirm' type='submit'}}}
                             {{{Button title='Cancel' class='button button_redirect' onClick=navigateBack type='button'}}}
                         </div>
                     </form>

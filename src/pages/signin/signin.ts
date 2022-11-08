@@ -43,7 +43,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
     });
   }
 
-  async onSubmit(event: SubmitEvent) {
+  onSubmit(event: SubmitEvent) {
     event.preventDefault();
     this.props.store.setState({ errorMessage: '' });
 
@@ -71,6 +71,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
           <form class="login-form" onSubmit={{onSubmit}}>
                 <div class="login-form__group">
                     <h2>Sign in</h2>
+                    
                     {{{ControlledInput
                         onInput=onInput 
                         onFocus=onFocus 

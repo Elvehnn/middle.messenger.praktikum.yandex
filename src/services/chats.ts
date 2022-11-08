@@ -15,7 +15,7 @@ import { getUserByLogin } from './userData';
 
 const api = new ChatsAPI();
 
-export const getChats = async (store: Store<AppState>) => {
+export const getChats = async () => {
   showPreloader();
 
   try {
@@ -25,19 +25,19 @@ export const getChats = async (store: Store<AppState>) => {
       throw new Error(response.reason);
     }
 
-    store.setState({
+    window.store.setState({
       chats: response.map((item) => transformChatsObject(item)),
     });
 
     return response.map((item) => transformChatsObject(item));
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const createChat = async (store: Store<AppState>, action: CreateChatRequestData) => {
+export const createChat = async (action: CreateChatRequestData) => {
   showPreloader();
 
   try {
@@ -47,16 +47,16 @@ export const createChat = async (store: Store<AppState>, action: CreateChatReque
       throw new Error(response.reason);
     }
 
-    await getChats(store);
+    await getChats();
     window.router.reload();
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const deleteChat = async (store: Store<AppState>, action: DeleteChatRequestData) => {
+export const deleteChat = async (action: DeleteChatRequestData) => {
   showPreloader();
 
   try {
@@ -66,16 +66,16 @@ export const deleteChat = async (store: Store<AppState>, action: DeleteChatReque
       throw new Error(response.reason);
     }
 
-    await getChats(store);
+    await getChats();
     window.router.reload();
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const addUserToChat = async (store: Store<AppState>, action: UserToChatData) => {
+export const addUserToChat = async (action: UserToChatData) => {
   showPreloader();
 
   try {
@@ -103,15 +103,15 @@ export const addUserToChat = async (store: Store<AppState>, action: UserToChatDa
       chatUsers,
     };
 
-    store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat: selectedChat });
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const deleteUserFromChat = async (store: Store<AppState>, action: UserToChatData) => {
+export const deleteUserFromChat = async (action: UserToChatData) => {
   showPreloader();
 
   try {
@@ -140,15 +140,15 @@ export const deleteUserFromChat = async (store: Store<AppState>, action: UserToC
       chatUsers,
     };
 
-    store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat: selectedChat });
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
+export const getChatInfo = async (action: ChatType) => {
   showPreloader();
 
   try {
@@ -170,9 +170,9 @@ export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
       chatToken: token,
     };
 
-    store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat: selectedChat });
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }

@@ -15,7 +15,7 @@ export async function startApp(store: Store<AppState>) {
     if (user) {
       const avatar = await getAvatar(user);
       const modifiedUser = { ...user, avatar };
-      const chats = await getChats(store);
+      const chats = await getChats();
 
       modifiedUser && chats && store.setState({ user: transformUserObject(modifiedUser), chats });
       return;

@@ -28,7 +28,7 @@ class ChatItem extends Block<ChatItemProps> {
         return;
       }
 
-      await getChatInfo(this.props.store, this.props.chat);
+      await getChatInfo(this.props.chat);
 
       const { user, selectedChat } = this.props.store.getState();
 
@@ -40,8 +40,8 @@ class ChatItem extends Block<ChatItemProps> {
     super({
       ...props,
       events: { click: onChatItemClick },
-      deleteChatHandler: () => {
-        deleteChat(this.props.store, { chatId: this.props.chat.id });
+      deleteChatHandler: async () => {
+        await deleteChat({ chatId: this.props.chat.id });
       },
     });
   }
@@ -61,8 +61,9 @@ class ChatItem extends Block<ChatItemProps> {
 
                 <div class='chat-item__info'>
                     {{{Button class='chat-item__delete' title="X" onClick=deleteChatHandler}}}
+                    
                     <div class='chat-item__notifications'>
-                        <p class='chat-item__unread'>{{chat.unreadCount}}</p>
+                      <p class='chat-item__unread'>{{chat.unreadCount}}</p>
                     </div>
                 </div>
             </div>

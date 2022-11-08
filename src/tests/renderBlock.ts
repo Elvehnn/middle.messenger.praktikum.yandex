@@ -4,7 +4,7 @@ import { defaultState } from 'store/defaultState';
 import { initRouter } from 'services/initRouter';
 import * as components from 'components';
 import { Store } from 'store/Store';
-import { sleep } from './sleep';
+import { sleep } from '../utils/sleep';
 import Router from 'core/Router';
 
 type RenderBlockParams<T extends Record<string, any>> = {

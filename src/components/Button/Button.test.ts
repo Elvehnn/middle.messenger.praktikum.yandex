@@ -1,6 +1,6 @@
 import { getByTestId } from '@testing-library/dom';
 import '@testing-library/jest-dom';
-import { renderBlock } from 'utils/renderBlock';
+import { renderBlock } from '../../tests/renderBlock';
 import Button from './Button';
 
 describe('components/Button', () => {
