@@ -8,7 +8,7 @@ export interface RouteProps {
   callback: Function;
 }
 
-export default class Route {
+export default class Route implements RouteProps {
   pathname: string;
   view: BlockConstructable;
   isPrivate: boolean;

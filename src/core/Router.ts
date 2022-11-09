@@ -28,23 +28,23 @@ export default class Router implements IRouter {
 
   start() {
     window.onpopstate = () => {
-      this._onRouteChange.call(this);
+      this.onRouteChange.call(this);
     };
 
-    this._onRouteChange();
+    this.onRouteChange();
   }
 
-  private _onRouteChange(pathname: string = window.location.pathname) {
+  onRouteChange(pathname: string = window.location.pathname) {
     const route = this.getRoute(pathname) || this.getRoute('/404');
 
-    window.store.setState({ view: route?.view, currentRoutePathname: pathname });
+    window.store.setState({ view: route?.view, currentRoutePathname: route?.pathname });
 
     route?.callback();
   }
 
   go(pathname: string) {
     window.history.pushState({}, '', pathname);
-    this._onRouteChange(pathname);
+    this.onRouteChange(pathname);
   }
 
   reload() {

@@ -5,7 +5,7 @@ import { initRouter } from 'services/initRouter';
 import * as components from 'components';
 import { Store } from 'store/Store';
 import { sleep } from '../utils/sleep';
-import Router from 'core/Router';
+import MockedRouter from './mockRouter';
 
 type RenderBlockParams<T extends Record<string, any>> = {
   Block: BlockClass<T>;
@@ -25,13 +25,13 @@ export async function renderBlock<T extends Record<string, any>>({
   const store = new Store<AppState>({ ...defaultState, ...state });
   window.store = store;
 
-  const router = new Router();
+  const router = new MockedRouter();
   window.router = router;
 
   document.body.innerHTML = '<div id="app"></div>';
 
   renderDOM(new Block(props));
-  // initRouter(router, store);
+  initRouter(router, store);
 
   await sleep();
 }
