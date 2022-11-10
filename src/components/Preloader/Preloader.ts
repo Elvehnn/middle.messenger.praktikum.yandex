@@ -12,7 +12,7 @@ export default class Preloader extends Block<PreloaderProps> {
   render() {
     // language=hbs
     return `
-        <div class="preloader">
+        <div class="preloader" data-testid="preloader">
             <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
             </div>
         </div>

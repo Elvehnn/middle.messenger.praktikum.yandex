@@ -13,9 +13,8 @@ import { signin } from 'services/authorization';
 type SigninProps = {
   router: Router;
   store: Store<AppState>;
-  inputs: Array<{ text: string; type: string }>;
-  events: {};
-  navigateToSignup: () => void;
+  events?: {};
+  navigateToSignup?: () => void;
 };
 
 type SigninRefs = Record<string, ControlledInput>;
@@ -100,10 +99,10 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
                 </div>
 
                 <div class="login-form__bottom">
-                    <p class='form-submit__warning'>${errorMessage}</p>
+                    <p class='form-submit__warning' data-testid='form-submit-warning'>${errorMessage}</p>
 
-                    {{{Button title="Log in" type="submit"}}}
-                    {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup type="button"}}}
+                    {{{Button title="Log in" type="submit" dataTestid="login-btn"}}}
+                    {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup type="button" dataTestid="goto-signup-btn"}}}
                 </div>
             </form>
         </main>

@@ -88,11 +88,11 @@ class MainPage extends Block<MainPageProps, Refs> {
     const { id, title, chatUsers = [] } = selectedChat || {};
     const chatUsersToString = reduceObjectToString(chatUsers, 'login');
 
-    console.log(`%c Main page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
+    // console.log(`%c Main page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
 
     // language=hbs
     return `
-        <main class="main">
+        <main class="main" data-testid="main">
           {{{Preloader}}}
          
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}

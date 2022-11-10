@@ -54,6 +54,7 @@ export default class Input extends Block<InputProps> {
     // language=hbs
     return `
       <input
+      data-testid='{{inputName}}'
         type='{{type}}'
         placeholder='{{placeholder}}'
         value='{{value}}' 
