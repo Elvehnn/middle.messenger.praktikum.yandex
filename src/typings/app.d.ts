@@ -42,6 +42,19 @@ declare global {
   };
 
   export type RefsObject = Record<string, HTMLInputElement>;
+
+  export type RouteProps = {
+    pathname: string;
+    view: BlockConstructable;
+    isPrivate: boolean;
+    callback: () => void;
+  };
+
+  export type PartialRouteProps = Omit<RouteProps, 'callback'>;
+
+  export interface IRouter {
+    routes: Array<Route>;
+  }
 }
 
 export {};

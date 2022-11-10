@@ -13,7 +13,7 @@ import { signin } from 'services/authorization';
 type SigninProps = {
   router: Router;
   store: Store<AppState>;
-  events?: {};
+  events?: Record<string, unknown>;
   navigateToSignup?: () => void;
 };
 
@@ -24,7 +24,7 @@ interface SubmitEvent extends Event {
 }
 
 class SigninPage extends Block<SigninProps, SigninRefs> {
-  static componentName: string = 'SigninPage';
+  static componentName = 'SigninPage';
 
   constructor(props: SigninProps) {
     super({

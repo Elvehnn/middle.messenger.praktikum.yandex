@@ -1,13 +1,10 @@
-import { RouteProps } from 'core/Route';
 import SigninPage from 'pages/signin/signin';
 import SignupPage from 'pages/signup/signup';
 import MainPage from 'pages/main/main';
 import Profile from 'pages/profile/profile';
-import NotFound404 from 'pages/notFound404/notFound404';
+import NotFound from 'pages/notFound/notFound';
 import ChangeUserData from 'pages/changeUserData/changeUserData';
 import ChangeUserPassword from 'pages/changeUserPassword/changeUserPassword';
-
-export type PartialRouteProps = Omit<RouteProps, 'callback'>;
 
 export const ROUTS: Array<PartialRouteProps> = [
   {
@@ -48,7 +45,7 @@ export const ROUTS: Array<PartialRouteProps> = [
   },
   {
     pathname: '/404',
-    view: NotFound404,
+    view: NotFound,
     isPrivate: false,
   },
 ];
