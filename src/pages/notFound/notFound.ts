@@ -15,7 +15,7 @@ class NotFound extends Block<NotFoundProps> {
 
     this.setProps({
       navigateBack: () => {
-        this.props.router.back();
+        window.history.back();
       },
     });
   }
@@ -29,7 +29,7 @@ class NotFound extends Block<NotFoundProps> {
           <h2 class="start">NOT FOUND</h2>
           <h2 class="start">404</h2>
 
-          {{{Button title='Go back' onClick=navigateBack class='button button_redirect'}}}
+          {{{Button title='Go back' onClick=navigateBack type='button' class='button button_redirect'}}}
           
         </main>
         `;

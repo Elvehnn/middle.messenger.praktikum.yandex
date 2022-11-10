@@ -1,13 +1,14 @@
 import Router from 'core/Router';
-import MockPage from '../tests/MockPage';
 import { Store } from 'store/Store';
 import { sleep } from 'utils/sleep';
 import { initRouter } from 'services/initRouter';
 import { defaultState } from 'store/defaultState';
+import MockPage from '../tests/MockPage';
 
 describe('core/Router', () => {
   let router: Router;
   let store: Store<AppState>;
+  const callbackFn = () => true;
 
   beforeEach(() => {
     store = new Store<AppState>(defaultState);
@@ -19,7 +20,6 @@ describe('core/Router', () => {
   });
 
   it('should register routes', () => {
-    const callbackFn = () => {};
     router.use({ pathname: '/test', view: MockPage, isPrivate: false }, callbackFn);
 
     expect(router.routes).toContainEqual({
@@ -32,7 +32,6 @@ describe('core/Router', () => {
 
   it('should navigate to a path', async () => {
     document.body.innerHTML = '<div id="app"></div>';
-    const callbackFn = () => {};
 
     router.use({ pathname: '/test', view: MockPage, isPrivate: false }, callbackFn);
     router.go('/test');
@@ -42,7 +41,6 @@ describe('core/Router', () => {
 
   it('should navigate back', async () => {
     document.body.innerHTML = '<div id="app"></div>';
-    const callbackFn = () => {};
 
     router.use({ pathname: '/test', view: MockPage, isPrivate: false }, callbackFn);
     router.go('/test');

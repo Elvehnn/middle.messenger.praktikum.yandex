@@ -1,7 +1,7 @@
-import { ROUTS } from '../constants/routes';
 import renderDOM from 'core/RenderDOM';
 import Router from 'core/Router';
 import { Store } from 'store/Store';
+import { ROUTS } from '../constants/routes';
 
 export const initRouter = async (router: Router, store: Store<AppState>) => {
   ROUTS.forEach((route) => {
@@ -34,8 +34,6 @@ export const initRouter = async (router: Router, store: Store<AppState>) => {
 
       renderDOM(newPage);
       document.title = `App / ${Page.componentName}`;
-
-      return;
     }
   });
 };

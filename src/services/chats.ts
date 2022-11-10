@@ -31,6 +31,8 @@ export const getChats = async () => {
     return response.map((item) => transformChatsObject(item));
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
+
+    return [];
   } finally {
     hidePreloader();
   }
@@ -94,15 +96,14 @@ export const addUserToChat = async (action: UserToChatData) => {
       throw new Error(response.reason);
     }
 
-    let chatUsers = action.chat.chatUsers;
-    chatUsers = chatUsers && [...chatUsers, transformUserObject(user[0])];
+    const { chatUsers } = action.chat;
 
     const selectedChat = {
       ...action.chat,
-      chatUsers,
+      chatUsers: chatUsers ? [...chatUsers, transformUserObject(user[0])] : [],
     };
 
-    window.store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat });
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
   } finally {
@@ -130,16 +131,14 @@ export const deleteUserFromChat = async (action: UserToChatData) => {
       throw new Error(response.reason);
     }
 
-    let chatUsers = action.chat.chatUsers;
-    chatUsers =
-      chatUsers && chatUsers.filter((item) => item.id !== transformUserObject(user[0]).id);
+    const { chatUsers } = action.chat;
 
     const selectedChat = {
       ...action.chat,
-      chatUsers,
+      chatUsers: chatUsers ? [...chatUsers, transformUserObject(user[0])] : [],
     };
 
-    window.store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat });
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
   } finally {
@@ -151,7 +150,7 @@ export const getChatInfo = async (action: ChatType) => {
   showPreloader();
 
   try {
-    const token = (await api.getChatToken(action.id)).token;
+    const { token } = await api.getChatToken(action.id);
 
     if (isApiReturnedError(token)) {
       throw new Error(token.reason);
@@ -169,7 +168,7 @@ export const getChatInfo = async (action: ChatType) => {
       chatToken: token,
     };
 
-    window.store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat });
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
   } finally {
@@ -182,8 +181,6 @@ export const openSocket = (id: number, chat: ChatType) => {
 
   if (!socket) {
     window.socketController.createSocket(id, chat);
-
-    return;
   }
 };
 
@@ -204,8 +201,10 @@ export const getUnreadMessagesCount = async (action: ChatType) => {
     if (isApiReturnedError(unreadCount)) {
       throw new Error(unreadCount.reason);
     }
+
     return unreadCount as UnreadCountResponseData;
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
+    return 0;
   }
 };

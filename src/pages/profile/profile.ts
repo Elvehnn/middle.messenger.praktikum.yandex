@@ -11,7 +11,7 @@ export interface ProfileProps {
 }
 
 class Profile extends Block<ProfileProps> {
-  static componentName: string = 'Profile';
+  static componentName = 'Profile';
 
   constructor(props: ProfileProps) {
     super(props);

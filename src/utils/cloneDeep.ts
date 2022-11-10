@@ -1,6 +1,6 @@
 import { isObject } from './checkers and validators/isObject';
 
-export function cloneDeep<T extends object = object>(obj: T) {
+export const cloneDeep = <T extends object = object>(obj: T) => {
   const clone = (Array.isArray(obj) ? [] : {}) as T;
 
   for (let i in obj) {
@@ -11,6 +11,4 @@ export function cloneDeep<T extends object = object>(obj: T) {
     }
   }
   return clone;
-}
-
-export default cloneDeep;
+};

@@ -1,13 +1,13 @@
 import { ChatFromServer, UserFromServer } from 'API/typesAPI';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
-import type { Store } from '../store/Store';
-import { getAvatar } from './userData';
 import ChatsAPI from 'API/ChatsAPI';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
 import AuthAPI from 'API/AuthorizationAPI';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
+import { Store } from 'store/Store';
 import { DEFAULT_AVATAR } from '../constants/imagesPaths';
+import { getAvatar } from './userData';
 
 export type LoginPayload = {
   login: string;
@@ -139,5 +139,6 @@ export const getUserInfo = async () => {
     return user;
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
+    return null;
   }
 };
