@@ -49,7 +49,6 @@ describe('Store', () => {
 
   it('should not emit update event if next state did not changed the store', () => {
     const mock = jest.fn();
-    const nextState = { ...defaultState, errorMessage: '' };
 
     store.on('updated', mock);
     store.setState({ errorMessage: '' });

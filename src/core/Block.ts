@@ -77,6 +77,10 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   }
 
   componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
+    if (deepEqual(oldProps, newProps)) {
+      return true;
+    }
+
     this.children = {};
 
     return true;
@@ -137,30 +141,6 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
     }
 
     return this.element!;
-  }
-
-  private _makePropsProxy(props: any): any {
-    const self = this;
-
-    return new Proxy(props as unknown as object, {
-      get(target: Record<string, unknown>, prop: string) {
-        const value = target[prop];
-        return typeof value === 'function' ? value.bind(target) : value;
-      },
-
-      set(target: Record<string, unknown>, prop: string, value: unknown) {
-        target[prop] = value;
-
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep
-        self._eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
-        return true;
-      },
-
-      deleteProperty() {
-        throw new Error('Нет доступа');
-      },
-    }) as unknown as P;
   }
 
   private _removeEvents() {

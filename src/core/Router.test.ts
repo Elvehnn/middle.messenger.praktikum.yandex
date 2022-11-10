@@ -1,11 +1,9 @@
 import Router from 'core/Router';
 import MockPage from '../tests/MockPage';
-import store, { Store } from 'store/Store';
-import { default as Profile } from 'pages/profile/profile';
+import { Store } from 'store/Store';
 import { sleep } from 'utils/sleep';
 import { initRouter } from 'services/initRouter';
 import { defaultState } from 'store/defaultState';
-import { renderBlock } from '../tests/renderBlock';
 
 describe('core/Router', () => {
   let router: Router;

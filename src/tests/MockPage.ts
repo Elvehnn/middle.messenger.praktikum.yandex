@@ -1,4 +1,4 @@
-import Block, { BlockClass } from 'core/Block';
+import Block from 'core/Block';
 
 class MockPage extends Block<{}> {
   static componentName: string = 'MockPage';

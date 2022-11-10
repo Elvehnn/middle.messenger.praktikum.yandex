@@ -1,7 +1,7 @@
 import { renderBlock } from '../../tests/renderBlock';
 import { default as SigninPage } from './signin';
 import userEvent from '@testing-library/user-event';
-import { findByTestId, getByLabelText, getByTestId, waitFor } from '@testing-library/dom';
+import { findByTestId, getByTestId, waitFor } from '@testing-library/dom';
 import { sleep } from 'utils/sleep';
 
 describe('pages/signin', () => {

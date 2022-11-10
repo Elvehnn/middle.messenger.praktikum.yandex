@@ -1,15 +1,6 @@
-import {
-  getByTestId,
-  getAllByText,
-  prettyDOM,
-  getByText,
-  waitFor,
-  queryByTestId,
-} from '@testing-library/dom';
-import '@testing-library/jest-dom';
+import { getByTestId, getAllByText, getByText, waitFor } from '@testing-library/dom';
 import { renderBlock } from '../../tests/renderBlock';
 import { default as Profile } from './profile';
-import { sleep } from 'utils/sleep';
 import { USER_MOCK } from '../../tests/userMock';
 
 describe('pages/profile', () => {

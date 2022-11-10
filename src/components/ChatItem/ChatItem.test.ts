@@ -2,7 +2,6 @@ import { getByTestId } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { renderBlock } from '../../tests/renderBlock';
 import { default as ChatItem } from './ChatItem';
-import { sleep } from 'utils/sleep';
 import { CHAT_MOCK } from '../../tests/chatMock';
 
 describe('components/ChatItem', () => {

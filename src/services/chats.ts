@@ -6,7 +6,6 @@ import {
   UnreadCountResponseData,
   UserToChatData,
 } from 'API/typesAPI';
-import { Store } from 'store/Store';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';

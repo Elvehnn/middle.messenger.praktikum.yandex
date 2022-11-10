@@ -1,5 +1,4 @@
 import Block from './Block';
-import { AnyProps } from './RegisterComponent';
 
 export default function renderDOM(block: Block<{}>) {
   const root = document.querySelector('#app');
