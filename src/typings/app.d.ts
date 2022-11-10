@@ -33,7 +33,7 @@ declare global {
   export type ChatType = {
     id: number;
     title: string;
-    avatar: Record<string, any>;
+    avatar: string;
     createdBy: number;
     unreadCount: number;
     lastMessage: Record<string, any>;
