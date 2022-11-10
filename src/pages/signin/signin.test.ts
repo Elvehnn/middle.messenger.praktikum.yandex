@@ -28,8 +28,6 @@ describe('pages/signin', () => {
     await (async () => {
       const state = window.store.getState();
 
-      console.log(state);
-
       expect(state.view.componentName).toBe('MainPage');
       expect(state.currentRoutePathname).toBe('/main');
       expect(state.user?.login).toBe('Elvehnn1980');

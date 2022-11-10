@@ -33,5 +33,7 @@ store.on('updated', (nextState) => {
   console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
 });
 
-initRouter(router, store);
-startApp(store);
+startApp(store).then(() => {
+  initRouter(router, store);
+  router.go(window.location.pathname);
+});

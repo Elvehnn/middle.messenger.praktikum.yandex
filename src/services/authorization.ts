@@ -36,11 +36,7 @@ export const signin = async (store: Store<AppState>, action: LoginPayload) => {
       throw new Error(response.reason);
     }
 
-    console.log(response);
-
     const user = (await api.getUserInfo()) as UserFromServer;
-
-    console.log(user);
 
     if (isApiReturnedError(user)) {
       throw new Error(user.reason);

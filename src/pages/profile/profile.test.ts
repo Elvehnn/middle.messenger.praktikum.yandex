@@ -7,8 +7,6 @@ import {
   queryByTestId,
 } from '@testing-library/dom';
 import '@testing-library/jest-dom';
-import { Store } from 'store/Store';
-import { defaultState } from 'store/defaultState';
 import { renderBlock } from '../../tests/renderBlock';
 import { default as Profile } from './profile';
 import { sleep } from 'utils/sleep';

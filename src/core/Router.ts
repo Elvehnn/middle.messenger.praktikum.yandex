@@ -16,6 +16,9 @@ export default class Router implements IRouter {
     }
 
     Router.__instance = this;
+    window.onpopstate = () => {
+      this.onRouteChange.call(this);
+    };
   }
 
   use(props: PartialRouteProps, callback: () => void) {
@@ -24,14 +27,6 @@ export default class Router implements IRouter {
     this.routes.push(route);
 
     return this;
-  }
-
-  start() {
-    window.onpopstate = () => {
-      this.onRouteChange.call(this);
-    };
-
-    this.onRouteChange();
   }
 
   onRouteChange(pathname: string = window.location.pathname) {
