@@ -7,8 +7,6 @@ import { Store } from 'store/Store';
 import { startApp } from './startApp';
 
 export const initRouter = async (router: Router, store: Store<AppState>) => {
-  await startApp(store);
-
   ROUTS.forEach((route) => {
     router.use(route, () => {
       const isAuthorized = !!store.getState().user;
@@ -50,5 +48,5 @@ export const initRouter = async (router: Router, store: Store<AppState>) => {
     }
   });
 
-  router.go(window.location.pathname);
+  // router.go(window.location.pathname);
 };
