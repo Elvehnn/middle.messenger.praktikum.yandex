@@ -22,7 +22,7 @@ type InputProps = InputIncomingProps & {
 };
 
 export default class Input extends Block<InputProps> {
-  static componentName: string = 'Input';
+  static componentName = 'Input';
 
   constructor({
     onInput,

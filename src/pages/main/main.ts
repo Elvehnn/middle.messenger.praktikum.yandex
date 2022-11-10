@@ -10,6 +10,10 @@ import { validateForm, ValidateType } from 'utils/checkers and validators/valida
 import { sendMessage } from 'services/chats';
 import { reduceObjectToString } from 'utils/transformers/reduceObjectToString';
 
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
 type MainPageProps = {
   router: Router;
   store: Store<AppState>;
@@ -27,13 +31,8 @@ type Refs = {
   messageRef: MessageInput;
   attach: Input;
 };
-
-interface SubmitEvent extends Event {
-  submitter: HTMLElement;
-}
-
 class MainPage extends Block<MainPageProps, Refs> {
-  static componentName: string = 'MainPage';
+  static componentName = 'MainPage';
 
   constructor(props: MainPageProps) {
     super(props);

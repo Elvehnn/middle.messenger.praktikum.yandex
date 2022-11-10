@@ -6,18 +6,18 @@ import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
-import { INPUTS } from '../../constants/inputs';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import { signup } from 'services/authorization';
 import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
 import { SignupData, UserKeys } from 'API/typesAPI';
+import { INPUTS } from '../../constants/inputs';
 
 type SignupProps = {
   router: Router;
   store: Store<AppState>;
-  events: {};
+  events: Record<string, unknown>;
   inputs: Array<Record<string, string>>;
   navigateToSignin?: () => void;
 };
@@ -29,7 +29,7 @@ interface SubmitEvent extends Event {
 }
 
 class SignupPage extends Block<SignupProps, SignupRefs> {
-  static componentName: string = 'SignupPage';
+  static componentName = 'SignupPage';
 
   constructor(props: SignupProps) {
     super({

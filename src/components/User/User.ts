@@ -12,7 +12,7 @@ export type UserProps = {
   router: Router;
   store: Store<AppState>;
   user: Nullable<UserType>;
-  userData: Array<any>;
+  userData: Array<unknown>;
   userLogin: string;
   avatarSrc: string;
   navigateTo: (event: PointerEvent) => void;
@@ -21,8 +21,9 @@ export type UserProps = {
 };
 
 class User extends Block<UserProps> {
-  static componentName: string = 'User';
-  avatarSrc: string = '';
+  static componentName = 'User';
+
+  avatarSrc = '';
 
   constructor(props: UserProps) {
     super(props);
@@ -32,7 +33,7 @@ class User extends Block<UserProps> {
 
     this.setProps({
       userData: data,
-      userLogin: userLogin,
+      userLogin,
       avatarSrc: this.props.store.getState().user?.avatar,
       navigateTo: (event: PointerEvent) => {
         const path = (event.target as HTMLButtonElement).textContent || '';

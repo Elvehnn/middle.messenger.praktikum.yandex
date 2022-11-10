@@ -2,6 +2,10 @@ import Block from 'core/Block';
 import './Popup.scss';
 import ControlledInput from 'components/ControlledInput/ControlledInput';
 
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
 type PopupProps = {
   onSubmit: (event: SubmitEvent) => void;
   onInput: (event: FocusEvent) => void;
@@ -12,12 +16,8 @@ type PopupRefs = {
   [key: string]: ControlledInput;
 };
 
-interface SubmitEvent extends Event {
-  submitter: HTMLElement;
-}
-
 export default class Popup extends Block<PopupProps, PopupRefs> {
-  static componentName: string = 'Popup';
+  static componentName = 'Popup';
 
   constructor(props: PopupProps) {
     super(props);
@@ -27,6 +27,7 @@ export default class Popup extends Block<PopupProps, PopupRefs> {
       },
     });
   }
+
   render() {
     // language=hbs
     return `

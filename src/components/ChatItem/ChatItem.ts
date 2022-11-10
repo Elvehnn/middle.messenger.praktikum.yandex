@@ -19,8 +19,10 @@ type ChatItemProps = ChatItemPreviewProps & {
 };
 
 class ChatItem extends Block<ChatItemProps> {
-  static componentName: string = 'ChatItem';
-  unreadCount: number = 0;
+  static componentName = 'ChatItem';
+
+  unreadCount = 0;
+
   messagesArray: Array<WebSocketMessage> = [];
 
   constructor(props: ChatItemPreviewProps) {

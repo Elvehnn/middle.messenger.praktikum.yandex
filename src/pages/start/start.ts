@@ -9,7 +9,7 @@ export type StartPageProps = {
 };
 
 export class StartPage extends Block<StartPageProps> {
-  static componentName: string = 'StartPage';
+  static componentName = 'StartPage';
 
   constructor(props: StartPageProps) {
     super(props);

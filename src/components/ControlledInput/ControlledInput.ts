@@ -25,7 +25,7 @@ type ControlledInputProps = IncomingControlledInputProps & {
 };
 
 export default class ControlledInput extends Block<ControlledInputProps, ControlledInputRefs> {
-  static componentName: string = 'ControlledInput';
+  static componentName = 'ControlledInput';
 
   constructor({ error = '', inputName, label = inputName, ...props }: ControlledInputProps) {
     super({
@@ -38,11 +38,11 @@ export default class ControlledInput extends Block<ControlledInputProps, Control
 
         const target = event.target as HTMLInputElement;
         const nameInPascalCase = stringToPascalCase(inputName);
-        const error = validateForm([{ name: nameInPascalCase as ValidateType, input: target }])[
-          nameInPascalCase
-        ];
+        const errorObject = validateForm([
+          { name: nameInPascalCase as ValidateType, input: target },
+        ])[nameInPascalCase];
 
-        this.refs.errorRef.setProps({ error: error });
+        this.refs.errorRef.setProps({ error: errorObject });
       },
     });
   }

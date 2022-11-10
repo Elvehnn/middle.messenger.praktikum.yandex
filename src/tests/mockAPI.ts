@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import { PATH } from '../constants/pathsAPI';

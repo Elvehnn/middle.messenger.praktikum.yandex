@@ -14,12 +14,12 @@ import { changeUserPassword } from 'services/userData';
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
 class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
-  static componentName: string = 'ChangeUserPassword';
+  static componentName = 'ChangeUserPassword';
 
   constructor(props: ChangeProfileProps) {
     super(props);
 
-    const user = this.props.user;
+    const { user } = this.props;
     const { login, avatar } = user || {};
 
     this.setProps({

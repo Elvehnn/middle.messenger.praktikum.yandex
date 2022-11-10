@@ -1,7 +1,7 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { getByTestId } from '@testing-library/dom';
-import '@testing-library/jest-dom';
 import { renderBlock } from '../../tests/renderBlock';
-import { default as ChatItem } from './ChatItem';
+import ChatItem from './ChatItem';
 import { CHAT_MOCK } from '../../tests/chatMock';
 
 describe('components/ChatItem', () => {

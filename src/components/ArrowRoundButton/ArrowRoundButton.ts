@@ -5,13 +5,13 @@ import './ArrowRoundButton.scss';
 
 interface ArrowRoundButtonProps {
   router: Router;
-  events: {};
+  events: Record<string, unknown>;
   onClick?: () => void;
   dataTestid?: string;
 }
 
 class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
-  static componentName: string = 'ArrowRoundButton';
+  static componentName = 'ArrowRoundButton';
 
   constructor({ router, dataTestid = 'arrow-btn', onClick }: ArrowRoundButtonProps) {
     super({ router, dataTestid, events: { click: onClick } });

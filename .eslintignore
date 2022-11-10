@@ -2,3 +2,4 @@
 /node_modules 
 /coverage
 webpack.config.js
+server.js

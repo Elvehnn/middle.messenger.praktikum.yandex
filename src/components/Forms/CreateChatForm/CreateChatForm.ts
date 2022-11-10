@@ -13,7 +13,7 @@ import { createChat } from 'services/chats';
 type CreateChatFormProps = {
   router: Router;
   store: Store<AppState>;
-  events: {};
+  events: Record<string, unknown>;
   onCancel: () => void;
 };
 
@@ -24,7 +24,7 @@ interface SubmitEvent extends Event {
 }
 
 class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
-  static componentName: string = 'CreateChatForm';
+  static componentName = 'CreateChatForm';
 
   constructor(props: CreateChatFormProps) {
     super({

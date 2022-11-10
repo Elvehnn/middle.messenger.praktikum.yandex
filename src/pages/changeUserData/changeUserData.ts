@@ -2,7 +2,6 @@ import Block from 'core/Block';
 import 'components/User/User.scss';
 import 'pages/profile/profile.scss';
 import 'pages/start/start.scss';
-import { ProfileProps } from '../profile/profile';
 import UserDataInput from 'components/UserDataInput/UserDataInput';
 import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
@@ -11,27 +10,27 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import { WithUser } from 'utils/HOCS/WithUser';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { changeUserProfile } from 'services/userData';
-
 import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
 import { SignupData, UserKeys } from 'API/typesAPI';
+import { ProfileProps } from '../profile/profile';
 
 export type ChangeProfileProps = ProfileProps & {
-  userData: Array<any>;
+  userData: Array<unknown>;
   userLogin: string;
   avatarSrc: string;
-  events: {};
+  events: Record<string, unknown>;
   navigateBack: () => void;
 };
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
 class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
-  static componentName: string = 'ChangeUserData';
+  static componentName = 'ChangeUserData';
 
   constructor(props: ChangeProfileProps) {
     super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
 
-    const user = this.props.user;
+    const { user } = this.props;
     const { login, avatar } = user || {};
 
     const data = user ? getUserDataArray(user) : [];

@@ -8,8 +8,8 @@ type LinkProps = {
   onClick?: (event: MouseEvent) => void;
 };
 
-export default class Link extends Block<Record<string, any>> {
-  static componentName: string = 'Link';
+export default class Link extends Block<Record<string, unknown>> {
+  static componentName = 'Link';
 
   constructor(props: LinkProps) {
     super({ ...props, events: { click: props.onClick } });

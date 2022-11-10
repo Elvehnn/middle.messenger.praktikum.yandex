@@ -18,7 +18,7 @@ type UserDataInputProps = IncomingUserDataInputProps & {
 type UserDataInputRefs = Record<string, Input | ErrorMessage>;
 
 export default class UserDataInput extends Block<UserDataInputProps, UserDataInputRefs> {
-  static componentName: string = 'UserDataInput';
+  static componentName = 'UserDataInput';
 
   constructor({ title, data, type, childRef, error = '', inputName }: IncomingUserDataInputProps) {
     super({
@@ -30,12 +30,15 @@ export default class UserDataInput extends Block<UserDataInputProps, UserDataInp
       inputName,
       onInputEvent: (event: FocusEvent) => {
         const target = event.target as HTMLInputElement;
-        const error = validateForm([{ name: inputName as ValidateType, input: target }])[inputName];
+        const errorObject = validateForm([{ name: inputName as ValidateType, input: target }])[
+          inputName
+        ];
 
-        this.refs.errorRef.setProps({ error: error });
+        this.refs.errorRef.setProps({ error: errorObject });
       },
     });
   }
+
   render() {
     // language=hbs
     return `

@@ -13,7 +13,7 @@ import { addUserToChat } from 'services/chats';
 type AddUserToChatFormProps = {
   router: Router;
   store: Store<AppState>;
-  events: {};
+  events: Record<string, unknown>;
   onCancel: () => void;
 };
 
@@ -24,7 +24,7 @@ interface SubmitEvent extends Event {
 }
 
 class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormRefs> {
-  static componentName: string = 'AddUserToChatForm';
+  static componentName = 'AddUserToChatForm';
 
   constructor(props: AddUserToChatFormProps) {
     super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
@@ -42,7 +42,9 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
     if (Object.keys(errors).length === 0) {
       const chat = this.props.store.getState().selectedChat;
 
-      chat && (await addUserToChat({ login: login.value, chat }));
+      if (chat) {
+        await addUserToChat({ login: login.value, chat });
+      }
     }
   }
 

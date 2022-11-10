@@ -17,12 +17,8 @@ type ChangeAvatarRefs = {
   [key: string]: ControlledInput;
 };
 
-interface SubmitEvent extends Event {
-  submitter: HTMLElement;
-}
-
 class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
-  static componentName: string = 'ChangeAvatar';
+  static componentName = 'ChangeAvatar';
 
   constructor(props: ChangeAvatarProps) {
     super(props);
@@ -37,7 +33,7 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
         const form = document.querySelector('form');
         const formData = new FormData(form as HTMLFormElement);
 
-        //TODO: Здесь будет правильная валидация данных
+        // TODO: Здесь будет правильная валидация данных
 
         if ((document.querySelector('#avatar') as HTMLInputElement).value) {
           document
@@ -57,8 +53,9 @@ class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
       },
     });
   }
+
   render() {
-    //TODO:  Застилить label и убрать стандартный инпут
+    // TODO:  Застилить label и убрать стандартный инпут
 
     // language=hbs
     return `

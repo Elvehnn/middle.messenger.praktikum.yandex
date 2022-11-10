@@ -1,14 +1,16 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import 'regenerator-runtime/runtime';
 import { registerComponent } from 'core';
 import * as components from 'components';
 import './styles/style.scss';
 import Router from 'core/Router';
 import { initRouter } from 'services/initRouter';
-import store, { Store } from './store/Store';
 import { startApp } from 'services/startApp';
 import SocketController from 'core/SocketController';
+import { BlockConstructable } from 'core/RegisterComponent';
+import store, { Store } from './store/Store';
 
-Object.values(components).forEach((Component: any) => {
+Object.values(components).forEach((Component: BlockConstructable) => {
   registerComponent(Component);
 });
 
@@ -27,9 +29,10 @@ window.store = store;
 const socketController = new SocketController();
 window.socketController = socketController;
 
-//TODO: добавить стартовый экран на запуск приложения
+// TODO: добавить стартовый экран на запуск приложения
 
 store.on('updated', (nextState) => {
+  // eslint-disable-next-line no-console
   console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
 });
 

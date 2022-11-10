@@ -1,5 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { getByTestId } from '@testing-library/dom';
-import '@testing-library/jest-dom';
 import { renderBlock } from '../../tests/renderBlock';
 import Button from './Button';
 

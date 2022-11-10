@@ -13,6 +13,7 @@ export function WithStore<P extends WithStateProps, S = Indexed<unknown>>(
   // @ts-expect-error No base constructor has the specified
   return class extends WrappedBlock<P> {
     public static componentName = WrappedBlock.componentName || WrappedBlock.name;
+
     public static mapStateToProps = (state: AppState) => {
       return state;
     };

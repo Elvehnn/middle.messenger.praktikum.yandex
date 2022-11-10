@@ -13,7 +13,7 @@ type AvatarProps = {
 };
 
 class Avatar extends Block<AvatarProps> {
-  static componentName: string = 'Avatar';
+  static componentName = 'Avatar';
 
   constructor(props: AvatarProps) {
     super(props);

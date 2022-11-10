@@ -4,7 +4,7 @@ import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedE
 import { cloneDeep } from 'utils/cloneDeep';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
-import { DEFAULT_AVATAR } from 'constants/imagesPaths';
+import { DEFAULT_AVATAR } from '../constants/imagesPaths';
 import type { Store } from '../store/Store';
 
 const api = new UserAPI();

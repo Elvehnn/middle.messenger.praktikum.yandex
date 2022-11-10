@@ -1,8 +1,9 @@
-import { renderBlock } from '../../tests/renderBlock';
-import { default as SigninPage } from './signin';
+/* eslint-disable import/no-extraneous-dependencies */
 import userEvent from '@testing-library/user-event';
 import { findByTestId, getByTestId, waitFor } from '@testing-library/dom';
 import { sleep } from 'utils/sleep';
+import SigninPage from './signin';
+import { renderBlock } from '../../tests/renderBlock';
 
 describe('pages/signin', () => {
   it('should log a user in', async () => {

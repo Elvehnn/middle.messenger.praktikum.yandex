@@ -13,7 +13,7 @@ import { deleteUserFromChat } from 'services/chats';
 type DeleteUserFromChatFormProps = {
   router: Router;
   store: Store<AppState>;
-  events: {};
+  events: Record<string, unknown>;
   onCancel: () => void;
 };
 
@@ -29,7 +29,7 @@ class DeleteUserFromChatForm extends Block<
   DeleteUserFromChatFormProps,
   DeleteUserFromChatFormRefs
 > {
-  static componentName: string = 'DeleteUserFromChatForm';
+  static componentName = 'DeleteUserFromChatForm';
 
   constructor(props: DeleteUserFromChatFormProps) {
     super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
@@ -48,7 +48,9 @@ class DeleteUserFromChatForm extends Block<
     if (Object.keys(errors).length === 0) {
       const chat = this.props.store.getState().selectedChat;
 
-      chat && (await deleteUserFromChat({ login: login.value, chat }));
+      if (chat) {
+        await deleteUserFromChat({ login: login.value, chat });
+      }
     }
   }
 

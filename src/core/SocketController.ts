@@ -1,18 +1,18 @@
+/* eslint-disable no-console */
 import { WebSocketMessage } from 'API/typesAPI';
-import { PATH } from '../constants/pathsAPI';
 import { addDOMMessageElement, updateDOMMessagesContainer } from 'utils/createMessageElement';
 import { sortMessagesByTime } from 'utils/sortMessagesByTime';
-
-export interface SocketControllerProps {
-  socketsMap: Map<string, SocketData>;
-  createSocket: (userId: number, chat: ChatType) => void;
-  setHandlers: (socket: WebSocket, userId: number, chat: ChatType) => void;
-}
+import { PATH } from '../constants/pathsAPI';
 
 export type SocketData = {
   socket: WebSocket;
   oldMessagesArray: Array<WebSocketMessage>;
 };
+export interface SocketControllerProps {
+  socketsMap: Map<string, SocketData>;
+  createSocket: (userId: number, chat: ChatType) => void;
+  setHandlers: (socket: WebSocket, userId: number, chat: ChatType) => void;
+}
 
 export default class SocketController implements SocketControllerProps {
   socketsMap: Map<string, SocketData> = new Map();
@@ -22,7 +22,7 @@ export default class SocketController implements SocketControllerProps {
     const socket = new WebSocket(`${PATH.WEBSOCKET}/chats/${userId}/${id}/${chatToken}`);
 
     this.setHandlers(socket, userId, chat);
-    this.socketsMap.set(String(id), { socket: socket, oldMessagesArray: [] });
+    this.socketsMap.set(String(id), { socket, oldMessagesArray: [] });
   }
 
   setHandlers(socket: WebSocket, userId: number, chat: ChatType) {
@@ -78,8 +78,8 @@ export default class SocketController implements SocketControllerProps {
         }
 
         addDOMMessageElement(data, userId);
-      } catch {
-        (error: Error) => console.log(error.message);
+      } catch (error) {
+        console.log((error as Error).message);
       }
     });
 
