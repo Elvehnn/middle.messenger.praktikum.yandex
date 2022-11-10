@@ -20,7 +20,7 @@ class Profile extends Block<ProfileProps> {
   }
 
   render() {
-    console.log(`%c Profile page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
+    // console.log(`%c Profile page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
     // language=hbs
     return `
         <main class="main">

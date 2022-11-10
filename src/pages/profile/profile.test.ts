@@ -1,20 +1,22 @@
-import { getByTestId, getAllByText, prettyDOM, getByText } from '@testing-library/dom';
+import {
+  getByTestId,
+  getAllByText,
+  prettyDOM,
+  getByText,
+  waitFor,
+  queryByTestId,
+} from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { Store } from 'store/Store';
 import { defaultState } from 'store/defaultState';
 import { renderBlock } from '../../tests/renderBlock';
 import { default as Profile } from './profile';
 import { sleep } from 'utils/sleep';
+import { USER_MOCK } from '../../tests/userMock';
 
 describe('pages/profile', () => {
-  let store: Store<AppState>;
-
-  beforeEach(() => {
-    store = new Store(defaultState);
-  });
-
-  it('should render profile page with default props', () => {
-    renderBlock({
+  it('should render profile page with default props', async () => {
+    await renderBlock({
       Block: Profile,
       props: {},
     });
@@ -30,28 +32,16 @@ describe('pages/profile', () => {
   });
 
   it('should render profile page with store data', async () => {
-    const userMOCK = {
-      avatar: 'blob:http://localhost:1234/784663d0-0878-419e-b4ca-3d747d5f39cc',
-      displayName: 'N',
-      email: 'Elvehnn1980@gmail.com',
-      firstName: 'Elena',
-      id: 44866,
-      login: 'Elvehnn1980',
-      phone: '+7(960)900-00-00',
-      secondName: 'Pupkina',
-    };
-
-    renderBlock({
+    await renderBlock({
       Block: Profile,
       props: {},
       state: {
         view: Profile,
+        currentRoutePathname: '/profile',
         isAppStarted: true,
-        user: userMOCK,
+        user: USER_MOCK,
       },
     });
-
-    // console.log(prettyDOM(document.body));
 
     expect(getByTestId(document.body, 'profile')).toBeInTheDocument();
     expect(getByTestId(document.body, 'aside')).toBeInTheDocument();
@@ -66,5 +56,33 @@ describe('pages/profile', () => {
     expect(getByText(document.body, '+7(960)900-00-00')).toBeInTheDocument();
     expect(getByText(document.body, 'Elena')).toBeInTheDocument();
     expect(getByText(document.body, 'Pupkina')).toBeInTheDocument();
+  });
+
+  it('should logout from profile and redirect to signin', async () => {
+    await renderBlock({
+      Block: Profile,
+      props: {},
+      state: {
+        view: Profile,
+        currentRoutePathname: '/profile',
+        isAppStarted: true,
+        user: USER_MOCK,
+      },
+    });
+
+    await (async () => {
+      const signoutButton = getByTestId(document.body, 'signout-btn');
+      signoutButton.click();
+    })();
+
+    await (async () => {
+      await waitFor(() => expect(getByTestId(document.body, 'signin')).toBeInTheDocument());
+    })();
+
+    const state = window.store.getState();
+
+    expect(state.view.componentName).toBe('SigninPage');
+    expect(state.currentRoutePathname).toBe('/signin');
+    expect(state.user).toEqual(null);
   });
 });

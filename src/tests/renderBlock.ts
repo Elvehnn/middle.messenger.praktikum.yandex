@@ -5,7 +5,7 @@ import { initRouter } from 'services/initRouter';
 import * as components from 'components';
 import { Store } from 'store/Store';
 import { sleep } from '../utils/sleep';
-import MockedRouter from './mockRouter';
+import MockedRouter from './MockedRouter';
 
 type RenderBlockParams<T extends Record<string, any>> = {
   Block: BlockClass<T>;
@@ -31,6 +31,7 @@ export async function renderBlock<T extends Record<string, any>>({
   document.body.innerHTML = '<div id="app"></div>';
 
   renderDOM(new Block(props));
+
   initRouter(router, store);
 
   await sleep();

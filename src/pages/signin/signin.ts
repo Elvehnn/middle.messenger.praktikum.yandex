@@ -68,7 +68,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
           <h1>Chatterbox</h1>
 
-          <form class="login-form" onSubmit={{onSubmit}}>
+          <form class="login-form" data-testid='signin' onSubmit={{onSubmit}}>
                 <div class="login-form__group">
                     <h2>Sign in</h2>
                     
