@@ -97,7 +97,7 @@
             "^pages(.*)$": "<rootDir>/src/pages$1"
         },
         "setupFilesAfterEnv": [
-            "<rootDir>/src/tests/setup.ts"
+            "<rootDir>/src/testsUtils/setup.ts"
         ]
     }
 }

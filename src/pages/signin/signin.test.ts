@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { findByTestId, getByTestId, waitFor } from '@testing-library/dom';
 import { sleep } from 'utils/sleep';
 import SigninPage from './signin';
-import { renderBlock } from '../../tests/renderBlock';
+import { renderBlock } from '../../testsUtils/renderBlock';
 
 describe('pages/signin', () => {
   it('should log a user in', async () => {

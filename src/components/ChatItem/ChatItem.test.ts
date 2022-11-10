@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getByTestId } from '@testing-library/dom';
-import { renderBlock } from '../../tests/renderBlock';
+import { renderBlock } from '../../testsUtils/renderBlock';
 import ChatItem from './ChatItem';
-import { CHAT_MOCK } from '../../tests/chatMock';
+import { CHAT_MOCK } from '../../testsUtils/chatMock';
 
 describe('components/ChatItem', () => {
   it('should render ChatItem component with props', async () => {

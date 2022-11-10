@@ -3,7 +3,7 @@ import { Store } from 'store/Store';
 import { sleep } from 'utils/sleep';
 import { initRouter } from 'services/initRouter';
 import { defaultState } from 'store/defaultState';
-import MockPage from '../tests/MockPage';
+import MockPage from '../testsUtils/MockPage';
 
 describe('core/Router', () => {
   let router: Router;

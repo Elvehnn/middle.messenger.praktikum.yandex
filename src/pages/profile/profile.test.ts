@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getByTestId, getAllByText, getByText, waitFor } from '@testing-library/dom';
-import { renderBlock } from '../../tests/renderBlock';
+import { renderBlock } from '../../testsUtils/renderBlock';
 import Profile from './profile';
-import { USER_MOCK } from '../../tests/userMock';
+import { USER_MOCK } from '../../testsUtils/userMock';
 
 describe('pages/profile', () => {
   it('should render profile page with default props', async () => {

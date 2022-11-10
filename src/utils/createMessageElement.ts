@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { WebSocketMessage } from 'API/typesAPI';
 
 export enum MessageStatus {

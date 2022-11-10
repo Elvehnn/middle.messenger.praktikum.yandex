@@ -1,3 +1,3 @@
-export default function getObjectFromPath(pathArray: string[], value: unknown): Indexed {
-  return pathArray.reduceRight((acc, item) => ({ [item]: acc }), value as unknown as any);
+export default function getObjectFromPath(pathArray: string[], value: unknown): Indexed<unknown> {
+  return pathArray.reduceRight((acc, item) => ({ [item]: acc }), value as Indexed<unknown>);
 }

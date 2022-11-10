@@ -2,7 +2,7 @@ import Block from 'core/Block';
 import './Button.scss';
 
 interface ButtonProps {
-  type: 'submit' | 'button' | 'reset';
+  type?: 'submit' | 'button' | 'reset';
   title?: string;
   class?: string;
   onClick?: () => void;
@@ -16,7 +16,7 @@ export default class Button extends Block<ButtonProps> {
   static componentName = 'Button';
 
   constructor({
-    type,
+    type = 'button',
     title = '',
     class: string = 'button button_confirm',
     dataTestid = 'button',

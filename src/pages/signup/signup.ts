@@ -77,7 +77,7 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
        
             <h1>Chatterbox</h1>
 
-            <form class="login-form">
+            <form class="login-form" onSubmit={{onSubmit}}>
                   <div class="login-form__group">
                       <h2>Sign up</h2>
                       {{#each inputs}}
@@ -100,8 +100,8 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
                   <div class="login-form__bottom">
                     <p class='form-submit__warning'>${errorMessage}</p>
                  
-                    {{{Button title="Sign up"}}}
-                    {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin}}}
+                    {{{Button title="Sign up" type="submit"}}}
+                    {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin type="button"}}}
                   </div>
             </form>
     
