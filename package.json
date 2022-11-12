@@ -10,7 +10,10 @@
         "format": "prettier --write \"src/**/*.{js,jsx,ts}\"",
         "stylelint": "stylelint \"src/**/*.{css,.scss}\"",
         "stylelint:fix": "stylelint \"src/**/*.{css,.scss}\" --fix",
-        "eslint": "eslint . --ext .ts,.js"
+        "eslint": "eslint . --ext .ts,.js",
+        "lint": "npm run eslint && npm run stylelint:fix",
+        "validate": "lint-staged && npm run test",
+        "prepare": "husky install"
     },
     "alias": {
         "core": "./src/core",
@@ -56,8 +59,10 @@
         "eslint-plugin-import": "2.26.0",
         "eslint-plugin-prettier": "4.2.1",
         "html-webpack-plugin": "5.5.0",
+        "husky": "8.0.2",
         "identity-obj-proxy": "3.0.0",
         "jest": "27.5.1",
+        "lint-staged": "13.0.3",
         "mini-css-extract-plugin": "2.6.1",
         "msw": "0.48.1",
         "postcss-loader": "7.0.1",
@@ -95,6 +100,17 @@
         },
         "setupFilesAfterEnv": [
             "<rootDir>/src/testsUtils/setup.ts"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.(js|ts|scss|css)": [
+            "npm run lint",
+            "git add"
         ]
     }
 }

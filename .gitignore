@@ -4,3 +4,5 @@ dist/
 coverage/
 .parcel-cache/
 .env
+/.husky
+
