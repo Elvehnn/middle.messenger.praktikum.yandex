@@ -1,18 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isObject } from './checkers and validators/isObject';
 
-export function cloneDeep<T extends object = object>(obj: T) {
-  const clone = (Array.isArray(obj) ? [] : {}) as T;
+export const cloneDeep = (obj: object) => {
+  const clone: any = Array.isArray(obj) ? [] : {};
 
-  for (let i in obj) {
-    if (isObject(obj[i])) {
-      console.log(obj[i]);
-
-      clone[i] = cloneDeep(obj[i] as T) as T[Extract<keyof T, string>];
+  Object.entries(obj).forEach(([key, value]) => {
+    if (isObject(value)) {
+      clone[key] = cloneDeep(value as object);
     } else {
-      clone[i] = obj[i];
+      clone[key] = value;
     }
-  }
-  return clone;
-}
+  });
 
-export default cloneDeep;
+  return clone;
+};

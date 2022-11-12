@@ -8,11 +8,8 @@ export interface DataItemProps {
 }
 
 export default class UserDataItem extends Block<DataItemProps> {
-  static componentName: string = 'UserDataItem';
+  static componentName = 'UserDataItem';
 
-  constructor(props: DataItemProps) {
-    super(props);
-  }
   render() {
     // language=hbs
     return `

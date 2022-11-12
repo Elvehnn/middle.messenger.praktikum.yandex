@@ -11,58 +11,62 @@ export interface ChatItemPreviewProps {
 }
 
 type ChatItemProps = ChatItemPreviewProps & {
-  deleteChatHandler: () => void;
-  events: {
+  onChatItemClick?: () => void;
+  deleteChatHandler?: () => void;
+  events?: {
     click: (event: Event) => void;
   };
 };
 
 class ChatItem extends Block<ChatItemProps> {
-  static componentName: string = 'ChatItem';
-  unreadCount: number = 0;
+  static componentName = 'ChatItem';
+
+  unreadCount = 0;
+
   messagesArray: Array<WebSocketMessage> = [];
 
   constructor(props: ChatItemPreviewProps) {
-    const onChatItemClick = async (event: Event) => {
-      if ((event.target as HTMLElement).tagName === 'BUTTON') {
-        return;
-      }
-
-      await getChatInfo(this.props.store, this.props.chat);
-
-      const { user, selectedChat } = this.props.store.getState();
-
-      if (user && selectedChat) {
-        openSocket(user.id, selectedChat);
-      }
-    };
-
     super({
       ...props,
-      events: { click: onChatItemClick },
-      deleteChatHandler: () => {
-        deleteChat(this.props.store, { chatId: this.props.chat.id });
+      events: { click: () => this.onChatItemClick },
+      deleteChatHandler: async () => {
+        await deleteChat({ chatId: this.props.chat.id });
       },
     });
+  }
+
+  async onChatItemClick(event: Event) {
+    if ((event.target as HTMLElement).tagName === 'BUTTON') {
+      return;
+    }
+
+    await getChatInfo(this.props.chat);
+
+    const { user, selectedChat } = this.props.store.getState();
+
+    if (user && selectedChat) {
+      openSocket(user.id, selectedChat);
+    }
   }
 
   protected render(): string {
     // language=hbs
     return `
         <div class='border'>
-            <div class='chat-item' >
-                <div class='chat-item__avatar'>
+            <div class='chat-item' data-testid='chat-item'>
+                <div class='chat-item__avatar' data-testid='chat-item-avatar'>
                     <img class='avatar' src='./images/avatar.jpg' alt='avatar' />
                 </div>
 
                 <div class='chat-item__text'>
-                    <h4 class='chat-item__name'>{{chat.title}}</h4>
+                    <h4 class='chat-item__name' data-testid='chat-item-title'>{{chat.title}}</h4>
                 </div>
 
-                <div class='chat-item__info'>
-                    {{{Button class='chat-item__delete' title="X" onClick=deleteChatHandler}}}
+                <div class='chat-item__info' data-testid='chat-item-info'>
+                    {{{Button class='chat-item__delete' title="X" onClick=deleteChatHandler dataTestid='chat-item-delete-btn'}}}
+                    
                     <div class='chat-item__notifications'>
-                        <p class='chat-item__unread'>{{chat.unreadCount}}</p>
+                      <p class='chat-item__unread' data-testid='chat-item-unread'>{{chat.unreadCount}}</p>
                     </div>
                 </div>
             </div>

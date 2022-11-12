@@ -1,3 +1,7 @@
+export type ResponseStatus = {
+  ok: string;
+};
+
 export type APIError = {
   reason: string;
   status: string;
@@ -25,10 +29,10 @@ export type SignupRequestData = {
 export type ChatFromServer = {
   id: number;
   title: string;
-  avatar: Record<string, any>;
+  avatar: string;
   created_by: number;
   unread_count: number;
-  last_message: Record<string, any>;
+  last_message: Record<string, unknown>;
 };
 
 export type CreateChatRequestData = {
@@ -64,12 +68,6 @@ export type ChatUsersRequestData = {
 export type UnreadCountResponseData = {
   unread_count: number;
 };
-
-export type ResponseData = {} | APIError;
-
-export enum ResponseStatus {
-  OK = 'ok',
-}
 
 export type WebSocketMessage = {
   chat_id: number;

@@ -10,6 +10,10 @@ import { validateForm, ValidateType } from 'utils/checkers and validators/valida
 import { sendMessage } from 'services/chats';
 import { reduceObjectToString } from 'utils/transformers/reduceObjectToString';
 
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
 type MainPageProps = {
   router: Router;
   store: Store<AppState>;
@@ -27,13 +31,8 @@ type Refs = {
   messageRef: MessageInput;
   attach: Input;
 };
-
-interface SubmitEvent extends Event {
-  submitter: HTMLElement;
-}
-
 class MainPage extends Block<MainPageProps, Refs> {
-  static componentName: string = 'MainPage';
+  static componentName = 'MainPage';
 
   constructor(props: MainPageProps) {
     super(props);
@@ -53,9 +52,7 @@ class MainPage extends Block<MainPageProps, Refs> {
 
         const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
 
-        if (Object.keys(errors).length !== 0) {
-          Object.values(errors).forEach((errorMessage) => console.log(errorMessage));
-        } else {
+        if (Object.keys(errors).length === 0) {
           const chat = this.props.store.getState().selectedChat;
 
           if (chat) {
@@ -90,9 +87,11 @@ class MainPage extends Block<MainPageProps, Refs> {
     const { id, title, chatUsers = [] } = selectedChat || {};
     const chatUsersToString = reduceObjectToString(chatUsers, 'login');
 
+    // console.log(`%c Main page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
+
     // language=hbs
     return `
-        <main class="main">
+        <main class="main" data-testid="main">
           {{{Preloader}}}
          
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}

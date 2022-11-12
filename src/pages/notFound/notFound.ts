@@ -2,20 +2,20 @@ import Block from 'core/Block';
 import Router from 'core/Router';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 
-export type NotFound404Props = {
+export type NotFoundProps = {
   router: Router;
   navigateBack?: () => void;
 };
 
-export class NotFound404 extends Block<NotFound404Props> {
-  static componentName: string = 'NotFound404';
+class NotFound extends Block<NotFoundProps> {
+  static componentName = 'NotFound404';
 
-  constructor(props: NotFound404Props) {
+  constructor(props: NotFoundProps) {
     super(props);
 
     this.setProps({
       navigateBack: () => {
-        this.props.router.back();
+        window.history.back();
       },
     });
   }
@@ -29,11 +29,11 @@ export class NotFound404 extends Block<NotFound404Props> {
           <h2 class="start">NOT FOUND</h2>
           <h2 class="start">404</h2>
 
-          {{{Button title='Go back' onClick=navigateBack class='button button_redirect'}}}
+          {{{Button title='Go back' onClick=navigateBack type='button' class='button button_redirect'}}}
           
         </main>
         `;
   }
 }
 
-export default WithRouter(NotFound404);
+export default WithRouter(NotFound);

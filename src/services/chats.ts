@@ -6,7 +6,6 @@ import {
   UnreadCountResponseData,
   UserToChatData,
 } from 'API/typesAPI';
-import { Store } from 'store/Store';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 import { transformChatsObject } from 'utils/transformers/transformChatsObject';
@@ -15,7 +14,7 @@ import { getUserByLogin } from './userData';
 
 const api = new ChatsAPI();
 
-export const getChats = async (store: Store<AppState>) => {
+export const getChats = async () => {
   showPreloader();
 
   try {
@@ -25,19 +24,21 @@ export const getChats = async (store: Store<AppState>) => {
       throw new Error(response.reason);
     }
 
-    store.setState({
+    window.store.setState({
       chats: response.map((item) => transformChatsObject(item)),
     });
 
     return response.map((item) => transformChatsObject(item));
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
+
+    return [];
   } finally {
     hidePreloader();
   }
 };
 
-export const createChat = async (store: Store<AppState>, action: CreateChatRequestData) => {
+export const createChat = async (action: CreateChatRequestData) => {
   showPreloader();
 
   try {
@@ -47,16 +48,16 @@ export const createChat = async (store: Store<AppState>, action: CreateChatReque
       throw new Error(response.reason);
     }
 
-    await getChats(store);
+    await getChats();
     window.router.reload();
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const deleteChat = async (store: Store<AppState>, action: DeleteChatRequestData) => {
+export const deleteChat = async (action: DeleteChatRequestData) => {
   showPreloader();
 
   try {
@@ -66,16 +67,16 @@ export const deleteChat = async (store: Store<AppState>, action: DeleteChatReque
       throw new Error(response.reason);
     }
 
-    await getChats(store);
+    await getChats();
     window.router.reload();
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const addUserToChat = async (store: Store<AppState>, action: UserToChatData) => {
+export const addUserToChat = async (action: UserToChatData) => {
   showPreloader();
 
   try {
@@ -95,23 +96,22 @@ export const addUserToChat = async (store: Store<AppState>, action: UserToChatDa
       throw new Error(response.reason);
     }
 
-    let chatUsers = action.chat.chatUsers;
-    chatUsers = chatUsers && [...chatUsers, transformUserObject(user[0])];
+    const { chatUsers } = action.chat;
 
     const selectedChat = {
       ...action.chat,
-      chatUsers,
+      chatUsers: chatUsers ? [...chatUsers, transformUserObject(user[0])] : [],
     };
 
-    store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat });
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const deleteUserFromChat = async (store: Store<AppState>, action: UserToChatData) => {
+export const deleteUserFromChat = async (action: UserToChatData) => {
   showPreloader();
 
   try {
@@ -131,28 +131,26 @@ export const deleteUserFromChat = async (store: Store<AppState>, action: UserToC
       throw new Error(response.reason);
     }
 
-    let chatUsers = action.chat.chatUsers;
-    chatUsers =
-      chatUsers && chatUsers.filter((item) => item.id !== transformUserObject(user[0]).id);
+    const { chatUsers } = action.chat;
 
     const selectedChat = {
       ...action.chat,
-      chatUsers,
+      chatUsers: chatUsers ? [...chatUsers, transformUserObject(user[0])] : [],
     };
 
-    store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat });
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
 };
 
-export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
+export const getChatInfo = async (action: ChatType) => {
   showPreloader();
 
   try {
-    const token = (await api.getChatToken(action.id)).token;
+    const { token } = await api.getChatToken(action.id);
 
     if (isApiReturnedError(token)) {
       throw new Error(token.reason);
@@ -170,9 +168,9 @@ export const getChatInfo = async (store: Store<AppState>, action: ChatType) => {
       chatToken: token,
     };
 
-    store.setState({ selectedChat: selectedChat });
+    window.store.setState({ selectedChat });
   } catch (error) {
-    store.setState({ errorMessage: (error as Error).message });
+    window.store.setState({ errorMessage: (error as Error).message });
   } finally {
     hidePreloader();
   }
@@ -183,8 +181,6 @@ export const openSocket = (id: number, chat: ChatType) => {
 
   if (!socket) {
     window.socketController.createSocket(id, chat);
-
-    return;
   }
 };
 
@@ -205,8 +201,10 @@ export const getUnreadMessagesCount = async (action: ChatType) => {
     if (isApiReturnedError(unreadCount)) {
       throw new Error(unreadCount.reason);
     }
+
     return unreadCount as UnreadCountResponseData;
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
+    return 0;
   }
 };

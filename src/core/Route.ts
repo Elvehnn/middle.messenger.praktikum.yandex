@@ -1,20 +1,17 @@
 import { isStringEqual } from 'utils/checkers and validators/isStringEqual';
 import { BlockConstructable } from './RegisterComponent';
 
-export interface RouteProps {
-  pathname: string;
-  view: BlockConstructable;
-  isPrivate: boolean;
-  callback: Function;
-}
-
 export default class Route {
   pathname: string;
-  view: BlockConstructable;
-  isPrivate: boolean;
-  callback: Function;
 
-  constructor({ pathname, view, isPrivate, callback }: RouteProps) {
+  view: BlockConstructable;
+
+  isPrivate: boolean;
+
+  callback: () => void;
+
+  constructor(props: RouteProps) {
+    const { pathname, view, isPrivate, callback } = props;
     this.pathname = pathname;
     this.view = view;
     this.isPrivate = isPrivate;

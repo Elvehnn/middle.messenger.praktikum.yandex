@@ -13,9 +13,7 @@ import { deleteUserFromChat } from 'services/chats';
 type DeleteUserFromChatFormProps = {
   router: Router;
   store: Store<AppState>;
-  onSubmit: (event: SubmitEvent) => void;
-  onInput: (event: FocusEvent) => void;
-  onFocus: (event: FocusEvent) => void;
+  events: Record<string, unknown>;
   onCancel: () => void;
 };
 
@@ -31,28 +29,29 @@ class DeleteUserFromChatForm extends Block<
   DeleteUserFromChatFormProps,
   DeleteUserFromChatFormRefs
 > {
-  static componentName: string = 'DeleteUserFromChatForm';
+  static componentName = 'DeleteUserFromChatForm';
 
   constructor(props: DeleteUserFromChatFormProps) {
-    super(props);
-    this.setProps({
-      onSubmit: async (event: SubmitEvent) => {
-        event.preventDefault();
+    super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
+  }
 
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
 
-        const { login } = refs;
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
 
-        setChildErrorsProps(errors, this.refs);
+    const { login } = refs;
 
-        if (Object.keys(errors).length === 0) {
-          const chat = this.props.store.getState().selectedChat;
+    setChildErrorsProps(errors, this.refs);
 
-          chat && deleteUserFromChat(this.props.store, { login: login.value, chat });
-        }
-      },
-    });
+    if (Object.keys(errors).length === 0) {
+      const chat = this.props.store.getState().selectedChat;
+
+      if (chat) {
+        await deleteUserFromChat({ login: login.value, chat });
+      }
+    }
   }
 
   render() {
@@ -62,7 +61,7 @@ class DeleteUserFromChatForm extends Block<
       <div class='form-container' id='deleteUser'>
         <div class='overlay'></div>
         
-        <form class='addUserToChatForm' action='#'>
+        <form class='addUserToChatForm' onSubmit={{onSubmit}}>
                 {{{Button class='addUserToChatForm__close' onClick=onCancel title='X' type='button'}}}
 
                 <h3>Enter user login to delete</h3>
@@ -83,8 +82,8 @@ class DeleteUserFromChatForm extends Block<
                 <div class="createChatForm__footer">
                     <p class='form-submit__warning'>${errorMessage}</p>
 
-                    {{{ Button  title='Delete user' class='button button_confirm' onClick=onSubmit type='submit'}}}
-                    {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
+                    {{{Button title='Delete user' class='button button_confirm' type='submit'}}}
+                    {{{Button title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
                     
                 </div>
             </form>

@@ -2,15 +2,15 @@ import EventBus from 'core/EventBus';
 import { deepEqual } from 'utils/checkers and validators/deepEqual';
 import { defaultState } from './defaultState';
 
-export type Action<State> = (state: State, payload: any) => void;
+export type Action<State> = (state: State, payload: Record<string, unknown>) => void;
 
-export class Store<State extends Record<string, any>> extends EventBus {
+export class Store<State extends Record<string, unknown>> extends EventBus {
   private state = {} as State;
 
-  constructor(defaultState: State) {
+  constructor(incomingState: State) {
     super();
 
-    this.state = defaultState;
+    this.state = incomingState;
   }
 
   public getState() {

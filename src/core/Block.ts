@@ -1,6 +1,7 @@
 import EventBus from './EventBus';
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
+import { deepEqual } from 'utils/checkers and validators/deepEqual';
 
 type Events = Values<typeof Block.EVENTS>;
 
@@ -9,10 +10,7 @@ export interface BlockClass<P extends Record<string, any>> extends Function {
   componentName?: string;
 }
 
-export default class Block<
-  P extends Record<string, any>,
-  Refs extends Record<string, Block<any>> = {}
-> {
+export default class Block<P extends Indexed<any>, Refs extends Record<string, Block<any>> = {}> {
   static componentName: string;
 
   static EVENTS = {
@@ -25,7 +23,7 @@ export default class Block<
   public id = nanoid(6);
 
   protected _element: Nullable<HTMLElement> = null;
-  protected readonly props: P;
+  protected props: Readonly<P>;
   protected children: { [id: string]: Block<{}> } = {};
 
   private _eventBus: EventBus<Events>;
@@ -34,7 +32,7 @@ export default class Block<
   protected refs: Refs = {} as { [key: string]: Block };
 
   public constructor(props?: P) {
-    this.props = this._makePropsProxy(props || ({} as P));
+    this.props = props || ({} as P);
 
     this._eventBus = new EventBus<Events>();
 
@@ -60,6 +58,7 @@ export default class Block<
 
   componentDidMount(props: P) {
     this.setProps(props);
+
     return true;
   }
 
@@ -67,27 +66,39 @@ export default class Block<
     this._eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: P, newProps: P) {
+  private _componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
     const response = this.componentDidUpdate(oldProps, newProps);
 
     if (!response) {
       return;
     }
+
     this._render();
   }
 
-  componentDidUpdate(oldProps: P, newProps: P) {
+  componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
+    if (deepEqual(oldProps, newProps)) {
+      return true;
+    }
+
     this.children = {};
 
     return true;
   }
 
-  setProps = (nextProps: Partial<P>) => {
-    if (!nextProps) {
+  setProps = (nextPartialProps: Partial<P>) => {
+    // console.log('set new prop', this.id, this.constructor.name, nextPartialProps);
+
+    if (!nextPartialProps) {
       return;
     }
 
-    Object.assign(this.props as Object, nextProps);
+    const prevProps = this.props;
+    const nextProps = { ...prevProps, ...nextPartialProps };
+
+    this.props = nextProps;
+
+    this._eventBus.emit(Block.EVENTS.FLOW_CDU, prevProps, nextProps);
   };
 
   getProps = () => {
@@ -130,30 +141,6 @@ export default class Block<
     }
 
     return this.element!;
-  }
-
-  private _makePropsProxy(props: any): any {
-    const self = this;
-
-    return new Proxy(props as unknown as object, {
-      get(target: Record<string, unknown>, prop: string) {
-        const value = target[prop];
-        return typeof value === 'function' ? value.bind(target) : value;
-      },
-
-      set(target: Record<string, unknown>, prop: string, value: unknown) {
-        target[prop] = value;
-
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep
-        self._eventBus.emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
-        return true;
-      },
-
-      deleteProperty() {
-        throw new Error('Нет доступа');
-      },
-    }) as unknown as P;
   }
 
   private _removeEvents() {
