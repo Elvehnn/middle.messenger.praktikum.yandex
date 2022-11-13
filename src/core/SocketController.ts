@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { WebSocketMessage } from 'API/typesAPI';
 import { addDOMMessageElement, updateDOMMessagesContainer } from 'utils/createMessageElement';
 import { sortMessagesByTime } from 'utils/sortMessagesByTime';
@@ -16,6 +15,8 @@ export interface SocketControllerProps {
 
 export default class SocketController implements SocketControllerProps {
   socketsMap: Map<string, SocketData> = new Map();
+
+  pingTimer: NodeJS.Timer | undefined;
 
   createSocket(userId: number, chat: ChatType) {
     const { id, chatToken } = chat;
@@ -40,6 +41,10 @@ export default class SocketController implements SocketControllerProps {
         socket.send(JSON.stringify(messageObject));
         currentMessageNumber += 20;
       }
+
+      this.pingTimer = setInterval(() => {
+        socket.send(JSON.stringify({ type: 'ping' }));
+      }, 10000);
     });
 
     socket.addEventListener('close', (event) => {
@@ -50,6 +55,8 @@ export default class SocketController implements SocketControllerProps {
       }
 
       console.log(`Код: ${event.code} | Причина: ${(event as CloseEvent).reason}`);
+
+      clearInterval(this.pingTimer);
       this.socketsMap.delete(String(userId));
     });
 

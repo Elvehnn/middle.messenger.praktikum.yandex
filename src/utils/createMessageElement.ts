@@ -5,6 +5,9 @@ export enum MessageStatus {
   Owner = 'owner',
   Mate = 'mate',
 }
+
+const SERVICE_MESSAGES = ['ping', 'pong', 'user connected'];
+
 export const createMessageElement = (
   message: { time: string; content: string },
   status: MessageStatus
@@ -31,9 +34,10 @@ export const createMessageElement = (
 
 export const addDOMMessageElement = (webSocketMessage: WebSocketMessage, userId: number) => {
   const { content, type, time, user_id } = webSocketMessage;
+
   const messageStatus = String(userId) === user_id ? MessageStatus.Owner : MessageStatus.Mate;
 
-  if (type !== 'user connected') {
+  if (!SERVICE_MESSAGES.includes(type)) {
     const messageData = { content, time };
     const messageElement = createMessageElement(messageData, messageStatus);
 
