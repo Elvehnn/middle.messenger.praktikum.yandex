@@ -11,7 +11,7 @@ export function WithStore<P extends WithStateProps, S = Indexed<unknown>>(
   mapStateToProps?: MapStateToProps<S>
 ) {
   // @ts-expect-error No base constructor has the specified
-  return class extends WrappedBlock<P> {
+  return class BlockWithStore extends WrappedBlock<P> {
     public static componentName = WrappedBlock.componentName || WrappedBlock.name;
 
     public static mapStateToProps = (state: AppState) => {

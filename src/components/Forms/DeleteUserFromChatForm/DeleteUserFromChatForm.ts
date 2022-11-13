@@ -61,8 +61,8 @@ class DeleteUserFromChatForm extends Block<
       <div class='form-container' id='deleteUser'>
         <div class='overlay'></div>
         
-        <form class='addUserToChatForm' onSubmit={{onSubmit}}>
-                {{{Button class='addUserToChatForm__close' onClick=onCancel title='X' type='button'}}}
+        <form class='delete-user-from-chat-form' onSubmit={{onSubmit}}>
+                {{{Button class='delete-user-from-chat-form__close' onClick=onCancel title='X' type='button'}}}
 
                 <h3>Enter user login to delete</h3>
 

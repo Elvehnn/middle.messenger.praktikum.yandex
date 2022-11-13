@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
+
 .left {
   width: 25%;
   height: 100%;
@@ -27,11 +28,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
+
   &__goto-profile {
     font-size: 1.4rem;
     color: $color-text-dark;
     background-color: transparent;
     align-self: flex-end;
+
     &:hover {
       transform: scale(1.1);
     }
@@ -46,6 +49,7 @@
   align-items: center;
   justify-content: flex-start;
   padding: 2rem;
+
   &__menu {
     position: relative;
     width: 54px;
@@ -54,6 +58,7 @@
     align-items: center;
     justify-content: center;
   }
+
   &__header,
   &__footer {
     width: 100%;
@@ -64,11 +69,13 @@
     border-bottom: 1px solid $color-text-dark;
     padding: 1rem;
   }
+
   &__footer {
     height: 104px;
     border-bottom: none;
     border-top: 0.1rem solid $color-text-dark;
     padding: 2rem 1rem;
+
     .message-form {
       width: 100%;
       height: 100%;
@@ -76,6 +83,7 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .button-container {
       width: 5%;
       height: 100%;
@@ -84,6 +92,7 @@
       justify-content: center;
     }
   }
+
   &__content {
     width: 100%;
     height: 100%;
@@ -103,10 +112,12 @@
   background-color: $color-light;
   border: none;
   outline: transparent;
-  &:after {
-    content: '\2807';
+
+  &::after {
+    content: "\2807";
     font-size: 30px;
   }
+
   &:hover {
     cursor: pointer;
     transform: scale(1.1);
@@ -135,17 +146,21 @@
   flex-direction: column;
   align-items: center;
   row-gap: 1rem;
+
   & > p {
     text-align: justify;
     line-height: 120%;
   }
+
   &_mate {
     align-self: flex-start;
   }
+
   &_owner {
     background-color: $color-main-second;
     align-self: flex-end;
   }
+
   &__time {
     font-size: 1rem;
     align-self: flex-end;

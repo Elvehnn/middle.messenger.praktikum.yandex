@@ -55,8 +55,8 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
       <div class='form-container' id='addUser'>
         <div class='overlay'></div>
         
-        <form class='addUserToChatForm' onSubmit={{onSubmit}}>
-                {{{Button class='addUserToChatForm__close' type='button' onClick=onCancel title='X'}}}
+        <form class='add-user-to-chat-form' onSubmit={{onSubmit}}>
+                {{{Button class='add-user-to-chat-form__close' type='button' onClick=onCancel title='X'}}}
 
                 <h3>Enter user login to add</h3>
 

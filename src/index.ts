@@ -29,10 +29,6 @@ window.socketController = socketController;
 
 // TODO: добавить стартовый экран на запуск приложения
 
-store.on('updated', (nextState) => {
-  console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
-});
-
 startApp(store).then(() => {
   initRouter(router, store);
   router.go(window.location.pathname);

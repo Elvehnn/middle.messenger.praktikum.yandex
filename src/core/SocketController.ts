@@ -13,6 +13,7 @@ export interface SocketControllerProps {
   setHandlers: (socket: WebSocket, userId: number, chat: ChatType) => void;
 }
 
+// TODO: заменить logs на уведомления или другие обработчики
 export default class SocketController implements SocketControllerProps {
   socketsMap: Map<string, SocketData> = new Map();
 

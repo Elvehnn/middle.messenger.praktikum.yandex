@@ -22,7 +22,7 @@
   "plugins": ["@typescript-eslint", "import", "prettier"],
   "settings": {
     "import/resolver": "webpack",
-    "import/extensions": [".js", ".jsx", ".ts"]
+    "import/extensions": [".js", ".js", ".ts"]
   },
   "rules": {
     "prettier/prettier": "error",
@@ -35,6 +35,7 @@
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "no-console": "warn",
+    "no-param-reassign": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
     "import/no-extraneous-dependencies": [

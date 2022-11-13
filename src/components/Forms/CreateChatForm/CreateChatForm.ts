@@ -64,8 +64,8 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
       <div class='form-container' id='createChat'>
           <div class='overlay'></div>
 
-          <form class='createChatForm' onSubmit={{onSubmit}}>
-          {{{Button class='createChatForm__close' onClick=onCancel title='X' type='button'}}}
+          <form class='create-chat-form' onSubmit={{onSubmit}}>
+          {{{Button class='create-chat-form__close' onClick=onCancel title='X' type='button'}}}
 
           <h3>Enter the name for the new chat</h3>
 

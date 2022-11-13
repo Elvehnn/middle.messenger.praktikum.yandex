@@ -1,4 +1,4 @@
-@import '../../../styles/variables.scss';
+@import "../../../styles/variables.scss";
 
 .form-container {
   display: none;
@@ -10,6 +10,7 @@
   top: 0;
   left: 0;
   z-index: -10;
+
   &_shown {
     display: flex;
     z-index: 10;
@@ -18,7 +19,7 @@
   .overlay {
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgb(0 0 0 / 70%);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -26,12 +27,12 @@
   }
 }
 
-.createChatForm {
+.create-chat-form {
   width: 360px;
   background-color: $color-light;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 6px rgb(0 0 0 / 14%);
   border-radius: 12px;
-  padding: 6rem 3rem 4rem 3rem;
+  padding: 6rem 3rem 4rem;
   position: absolute;
   top: calc(50% - 148px);
   left: calc(50% - 170px);
@@ -40,9 +41,11 @@
   align-items: center;
   justify-content: space-between;
   row-gap: 4rem;
+
   &__error {
     color: $color-warning;
   }
+
   &__label {
     cursor: pointer;
     color: $color-main-first;
@@ -52,11 +55,13 @@
     text-decoration: underline;
     position: relative;
   }
+
   &__upload {
     opacity: 0;
     position: absolute;
     z-index: -1;
   }
+
   &__close {
     position: absolute;
     top: 20px;
@@ -64,10 +69,12 @@
     border: none;
     background-color: transparent;
     font-size: 24px;
+
     &:hover {
       cursor: pointer;
     }
   }
+
   &__footer {
     width: 100%;
     display: flex;
@@ -76,8 +83,10 @@
     justify-content: center;
     row-gap: 0.7rem;
   }
+
   &__warning {
     opacity: 0;
+
     &_show {
       color: $color-warning;
       font-size: 1rem;

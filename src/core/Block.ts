@@ -28,7 +28,7 @@ export default class Block<P extends Indexed<any>, ParentRefs = {}> {
 
   private _eventBus: EventBus<Events>;
 
-  // @ts-expect-error Тип {} не соответствует типу Record<string, Block<any>
+  // @ts-expect-error Тип {} не соответствует типу ParentRefs
   protected refs: ParentRefs = {};
 
   public constructor(props?: P) {

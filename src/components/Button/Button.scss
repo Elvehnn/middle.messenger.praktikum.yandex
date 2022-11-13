@@ -1,38 +1,44 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
+
 .button {
-    border: none;
-    color: $color-light;
+  border: none;
+  color: $color-light;
+  background-color: $color-main-first;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 37px;
+  border-radius: 8px;
+  outline: transparent;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &_confirm {
     background-color: $color-main-first;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.4rem;
-    line-height: 22px;
-    text-align: center;
-    letter-spacing: 0.02em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 37px;
-    border-radius: 8px;
-    outline: transparent;
+  }
+
+  &_redirect {
+    background-color: $color-light;
+    color: $color-main-first;
+  }
+
+  &_navigate {
+    background-color: $color-light;
+    border: 1px solid $color-main-first;
+    color: $color-main-first;
+    font-weight: 500;
+
     &:hover {
-        cursor: pointer;
+      box-shadow: 0 0 6px rgb(0 41 128 / 20%);
     }
-    &_confirm {
-        background-color: $color-main-first;
-    }
-    &_redirect {
-        background-color: $color-light;
-        color: $color-main-first;
-    }
-    &_navigate {
-        background-color: $color-light;
-        border: 1px solid $color-main-first;
-        color: $color-main-first;
-        font-weight: 500;
-        &:hover {
-            box-shadow: 0px 0px 6px rgba(0, 41, 128, 20%);
-        }
-    }
+  }
 }
