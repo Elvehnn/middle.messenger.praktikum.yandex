@@ -14,7 +14,6 @@ import {
 } from '../../constants/validateRegExpressions';
 import { lowerCaseFirstLetter } from '../transformers/lowerCaseFirstLetter';
 
-// eslint-disable-next-line no-shadow
 export enum ValidateType {
   Login = 'login',
   Password = 'password',

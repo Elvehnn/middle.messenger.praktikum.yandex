@@ -1,13 +1,14 @@
-import Block from 'core/Block';
-
-export const setChildErrorsProps = (
-  errors: Record<string, string>,
-  parentRefs: Record<string, Block<any, any>>
-) => {
+export const setChildErrorsProps = (errors: Record<string, string>, parentRefs: ParentRefs) => {
   if (Object.entries(errors).length !== 0) {
-    Object.entries(errors).forEach(([key, value]) =>
-      parentRefs[key].getRefs().errorRef.setProps({ error: value })
-    );
+    Object.entries(errors).forEach(([key, value]) => {
+      const childRefs = parentRefs[key].getRefs();
+
+      if (Object.keys(childRefs).includes('errorRef')) {
+        childRefs.errorRef.setProps({
+          error: value,
+        });
+      }
+    });
 
     return;
   }

@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isObject } from './checkers and validators/isObject';
 
+type ArrayOrObject = Record<number | string, unknown>;
+
 export const cloneDeep = (obj: object) => {
-  const clone: any = Array.isArray(obj) ? [] : {};
+  const clone = (Array.isArray(obj) ? [] : {}) as ArrayOrObject;
 
   Object.entries(obj).forEach(([key, value]) => {
     if (isObject(value)) {
@@ -12,5 +13,5 @@ export const cloneDeep = (obj: object) => {
     }
   });
 
-  return clone;
+  return clone as Record<string, unknown>;
 };

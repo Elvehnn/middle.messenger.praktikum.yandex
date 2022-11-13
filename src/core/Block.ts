@@ -1,35 +1,35 @@
-import EventBus from './EventBus';
-import { nanoid } from 'nanoid';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Handlebars from 'handlebars';
+import { nanoid } from 'nanoid';
 import { deepEqual } from 'utils/checkers and validators/deepEqual';
+import EventBus from './EventBus';
 
-type Events = Values<typeof Block.EVENTS>;
+export const BLOCK_EVENTS = {
+  INIT: 'init',
+  FLOW_CDM: 'flow:component-did-mount',
+  FLOW_CDU: 'flow:component-did-update',
+  FLOW_RENDER: 'flow:render',
+};
 
-export interface BlockClass<P extends Record<string, any>> extends Function {
-  new (props: P): Block<P>;
-  componentName?: string;
-}
+export type Events = Values<typeof BLOCK_EVENTS>;
 
-export default class Block<P extends Indexed<any>, Refs extends Record<string, Block<any>> = {}> {
+export default class Block<P extends Indexed<any>, ParentRefs = {}> {
   static componentName: string;
 
-  static EVENTS = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_RENDER: 'flow:render',
-  } as const;
+  static EVENTS = BLOCK_EVENTS;
 
   public id = nanoid(6);
 
   protected _element: Nullable<HTMLElement> = null;
+
   protected props: Readonly<P>;
+
   protected children: { [id: string]: Block<{}> } = {};
 
   private _eventBus: EventBus<Events>;
 
   // @ts-expect-error Тип {} не соответствует типу Record<string, Block<any>
-  protected refs: Refs = {} as { [key: string]: Block };
+  protected refs: ParentRefs = {};
 
   public constructor(props?: P) {
     this.props = props || ({} as P);
@@ -87,8 +87,6 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   }
 
   setProps = (nextPartialProps: Partial<P>) => {
-    // console.log('set new prop', this.id, this.constructor.name, nextPartialProps);
-
     if (!nextPartialProps) {
       return;
     }
@@ -115,11 +113,11 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
 
   private _render() {
     const fragment = this._compile();
-    const newElement = fragment.firstElementChild!;
+    const newElement = fragment.firstElementChild;
 
-    if (this._element) {
+    if (this._element && newElement) {
       this._removeEvents();
-      this._element!.replaceWith(newElement);
+      this._element.replaceWith(newElement);
     }
 
     this._element = newElement as HTMLElement;
@@ -131,7 +129,6 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   }
 
   getContent(): HTMLElement {
-    // Хак, чтобы вызвать CDM только после добавления в DOM
     if (this.element?.parentNode?.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
       setTimeout(() => {
         if (this.element?.parentNode?.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
@@ -144,7 +141,7 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   }
 
   private _removeEvents() {
-    const events: Record<string, () => void> = (this.props as any).events;
+    const { events } = this.props;
 
     if (!events || !this._element) {
       return;
@@ -156,7 +153,7 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   }
 
   private _addEvents() {
-    const events: Record<string, () => void> = (this.props as any).events;
+    const { events } = this.props;
 
     if (!events) {
       return;
@@ -170,9 +167,6 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   private _compile(): DocumentFragment {
     const fragment = document.createElement('template');
 
-    /**
-     * Рендерим шаблон
-     */
     const template = Handlebars.compile(this.render());
 
     fragment.innerHTML = template({
@@ -181,13 +175,7 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
       refs: this.refs,
     });
 
-    /**
-     * Заменяем заглушки на компоненты
-     */
     Object.entries(this.children).forEach(([id, component]) => {
-      /**
-       * Ищем заглушку по id
-       */
       const stub = fragment.content.querySelector(`[data-id="${id}"]`);
 
       if (!stub) {
@@ -196,15 +184,9 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
 
       const stubChilds = stub.childNodes.length ? stub.childNodes : [];
 
-      /**
-       * Заменяем заглушку на component._element
-       */
       const content = component.getContent();
       stub.replaceWith(content);
 
-      /**
-       * Ищем элемент layout-а, куда вставлять детей
-       */
       const layoutContent = content.querySelector('[data-layout="1"]');
 
       if (layoutContent && stubChilds.length) {
@@ -212,9 +194,6 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
       }
     });
 
-    /**
-     * Возвращаем фрагмент
-     */
     return fragment.content;
   }
 
@@ -225,4 +204,9 @@ export default class Block<P extends Indexed<any>, Refs extends Record<string, B
   hide() {
     this.getContent().style.display = 'none';
   }
+}
+
+export interface BlockClass<P extends Record<string, unknown>> extends Function {
+  new (props: P): Block<P>;
+  componentName?: string;
 }
