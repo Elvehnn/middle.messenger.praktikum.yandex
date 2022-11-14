@@ -59,6 +59,16 @@ class MainPage extends Block<MainPageProps, Refs> {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.store.getState().currentRoutePathname !== '/main') {
+      return false;
+    }
+
+    this.children = {};
+
+    return true;
+  }
+
   onSubmit(event: SubmitEvent) {
     // TODO: добавить обработку прикрепленных файлов
     event.preventDefault();

@@ -126,13 +126,20 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
         break;
 
-      case ValidateType.Phone:
+      case ValidateType.Phone: {
         if (!value.length) {
           errors[name] = 'Phone can not be empty';
           return;
         }
 
-        if (!value.match(NO_DIGITS)) {
+        const digitsNumber = value.match(/(\d+)/);
+
+        if (digitsNumber && digitsNumber.length > 10) {
+          errors[name] = 'Phone number must contain no more than 10 digits';
+          return;
+        }
+
+        if (value.match(NO_DIGITS)) {
           errors[name] = 'Phone number must not contain letters';
           return;
         }
@@ -147,6 +154,7 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
         }
 
         break;
+      }
 
       case ValidateType.FirstName:
       case ValidateType.SecondName:

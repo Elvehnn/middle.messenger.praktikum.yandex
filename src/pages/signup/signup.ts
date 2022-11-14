@@ -98,7 +98,7 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
                   </div>
 
                   <div class="login-form__bottom">
-                    <p class='form-submit__warning'>${errorMessage}</p>
+                    <p class='form-submit-warning'>${errorMessage}</p>
                  
                     {{{Button title="Sign up" type="submit"}}}
                     {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin type="button"}}}

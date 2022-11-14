@@ -7,14 +7,16 @@ import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
-import { WithUser } from 'utils/HOCS/WithUser';
 import { getUserDataArray } from 'utils/getUserDataArray';
 import { changeUserProfile } from 'services/userData';
 import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
 import { SignupData, UserKeys } from 'API/typesAPI';
+import { WithStore } from 'utils/HOCS/WithStore';
+import { Store } from 'store/Store';
 import { ProfileProps } from '../profile/profile';
 
 export type ChangeProfileProps = ProfileProps & {
+  store: Store<AppState>;
   userData: Array<unknown>;
   userLogin: string;
   avatarSrc: string;
@@ -30,7 +32,7 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   constructor(props: ChangeProfileProps) {
     super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
 
-    const { user } = this.props;
+    const { user } = this.props.store.getState();
     const { login, avatar } = user || {};
 
     const data = user ? getUserDataArray(user) : [];
@@ -42,6 +44,16 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
 
       navigateBack: () => this.props.router.go('/profile'),
     });
+  }
+
+  componentDidUpdate() {
+    if (this.props.store.getState().currentRoutePathname !== '/changeUserData') {
+      return false;
+    }
+
+    this.children = {};
+
+    return true;
   }
 
   async onSubmit(event: SubmitEvent) {
@@ -75,8 +87,8 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
                 </div>
                 
                 <section class='profile__container'>
-                    <form class='user' onSubmit={{onSubmit}}>
-                    {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
+                    <form class='user'>
+                    {{{Avatar imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
                             {{#each userData}}
@@ -98,4 +110,4 @@ class ChangeUserData extends Block<ChangeProfileProps, ChangeUserPasswordRefs> {
   }
 }
 
-export default WithRouter(WithUser(ChangeUserData));
+export default WithRouter(WithStore(ChangeUserData));

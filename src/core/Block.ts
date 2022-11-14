@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Handlebars from 'handlebars';
 import { nanoid } from 'nanoid';
 import { deepEqual } from 'utils/checkers and validators/deepEqual';
@@ -24,7 +23,7 @@ export default class Block<P extends Indexed<any>, ParentRefs = {}> {
 
   protected props: Readonly<P>;
 
-  protected children: { [id: string]: Block<{}> } = {};
+  protected children: { [id: string]: unknown } = {};
 
   private _eventBus: EventBus<Events>;
 
@@ -78,7 +77,7 @@ export default class Block<P extends Indexed<any>, ParentRefs = {}> {
 
   componentDidUpdate(oldProps: Partial<P>, newProps: Partial<P>) {
     if (deepEqual(oldProps, newProps)) {
-      return true;
+      return false;
     }
 
     this.children = {};
@@ -184,7 +183,7 @@ export default class Block<P extends Indexed<any>, ParentRefs = {}> {
 
       const stubChilds = stub.childNodes.length ? stub.childNodes : [];
 
-      const content = component.getContent();
+      const content = (component as Block<{}>).getContent();
       stub.replaceWith(content);
 
       const layoutContent = content.querySelector('[data-layout="1"]');

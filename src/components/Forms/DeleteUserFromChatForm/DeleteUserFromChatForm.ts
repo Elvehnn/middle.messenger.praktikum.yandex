@@ -79,7 +79,7 @@ class DeleteUserFromChatForm extends Block<
                     placeholder="Enter login"
                 }}}
                 
-                <div class="createChatForm__footer">
+                <div class="delete-user-from-chat-form__footer">
                     <p class='form-submit__warning'>${errorMessage}</p>
 
                     {{{Button title='Delete user' class='button button_confirm' type='submit'}}}

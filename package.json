@@ -10,7 +10,7 @@
         "format": "prettier --write \"src/**/*.{js,jsx,ts}\"",
         "stylelint": "stylelint \"src/**/*.{css,scss}\" --fix",
         "eslint": "eslint . --ext .ts,.js",
-        "lint": "npm run eslint && npm run stylelint:fix",
+        "lint": "npm run eslint && npm run stylelint",
         "validate": "lint-staged && npm run test",
         "prepare": "husky install"
     },

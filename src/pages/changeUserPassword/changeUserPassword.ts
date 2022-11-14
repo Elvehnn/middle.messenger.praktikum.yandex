@@ -8,8 +8,8 @@ import { getChildInputRefs } from 'utils/getChildInputRefs';
 import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
-import { WithUser } from 'utils/HOCS/WithUser';
 import { changeUserPassword } from 'services/userData';
+import { WithStore } from 'utils/HOCS/WithStore';
 
 type ChangeUserPasswordRefs = Record<string, UserDataInput>;
 
@@ -17,17 +17,26 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
   static componentName = 'ChangeUserPassword';
 
   constructor(props: ChangeProfileProps) {
-    super(props);
+    super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
 
-    const { user } = this.props;
+    const { user } = this.props.store.getState();
     const { login, avatar } = user || {};
 
     this.setProps({
       userLogin: login,
       avatarSrc: avatar,
-
       navigateBack: () => this.props.router.go('/profile'),
     });
+  }
+
+  componentDidUpdate() {
+    if (this.props.store.getState().currentRoutePathname !== '/changeUserPassword') {
+      return false;
+    }
+
+    this.children = {};
+
+    return true;
   }
 
   async onSubmit(event: SubmitEvent) {
@@ -36,7 +45,11 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
     const refs = getChildInputRefs(this.refs);
     const errors = getErrorsObject(refs);
 
-    setChildErrorsProps(errors, this.refs);
+    if (Object.keys(errors).length) {
+      setChildErrorsProps(errors, this.refs);
+
+      return;
+    }
 
     const { oldPassword, newPassword, repeatNewPassword } = refs;
 
@@ -66,8 +79,8 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
                 </div>
                 
                 <section class='profile__container'>
-                    <form class='user' onSubmit={{onSubmit}}>
-                        {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=false}}}
+                    <form class='user'>
+                        {{{Avatar imageSrc=avatarSrc isEditable=false}}}
 
                         <div class='user__data'>
                             {{{UserDataInput ref="oldPassword" childRef="oldPassword" title="Enter old password" type="password" inputName='password'}}}
@@ -87,4 +100,4 @@ class ChangeUserPassword extends Block<ChangeProfileProps, ChangeUserPasswordRef
   }
 }
 
-export default WithRouter(WithUser(ChangeUserPassword));
+export default WithRouter(WithStore(ChangeUserPassword));

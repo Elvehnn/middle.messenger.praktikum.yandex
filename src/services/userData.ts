@@ -26,7 +26,7 @@ export const changeUserProfile = async (action: Partial<UserFromServer>) => {
       user: updatedUser,
     });
 
-    window.router.back();
+    window.router.go('/profile');
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
   } finally {
@@ -97,8 +97,12 @@ export const changeAvatar = async (store: Store<AppState>, action: FormData) => 
     newUser = { ...newUser, avatar };
 
     store.setState({ user: transformUserObject(newUser) });
+
+    return avatar;
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
+
+    return store.getState().user?.avatar;
   } finally {
     hidePreloader();
   }

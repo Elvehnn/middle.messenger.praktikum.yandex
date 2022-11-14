@@ -82,7 +82,7 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
               placeholder="Enter any name"
           }}}
           
-          <div class="createChatForm__footer">
+          <div class="create-chat-form__footer">
               <p class='form-submit__warning'>${errorMessage}</p>
 
               {{{Button  title='Create chat' class='button button_confirm' type='submit'}}}

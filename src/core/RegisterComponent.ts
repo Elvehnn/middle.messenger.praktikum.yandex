@@ -1,7 +1,7 @@
 import Handlebars, { HelperOptions } from 'handlebars';
 import Block from './Block';
 
-export interface BlockConstructable<Props extends Record<string, any> = any, IncomingProps = any> {
+export interface BlockConstructable<Props extends Indexed<any> = any, IncomingProps = any> {
   new (props: IncomingProps): Block<Props>;
   componentName?: string;
 }
@@ -9,7 +9,7 @@ export interface BlockConstructable<Props extends Record<string, any> = any, Inc
 export type AnyProps = Record<string, unknown>;
 
 export default function registerComponent<
-  Props extends Record<string, any> = AnyProps,
+  Props extends Record<string, unknown> = AnyProps,
   IncomingProps = AnyProps
 >(Component: BlockConstructable<Props, IncomingProps>) {
   Handlebars.registerHelper(

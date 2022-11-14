@@ -1,14 +1,16 @@
 import Block from 'core/Block';
 import Router from 'core/Router';
+import { Store } from 'store/Store';
 import { WithRouter } from 'utils/HOCS/WithRouter';
+import { WithStore } from 'utils/HOCS/WithStore';
 import './Avatar.scss';
 
 type AvatarProps = {
+  store: Store<AppState>;
   router: Router;
   imageSrc: string;
   name: string;
   isEditable: boolean;
-  image?: HTMLImageElement;
   showChangeAvatarForm: () => void;
 };
 
@@ -18,7 +20,13 @@ class Avatar extends Block<AvatarProps> {
   constructor(props: AvatarProps) {
     super(props);
 
+    const { user } = this.props.store.getState();
+
+    const { avatar, login } = user || {};
+
     this.setProps({
+      imageSrc: avatar,
+      name: login,
       showChangeAvatarForm: () => {
         document.querySelector('#changeAvatar')?.classList.add('form-container_shown');
       },
@@ -41,4 +49,4 @@ class Avatar extends Block<AvatarProps> {
   }
 }
 
-export default WithRouter(Avatar);
+export default WithStore(WithRouter(Avatar));

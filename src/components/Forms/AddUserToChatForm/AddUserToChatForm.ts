@@ -73,7 +73,7 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
                     placeholder="Enter login"
                 }}}
                 
-                <div class="createChatForm__footer">
+                <div class="add-user-to-chat-form__footer">
                     <p class='form-submit__warning'>${errorMessage}</p>
 
                     {{{Button  title='Add user' class='button button_confirm' type='submit'}}}

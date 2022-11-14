@@ -16,6 +16,6 @@ export const userKeysMap = new Map(
 export const transformRefsToUser = (refs: Partial<SignupData>) => {
   return Object.entries(refs).reduce((acc, [key, value]) => {
     const mappedKey = userKeysMap.get(key) as ChangeProfileKeys;
-    return { ...acc, [mappedKey]: value };
+    return { ...acc, [mappedKey]: value || 'not defined' };
   }, {} as Partial<UserFromServer>);
 };
