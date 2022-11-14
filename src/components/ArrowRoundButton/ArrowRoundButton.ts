@@ -4,6 +4,8 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import './ArrowRoundButton.scss';
 
 interface ArrowRoundButtonProps {
+  arrowClass: string;
+  type: string;
   router: Router;
   events: Record<string, unknown>;
   onClick?: () => void;
@@ -13,14 +15,20 @@ interface ArrowRoundButtonProps {
 class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
   static componentName = 'ArrowRoundButton';
 
-  constructor({ router, dataTestid = 'arrow-btn', onClick }: ArrowRoundButtonProps) {
-    super({ router, dataTestid, events: { click: onClick } });
+  constructor({
+    router,
+    arrowClass = 'arrow',
+    dataTestid = 'arrow-btn',
+    type = 'button',
+    onClick,
+  }: ArrowRoundButtonProps) {
+    super({ router, dataTestid, events: { click: onClick }, arrowClass, type });
   }
 
   render() {
     // language=hbs
     return `
-    <button data-testid="{{dataTestid}}" class="arrow" type="button" onClick={{onClick}}></button>
+    <button data-testid="{{dataTestid}}" class="{{arrowClass}}" type="{{type}}" onClick={{onClick}}></button>
     `;
   }
 }

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { getByTestId, getAllByText, getByText, waitFor } from '@testing-library/dom';
 import { renderBlock } from '../../testsUtils/renderBlock';
 import Profile from './profile';

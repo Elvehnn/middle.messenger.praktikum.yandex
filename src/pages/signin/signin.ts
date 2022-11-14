@@ -59,7 +59,6 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
 
   render() {
     const { errorMessage } = this.props.store.getState();
-    // console.log(`%c Signin page render with id = ${this.id}`, 'background: #1f9af3; color: #fff');
     // language=hbs
     return `
         <main class="main">
@@ -99,7 +98,7 @@ class SigninPage extends Block<SigninProps, SigninRefs> {
                 </div>
 
                 <div class="login-form__bottom">
-                    <p class='form-submit__warning' data-testid='form-submit-warning'>${errorMessage}</p>
+                    <p class='form-submit-warning' data-testid='form-submit-warning'>${errorMessage}</p>
 
                     {{{Button title="Log in" type="submit" dataTestid="login-btn"}}}
                     {{{Button class="button button_redirect" title="Create account" onClick=navigateToSignup type="button" dataTestid="goto-signup-btn"}}}

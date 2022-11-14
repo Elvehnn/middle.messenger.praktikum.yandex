@@ -1,10 +1,10 @@
 import { isStringEqual } from 'utils/checkers and validators/isStringEqual';
-import { BlockConstructable } from './RegisterComponent';
+import Block from './Block';
 
 export default class Route {
   pathname: string;
 
-  view: BlockConstructable;
+  view: Block<{}>;
 
   isPrivate: boolean;
 

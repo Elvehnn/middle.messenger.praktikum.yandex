@@ -43,6 +43,12 @@ declare global {
     isPopupShown: boolean;
   };
 
+  export type ErrorRef = {
+    errorRef?: BlockClass;
+  };
+
+  export type ParentRefs = ErrorRef & Record<string, BlockClass>;
+
   export type RefsObject = Record<string, HTMLInputElement>;
 
   export type RouteProps = {

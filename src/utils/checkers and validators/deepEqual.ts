@@ -18,11 +18,9 @@ export function deepEqual(a: Indexed, b: Indexed): boolean {
     if (!acc) return false;
 
     if (!bObjectKeys.includes(key)) {
-      acc = false;
-      return acc;
+      return false;
     }
 
-    acc = deepEqual(a[key] as Indexed, b[key] as Indexed);
-    return acc;
+    return deepEqual(a[key] as Indexed, b[key] as Indexed);
   }, true);
 }

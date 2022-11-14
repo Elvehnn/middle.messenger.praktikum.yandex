@@ -135,7 +135,7 @@ export const deleteUserFromChat = async (action: UserToChatData) => {
 
     const selectedChat = {
       ...action.chat,
-      chatUsers: chatUsers ? [...chatUsers, transformUserObject(user[0])] : [],
+      chatUsers: chatUsers ? chatUsers.filter((item) => item.login !== action.login) : [],
     };
 
     window.store.setState({ selectedChat });

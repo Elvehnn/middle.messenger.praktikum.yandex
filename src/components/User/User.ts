@@ -13,8 +13,7 @@ export type UserProps = {
   store: Store<AppState>;
   user: Nullable<UserType>;
   userData: Array<unknown>;
-  userLogin: string;
-  avatarSrc: string;
+  imageSrc: string;
   navigateTo: (event: PointerEvent) => void;
   signout: () => void;
   getAvatarSrc: (path: string) => void;
@@ -29,12 +28,11 @@ class User extends Block<UserProps> {
     super(props);
 
     const data = props.user ? getUserDataArray(props.user) : [];
-    const userLogin = props.user?.login;
+    const imageSrc = props.user?.avatar;
 
     this.setProps({
       userData: data,
-      userLogin,
-      avatarSrc: this.props.store.getState().user?.avatar,
+      imageSrc,
       navigateTo: (event: PointerEvent) => {
         const path = (event.target as HTMLButtonElement).textContent || '';
         this.props.router.go(`/${stringToCamelCase(path)}`);
@@ -43,11 +41,21 @@ class User extends Block<UserProps> {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.store.getState().currentRoutePathname !== '/profile') {
+      return false;
+    }
+
+    this.children = {};
+
+    return true;
+  }
+
   render() {
     // language=hbs
     return `
         <div class='user' data-testid='user'>
-				  {{{Avatar name=userLogin imageSrc=avatarSrc isEditable=true}}}
+				  {{{Avatar isEditable=true imageSrc=imageSrc}}}
 
           <div class='user__data' data-testid='user-data'>
 					  {{#each userData}}

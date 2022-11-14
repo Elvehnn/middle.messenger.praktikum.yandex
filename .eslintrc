@@ -21,17 +21,47 @@
   ],
   "plugins": ["@typescript-eslint", "import", "prettier"],
   "settings": {
-    "import/resolver": "webpack",
-    "import/extensions": [".js", ".jsx", ".ts"]
+    "import/resolver": "eslint-import-resolver-webpack",
+    "import/extensions": [".js", ".js", ".ts"],
+    "import/core-modules": ["nanoid"]
   },
   "rules": {
     "prettier/prettier": "error",
-    "import/extensions": 0,
+    "import/extensions": "off",
     "import/prefer-default-export": "off",
-    "linebreak-style": 0,
-    "import/no-unresolved": [2, { "caseSensitive": false }],
+    "import/no-unresolved": ["warn", { "caseSensitive": false }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": true, "optionalDependencies": true, "peerDependencies": true }
+    ],
+    "linebreak-style": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
-    "no-shadow": 1
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-console": "warn",
+    "no-param-reassign": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-use-before-define": [
+      "warn",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": true,
+        "allowNamedExports": false
+      }
+    ],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ]
   }
 }

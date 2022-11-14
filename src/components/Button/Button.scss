@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@import '../../styles/variables';
+
 .button {
   border: none;
   color: $color-light;
@@ -16,12 +17,15 @@
   height: 37px;
   border-radius: 8px;
   outline: transparent;
+
   &:hover {
     cursor: pointer;
   }
+
   &_confirm {
     background-color: $color-main-first;
   }
+
   &_redirect {
     background-color: $color-light;
     color: $color-main-first;
@@ -31,8 +35,9 @@
     border: 1px solid $color-main-first;
     color: $color-main-first;
     font-weight: 500;
+
     &:hover {
-      box-shadow: 0px 0px 6px rgba(0, 41, 128, 20%);
+      box-shadow: 0 0 6px rgb(0 41 128 / 20%);
     }
   }
 }

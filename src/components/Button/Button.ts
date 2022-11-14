@@ -28,7 +28,7 @@ export default class Button extends Block<ButtonProps> {
   protected render(): string {
     // language=hbs
     return `
-        <button data-testid="{{dataTestid}}" class="{{class}}" type="{{type}}" onClick={{onClick}}>{{title}}</button>
+        <button data-testid="{{dataTestid}}" class="{{class}}" type="{{type}}" onclick={{onClick}}>{{title}}</button>
     `;
   }
 }

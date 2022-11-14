@@ -20,4 +20,6 @@ export const EMAIL_CHARACTERS = /^\S+@\S+\.([A-Za-z]{2,4})$/;
 
 export const NO_DIGITS = /[a-zA-Z]/;
 
-export const PHONE_SYMBOLS = /^[+\d][\d\\(\\)\s-]{10,15}\d$/;
+export const NUMBER_OF_DIGITS = /(\d+)/;
+
+export const PHONE_SYMBOLS = /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/;

@@ -1,7 +1,6 @@
 import { ChangePasswordRequestData, UserFromServer } from 'API/typesAPI';
 import UserAPI from 'API/UserAPI';
 import { isApiReturnedError } from 'utils/checkers and validators/isApiReturnedError';
-import { cloneDeep } from 'utils/cloneDeep';
 import { hidePreloader, showPreloader } from 'utils/showOrHidePreloader';
 import { transformUserObject } from 'utils/transformers/transformUserObject';
 import { DEFAULT_AVATAR } from '../constants/imagesPaths';
@@ -27,7 +26,7 @@ export const changeUserProfile = async (action: Partial<UserFromServer>) => {
       user: updatedUser,
     });
 
-    window.router.back();
+    window.router.go('/profile');
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
   } finally {
@@ -95,11 +94,15 @@ export const changeAvatar = async (store: Store<AppState>, action: FormData) => 
       throw new Error(avatar.reason);
     }
 
-    newUser = { ...cloneDeep(newUser), avatar };
+    newUser = { ...newUser, avatar };
 
     store.setState({ user: transformUserObject(newUser) });
+
+    return avatar;
   } catch (error) {
     window.store.setState({ errorMessage: (error as Error).message });
+
+    return store.getState().user?.avatar;
   } finally {
     hidePreloader();
   }

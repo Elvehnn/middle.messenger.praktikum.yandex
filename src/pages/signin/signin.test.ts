@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import userEvent from '@testing-library/user-event';
 import { findByTestId, getByTestId, waitFor } from '@testing-library/dom';
 import { sleep } from 'utils/sleep';

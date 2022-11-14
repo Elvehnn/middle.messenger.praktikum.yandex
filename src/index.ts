@@ -1,5 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import 'regenerator-runtime/runtime';
 import { registerComponent } from 'core';
 import * as components from 'components';
 import './styles/style.scss';
@@ -30,11 +28,6 @@ const socketController = new SocketController();
 window.socketController = socketController;
 
 // TODO: добавить стартовый экран на запуск приложения
-
-store.on('updated', (nextState) => {
-  // eslint-disable-next-line no-console
-  console.log('%cstore updated', 'background: #222; color: #bada55', nextState);
-});
 
 startApp(store).then(() => {
   initRouter(router, store);

@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@import '../../styles/variables';
+
 .input {
   display: flex;
   flex-direction: column-reverse;
@@ -12,9 +13,11 @@
   border-bottom: 0.1rem solid $color-text-dark;
   outline: transparent;
   height: 3rem;
+
   &::placeholder {
     opacity: 0;
   }
+
   &_attach {
     display: none;
   }

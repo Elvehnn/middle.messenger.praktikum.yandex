@@ -1,7 +1,6 @@
 import queryStringify from 'utils/transformers/queryStringify';
 import { PATH } from '../constants/pathsAPI';
 
-// eslint-disable-next-line no-shadow
 enum Methods {
   Get = 'GET',
   Post = 'POST',
