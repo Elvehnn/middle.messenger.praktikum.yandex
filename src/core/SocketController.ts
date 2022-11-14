@@ -4,44 +4,44 @@ import { sortMessagesByTime } from 'utils/sortMessagesByTime';
 import { PATH } from '../constants/pathsAPI';
 
 export type SocketData = {
-  socket: WebSocket;
-  oldMessagesArray: Array<WebSocketMessage>;
+  socket: Nullable<WebSocket>;
+  messagesArray: Array<WebSocketMessage>;
 };
 export interface SocketControllerProps {
-  socketsMap: Map<string, SocketData>;
-  createSocket: (userId: number, chat: ChatType) => void;
+  socketsMap: Map<number, SocketData>;
+  initSocket: (userId: number, chat: ChatType) => void;
   setHandlers: (socket: WebSocket, userId: number, chat: ChatType) => void;
 }
 
 // TODO: заменить logs на уведомления или другие обработчики
 export default class SocketController implements SocketControllerProps {
-  socketsMap: Map<string, SocketData> = new Map();
+  socketsMap: Map<number, SocketData> = new Map();
 
   pingTimer: NodeJS.Timer | undefined;
 
-  createSocket(userId: number, chat: ChatType) {
+  initSocket(userId: number, chat: ChatType) {
     const { id, chatToken } = chat;
     const socket = new WebSocket(`${PATH.WEBSOCKET}/chats/${userId}/${id}/${chatToken}`);
 
+    this.socketsMap.set(id, { socket, messagesArray: [] });
     this.setHandlers(socket, userId, chat);
-    this.socketsMap.set(String(id), { socket, oldMessagesArray: [] });
   }
 
   setHandlers(socket: WebSocket, userId: number, chat: ChatType) {
     socket.addEventListener('open', () => {
       let currentMessageNumber = 0;
 
-      while (currentMessageNumber < chat.unreadCount) {
+      while (currentMessageNumber <= chat.unreadCount) {
         const messageObject = {
           content: String(currentMessageNumber),
           type: 'get old',
         };
 
-        // TODO: отдавать следующие 20 по клику, а здесь только первые 20. И сортировку - от старых к новым.
-
         socket.send(JSON.stringify(messageObject));
         currentMessageNumber += 20;
       }
+
+      // TODO: отдавать следующие 20 по клику, а здесь только первые 20. И сортировку - от старых к новым.
 
       this.pingTimer = setInterval(() => {
         socket.send(JSON.stringify({ type: 'ping' }));
@@ -58,7 +58,7 @@ export default class SocketController implements SocketControllerProps {
       console.log(`Код: ${event.code} | Причина: ${(event as CloseEvent).reason}`);
 
       clearInterval(this.pingTimer);
-      this.socketsMap.delete(String(userId));
+      this.socketsMap.delete(chat.id);
     });
 
     socket.addEventListener('message', (event) => {
@@ -66,21 +66,21 @@ export default class SocketController implements SocketControllerProps {
         const data = JSON.parse(event.data);
 
         if (Array.isArray(data)) {
-          const socketData = this.socketsMap.get(String(chat.id)) as SocketData;
+          const socketData = this.socketsMap.get(chat.id) as SocketData;
 
-          const messagesArray = [...socketData.oldMessagesArray, ...data];
+          const messagesArray = [...socketData.messagesArray, ...data];
 
           const updatedSocketData = {
             ...socketData,
-            oldMessagesArray: sortMessagesByTime(messagesArray),
+            messagesArray: sortMessagesByTime(messagesArray),
           };
 
-          this.socketsMap.set(String(chat.id), {
+          this.socketsMap.set(chat.id, {
             socket: updatedSocketData.socket,
-            oldMessagesArray: updatedSocketData.oldMessagesArray,
+            messagesArray: updatedSocketData.messagesArray,
           });
 
-          updateDOMMessagesContainer(updatedSocketData.oldMessagesArray, userId);
+          updateDOMMessagesContainer(updatedSocketData.messagesArray, userId);
 
           return;
         }

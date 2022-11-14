@@ -14,8 +14,8 @@ export const createMessageElement = (
 ): HTMLDivElement => {
   const elementClass =
     status === MessageStatus.Owner
-      ? ['chat-message', 'chat-message_mate']
-      : ['chat-message', 'chat-message_owner'];
+      ? ['chat-message', 'chat-message_owner']
+      : ['chat-message', 'chat-message_mate'];
 
   const messageElement = document.createElement('div');
   messageElement.classList.add(...elementClass);
@@ -35,7 +35,7 @@ export const createMessageElement = (
 export const addDOMMessageElement = (webSocketMessage: WebSocketMessage, userId: number) => {
   const { content, type, time, user_id } = webSocketMessage;
 
-  const messageStatus = String(userId) === user_id ? MessageStatus.Owner : MessageStatus.Mate;
+  const messageStatus = userId === +user_id ? MessageStatus.Owner : MessageStatus.Mate;
 
   if (!SERVICE_MESSAGES.includes(type)) {
     const messageData = { content, time };

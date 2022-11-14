@@ -177,15 +177,11 @@ export const getChatInfo = async (action: ChatType) => {
 };
 
 export const openSocket = (id: number, chat: ChatType) => {
-  const socket = window.socketController.socketsMap.get(String(id));
-
-  if (!socket) {
-    window.socketController.createSocket(id, chat);
-  }
+  window.socketController.initSocket(id, chat);
 };
 
 export const sendMessage = (message: string, chat: ChatType) => {
-  const socket = window.socketController.socketsMap.get(String(chat.id))?.socket;
+  const socket = window.socketController.socketsMap.get(chat.id)?.socket;
   const messageObject = {
     content: message,
     type: 'message',
