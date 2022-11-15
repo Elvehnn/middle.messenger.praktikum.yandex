@@ -1,5 +1,9 @@
 import { WebSocketMessage } from 'API/typesAPI';
-import { addDOMMessageElement, updateDOMMessagesContainer } from 'utils/createMessageElement';
+import {
+  addDOMMessageElement,
+  clearConversation,
+  updateDOMMessagesContainer,
+} from 'utils/createMessageElement';
 import { sortMessagesByTime } from 'utils/sortMessagesByTime';
 import { PATH } from '../constants/pathsAPI';
 
@@ -49,13 +53,9 @@ export default class SocketController implements SocketControllerProps {
     });
 
     socket.addEventListener('close', (event) => {
-      if (event.wasClean) {
-        console.log('Соединение закрыто чисто');
-      } else {
-        console.log('Обрыв соединения');
+      if (!event.wasClean) {
+        clearConversation('Connection is lost. Please, reload chat');
       }
-
-      console.log(`Код: ${event.code} | Причина: ${(event as CloseEvent).reason}`);
 
       clearInterval(this.pingTimer);
       this.socketsMap.delete(chat.id);

@@ -57,3 +57,17 @@ export const updateDOMMessagesContainer = (wsMessagesArray: WebSocketMessage[], 
     addDOMMessageElement(message, userId);
   });
 };
+
+export const clearConversation = (notification: string) => {
+  const container = document.querySelector('.conversation');
+
+  if (container && notification) {
+    container.innerHTML = '';
+    const notice = document.createElement('p');
+    notice.classList.add('notice');
+
+    notice.textContent = notification;
+
+    container.append(notice);
+  }
+};
