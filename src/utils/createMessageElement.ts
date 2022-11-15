@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { WebSocketMessage } from 'API/typesAPI';
+import { dateToLocaleString } from './dateToLocaleString';
 
 export enum MessageStatus {
   Owner = 'owner',
@@ -25,7 +26,7 @@ export const createMessageElement = (
 
   const timeElement = document.createElement('time');
   timeElement.classList.add('chat-message__time');
-  timeElement.textContent = message.time;
+  timeElement.textContent = dateToLocaleString(message.time);
 
   messageElement.append(textElement, timeElement);
 
