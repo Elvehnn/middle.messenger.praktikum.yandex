@@ -4,6 +4,7 @@ import {
   FIRST_CAPITAL_LETTER,
   LATIN_LETTERS,
   NO_DIGITS,
+  NO_SPACE_SYMBOL,
   ONE_CAPITAL_LETTER,
   ONE_DIGIT,
   ONE_SPACE_SYMBOL,
@@ -46,12 +47,16 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
       case ValidateType.ChatName:
         if (!value.length) {
           errors[name] = 'Name can not be empty';
+
           return;
         }
+
         if (value.length > 20 || value.length < 3) {
           errors[name] = 'Name must contain from 3 to 20 symbols';
-          return;
         }
+
+        break;
+
       case ValidateType.Login:
         if (!value.length) {
           errors[name] = 'Login can not be empty';
@@ -80,7 +85,6 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
         if (value.match(SPECIAL_CHARACTERS)) {
           errors[name] = 'Login should not contain special symbols';
-          return;
         }
 
         break;
@@ -106,7 +110,6 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
         if (!value.match(ONE_DIGIT)) {
           errors[name] = 'Password must contain one digit at least';
-          return;
         }
 
         break;
@@ -119,28 +122,39 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
         if (!value.match(EMAIL_CHARACTERS)) {
           errors[name] = 'Invalid e-mail address';
-          return;
         }
 
         break;
 
-      case ValidateType.Phone:
+      case ValidateType.Phone: {
         if (!value.length) {
           errors[name] = 'Phone can not be empty';
           return;
         }
 
-        if (!value.match(NO_DIGITS)) {
+        const digitsNumber = value.match(/(\d+)/);
+
+        if (digitsNumber && digitsNumber.length > 10) {
+          errors[name] = 'Phone number must contain no more than 10 digits';
+          return;
+        }
+
+        if (value.match(NO_DIGITS)) {
           errors[name] = 'Phone number must not contain letters';
+          return;
+        }
+
+        if (value.match(NO_SPACE_SYMBOL)) {
+          errors[name] = 'Phone number must not contain space symbols';
           return;
         }
 
         if (!value.match(PHONE_SYMBOLS)) {
           errors[name] = 'Invalid phone number';
-          return;
         }
 
         break;
+      }
 
       case ValidateType.FirstName:
       case ValidateType.SecondName:
@@ -157,7 +171,6 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
 
         if (!value.match(FIRST_CAPITAL_LETTER)) {
           errors[name] = 'Name should begin with a capital letter';
-          return;
         }
 
         break;
@@ -165,7 +178,6 @@ export const validateForm = (rulesArray: ValidateRule[]) => {
       case ValidateType.Message:
         if (!value.length) {
           errors[name] = 'Your message is empty';
-          return;
         }
 
         break;

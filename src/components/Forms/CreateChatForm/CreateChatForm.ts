@@ -13,47 +13,50 @@ import { createChat } from 'services/chats';
 type CreateChatFormProps = {
   router: Router;
   store: Store<AppState>;
-  onSubmit: (event: SubmitEvent) => void;
-  onInput: (event: FocusEvent) => void;
-  onFocus: (event: FocusEvent) => void;
+  events: Record<string, unknown>;
   onCancel: () => void;
 };
 
-type CreateChatFormRefs = {
-  [key: string]: ControlledInput;
-};
+type CreateChatFormRefs = Indexed<ControlledInput>;
 
 interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
 class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
-  static componentName: string = 'CreateChatForm';
+  static componentName = 'CreateChatForm';
 
   constructor(props: CreateChatFormProps) {
-    super(props);
+    super({
+      ...props,
+      events: {
+        submit: (event: SubmitEvent) => this.onSubmit(event),
+      },
+    });
 
     this.setProps({
-      onSubmit: (event) => {
-        event.preventDefault();
-
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
-
-        const { chatName } = refs;
-
-        setChildErrorsProps(errors, this.refs);
-
-        if (Object.keys(errors).length === 0) {
-          createChat(this.props.store, { title: chatName.value });
-          document.querySelector('#createChat')?.classList.remove('form-container_shown');
-        }
-      },
       onCancel: () => {
         document.querySelector('#createChat')?.classList.remove('form-container_shown');
       },
     });
   }
+
+  onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
+
+    const { chatName } = refs;
+
+    setChildErrorsProps(errors, this.refs);
+
+    if (Object.keys(errors).length === 0) {
+      createChat({ title: chatName.value });
+      document.querySelector('#createChat')?.classList.remove('form-container_shown');
+    }
+  }
+
   render() {
     const { errorMessage } = this.props.store.getState();
     // language=hbs
@@ -61,8 +64,8 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
       <div class='form-container' id='createChat'>
           <div class='overlay'></div>
 
-          <form class='createChatForm' action='#'>
-          {{{Button class='createChatForm__close' onClick=onCancel title='X' type='button'}}}
+          <form class='create-chat-form' onSubmit={{onSubmit}}>
+          {{{Button class='create-chat-form__close' onClick=onCancel title='X' type='button'}}}
 
           <h3>Enter the name for the new chat</h3>
 
@@ -79,11 +82,11 @@ class CreateChatForm extends Block<CreateChatFormProps, CreateChatFormRefs> {
               placeholder="Enter any name"
           }}}
           
-          <div class="createChatForm__footer">
+          <div class="create-chat-form__footer">
               <p class='form-submit__warning'>${errorMessage}</p>
 
-              {{{ Button  title='Create chat' class='button button_confirm' onClick=onSubmit type='submit'}}}
-              {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
+              {{{Button  title='Create chat' class='button button_confirm' type='submit'}}}
+              {{{Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
           </div>
       </form>
       </div>

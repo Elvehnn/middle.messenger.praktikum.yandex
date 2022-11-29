@@ -13,40 +13,39 @@ import { addUserToChat } from 'services/chats';
 type AddUserToChatFormProps = {
   router: Router;
   store: Store<AppState>;
-  onSubmit: (event: SubmitEvent) => void;
-  onInput: (event: FocusEvent) => void;
-  onFocus: (event: FocusEvent) => void;
+  events: Record<string, unknown>;
   onCancel: () => void;
 };
 
-type AddUserToChatFormRefs = Record<string, ControlledInput>;
+type AddUserToChatFormRefs = Indexed<ControlledInput>;
 
 interface SubmitEvent extends Event {
   submitter: HTMLElement;
 }
 
 class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormRefs> {
-  static componentName: string = 'AddUserToChatForm';
+  static componentName = 'AddUserToChatForm';
 
   constructor(props: AddUserToChatFormProps) {
-    super(props);
-    this.setProps({
-      onSubmit: async (event: SubmitEvent) => {
-        event.preventDefault();
+    super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
+  }
 
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
-        const { login } = refs;
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
 
-        setChildErrorsProps(errors, this.refs);
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
+    const { login } = refs;
 
-        if (Object.keys(errors).length === 0) {
-          const chat = this.props.store.getState().selectedChat;
+    setChildErrorsProps(errors, this.refs);
 
-          chat && addUserToChat(this.props.store, { login: login.value, chat });
-        }
-      },
-    });
+    if (Object.keys(errors).length === 0) {
+      const chat = this.props.store.getState().selectedChat;
+
+      if (chat) {
+        await addUserToChat({ login: login.value, chat });
+      }
+    }
   }
 
   render() {
@@ -56,8 +55,8 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
       <div class='form-container' id='addUser'>
         <div class='overlay'></div>
         
-        <form class='addUserToChatForm' action='#'>
-                {{{Button class='addUserToChatForm__close' type='button' onClick=onCancel title='X'}}}
+        <form class='add-user-to-chat-form' onSubmit={{onSubmit}}>
+                {{{Button class='add-user-to-chat-form__close' type='button' onClick=onCancel title='X'}}}
 
                 <h3>Enter user login to add</h3>
 
@@ -74,11 +73,11 @@ class AddUserToChatForm extends Block<AddUserToChatFormProps, AddUserToChatFormR
                     placeholder="Enter login"
                 }}}
                 
-                <div class="createChatForm__footer">
+                <div class="add-user-to-chat-form__footer">
                     <p class='form-submit__warning'>${errorMessage}</p>
 
-                    {{{ Button  title='Add user' class='button button_confirm' onClick=onSubmit type='submit'}}}
-                    {{{ Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
+                    {{{Button  title='Add user' class='button button_confirm' type='submit'}}}
+                    {{{Button  title='Cancel' class='button button_redirect' onClick=onCancel type='button'}}}
                     
                 </div>
             </form>

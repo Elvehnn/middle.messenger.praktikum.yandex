@@ -7,6 +7,7 @@ import { changeAvatar } from 'services/userData';
 
 type ChangeAvatarProps = {
   store: Store<AppState>;
+  events?: Record<string, unknown>;
   onSubmit: (event: SubmitEvent) => void;
   onInput: (event: FocusEvent) => void;
   onFocus: (event: FocusEvent) => void;
@@ -17,48 +18,44 @@ type ChangeAvatarRefs = {
   [key: string]: ControlledInput;
 };
 
-interface SubmitEvent extends Event {
-  submitter: HTMLElement;
-}
-
 class ChangeAvatar extends Block<ChangeAvatarProps, ChangeAvatarRefs> {
-  static componentName: string = 'ChangeAvatar';
+  static componentName = 'ChangeAvatar';
 
   constructor(props: ChangeAvatarProps) {
-    super(props);
+    super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
 
     this.setProps({
-      onSubmit: (event) => {
-        event.preventDefault();
-        document
-          .querySelector('.avatar-form__warning')
-          ?.classList.remove('avatar-form__warning_show');
-
-        const form = document.querySelector('form');
-        const formData = new FormData(form as HTMLFormElement);
-
-        //TODO: Здесь будет правильная валидация данных
-
-        if ((document.querySelector('#avatar') as HTMLInputElement).value) {
-          document
-            .querySelector('.avatar-form__warning')
-            ?.classList.remove('avatar-form__warning_show');
-
-          changeAvatar(this.props.store, formData);
-          document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
-
-          return;
-        }
-
-        document.querySelector('.avatar-form__warning')?.classList.add('avatar-form__warning_show');
-      },
       onCancel: () => {
         document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
       },
     });
   }
+
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    document.querySelector('.avatar-form__warning')?.classList.remove('avatar-form__warning_show');
+
+    const form = document.querySelector('form');
+    const formData = new FormData(form as HTMLFormElement);
+
+    // TODO: Здесь будет правильная валидация данных
+
+    if ((document.querySelector('#avatar') as HTMLInputElement).value) {
+      document
+        .querySelector('.avatar-form__warning')
+        ?.classList.remove('avatar-form__warning_show');
+
+      changeAvatar(this.props.store, formData);
+      document.querySelector('#changeAvatar')?.classList.remove('form-container_shown');
+
+      return;
+    }
+
+    document.querySelector('.avatar-form__warning')?.classList.add('avatar-form__warning_show');
+  }
+
   render() {
-    //TODO:  Застилить label и убрать стандартный инпут
+    // TODO:  Застилить label и убрать стандартный инпут
 
     // language=hbs
     return `

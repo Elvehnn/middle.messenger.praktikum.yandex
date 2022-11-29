@@ -1,21 +1,24 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables";
+
 .input {
-    display: flex;
-    flex-direction: column-reverse;
-    width: 100%;
-    margin: 0 auto;
-    border: none;
-    padding-left: 1rem;
-    padding-top: 1rem;
-    margin-top: 2rem;
-    font-size: 1.4rem;
-    border-bottom: 0.1rem solid $color-text-dark;
-    outline: transparent;
-    height: 3rem;
-    &::placeholder {
-        opacity: 0;
-    }
-    &_attach {
-        display: none;
-    }
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  margin: 0 auto;
+  border: none;
+  padding-left: 1rem;
+  padding-top: 1rem;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  border-bottom: 0.1rem solid $color-text-dark;
+  outline: transparent;
+  height: 3rem;
+
+  &::placeholder {
+    opacity: 0;
+  }
+
+  &_attach {
+    display: none;
+  }
 }

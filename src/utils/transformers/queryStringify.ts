@@ -1,8 +1,9 @@
 import { isObject } from '../checkers and validators/isObject';
 
-type StringIndexed = Record<string, any>;
+type StringIndexed = Record<string, unknown>;
+export type PrimitiveValues = number | string | boolean;
 
-function stringifyPrimitive(key: string, value: number | string | boolean, postfix = '') {
+function stringifyPrimitive(key: string, value: PrimitiveValues, postfix = '') {
   return postfix ? `${key}[${postfix}]=${value}` : `${key}=${value}`;
 }
 
@@ -37,10 +38,10 @@ function queryStringify(data: StringIndexed): string | never {
 
   const params = Object.entries(data).map(([key, value]) => {
     if (typeof value !== 'object' && value !== null) {
-      return stringifyPrimitive(key, value);
+      return stringifyPrimitive(key, value as PrimitiveValues);
     }
 
-    return stringifyObject(key, value);
+    return stringifyObject(key, value as object);
   });
 
   return params.join('&');

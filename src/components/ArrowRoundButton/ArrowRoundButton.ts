@@ -4,26 +4,31 @@ import { WithRouter } from 'utils/HOCS/WithRouter';
 import './ArrowRoundButton.scss';
 
 interface ArrowRoundButtonProps {
+  arrowClass: string;
+  type: string;
   router: Router;
-  onClick: () => void;
-  blockClass: string;
+  events: Record<string, unknown>;
+  onClick?: () => void;
+  dataTestid?: string;
 }
 
 class ArrowRoundButton extends Block<ArrowRoundButtonProps> {
-  static componentName: string = 'ArrowRoundButton';
+  static componentName = 'ArrowRoundButton';
 
-  constructor({ blockClass = 'arrow', router, onClick }: ArrowRoundButtonProps) {
-    super({
-      blockClass,
-      router,
-      onClick,
-    });
+  constructor({
+    router,
+    arrowClass = 'arrow',
+    dataTestid = 'arrow-btn',
+    type = 'button',
+    onClick,
+  }: ArrowRoundButtonProps) {
+    super({ router, dataTestid, events: { click: onClick }, arrowClass, type });
   }
 
   render() {
     // language=hbs
     return `
-        {{{Button class=blockClass onClick=onClick}}}
+    <button data-testid="{{dataTestid}}" class="{{arrowClass}}" type="{{type}}" onClick={{onClick}}></button>
     `;
   }
 }

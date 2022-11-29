@@ -1,4 +1,5 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables";
+
 .user {
   width: 510px;
   height: 80%;
@@ -16,16 +17,19 @@
     align-items: center;
     width: 100%;
   }
+
   .action-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     border-bottom: 1px solid $color-text-dark;
+
     &__title {
       font-size: 1.4rem;
       color: $color-main-first;
       font-weight: 500;
+
       &_warning {
         color: $color-warning;
       }

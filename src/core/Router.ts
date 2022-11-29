@@ -1,50 +1,38 @@
-import { PartialRouteProps } from 'constants/routes';
 import renderDOM from './RenderDOM';
 import Route from './Route';
 
-interface IRouter {
-  routes: Array<Route>;
-}
-
 export default class Router implements IRouter {
   routes: Array<Route> = [];
-  static __instance: Router;
+
+  static __instance: IRouter;
 
   constructor() {
-    if (Router.__instance) {
-      return Router.__instance;
-    }
-
     Router.__instance = this;
+    window.onpopstate = () => {
+      this.onRouteChange.call(this);
+    };
   }
 
   use(props: PartialRouteProps, callback: () => void) {
-    const route = new Route({ ...props, callback });
+    const routeProps = { ...props, callback } as RouteProps;
+    const route = new Route(routeProps);
 
     this.routes.push(route);
 
     return this;
   }
 
-  start() {
-    window.onpopstate = () => {
-      this._onRouteChange.call(this);
-    };
-
-    this._onRouteChange();
-  }
-
-  private _onRouteChange(pathname: string = window.location.pathname) {
+  onRouteChange(pathname: string = window.location.pathname) {
     const route = this.getRoute(pathname) || this.getRoute('/404');
 
-    window.store.setState({ view: route?.view });
+    window.store.setState({ view: route?.view, currentRoutePathname: route?.pathname });
 
     route?.callback();
   }
 
   go(pathname: string) {
     window.history.pushState({}, '', pathname);
-    this._onRouteChange(pathname);
+    this.onRouteChange(pathname);
   }
 
   reload() {

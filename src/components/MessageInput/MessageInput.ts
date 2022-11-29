@@ -6,7 +6,7 @@ interface MessageInputProps {
 }
 
 export default class MessageInput extends Block<MessageInputProps> {
-  static componentName: string = 'MessageInput';
+  static componentName = 'MessageInput';
 
   constructor({ class: string }: MessageInputProps) {
     super({ class: string });

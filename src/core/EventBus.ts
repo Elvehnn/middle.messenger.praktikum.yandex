@@ -1,4 +1,4 @@
-export type Listener<T extends unknown[] = any[]> = (...args: T) => void;
+export type Listener<T extends unknown[]> = (...args: T) => void;
 
 export default class EventBus<
   E extends string = string,
@@ -27,7 +27,7 @@ export default class EventBus<
       return;
     }
 
-    this.listeners[event]!.forEach(function (listener) {
+    this.listeners[event]!.forEach(function eventHandler(listener) {
       listener(...args);
     });
   }

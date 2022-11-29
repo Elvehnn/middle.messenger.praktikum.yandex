@@ -10,59 +10,35 @@ import { validateForm, ValidateType } from 'utils/checkers and validators/valida
 import { sendMessage } from 'services/chats';
 import { reduceObjectToString } from 'utils/transformers/reduceObjectToString';
 
+interface SubmitEvent extends Event {
+  submitter: HTMLElement;
+}
+
 type MainPageProps = {
   router: Router;
   store: Store<AppState>;
   chats?: Nullable<Array<ChatType>>;
-  onSubmit?: (event: SubmitEvent) => void;
+  events?: Record<string, unknown>;
   navigateToProfile?: () => void;
   toggleCreateChatForm?: () => void;
   toggleShowChatMenu?: () => void;
   toggleShowAddUserForm?: () => void;
   toggleShowDeleteUserForm?: () => void;
-  addMessage?: (message: string) => void;
 };
 
 type Refs = {
   messageRef: MessageInput;
   attach: Input;
 };
-
-interface SubmitEvent extends Event {
-  submitter: HTMLElement;
-}
-
 class MainPage extends Block<MainPageProps, Refs> {
-  static componentName: string = 'MainPage';
+  static componentName = 'MainPage';
 
   constructor(props: MainPageProps) {
-    super(props);
+    super({ ...props, events: { submit: (event: SubmitEvent) => this.onSubmit(event) } });
 
     this.setProps({
       chats: this.props.store.getState().chats,
-      onSubmit: (event: SubmitEvent) => {
-        // TODO: добавить обработку прикрепленных файлов
-        event.preventDefault();
 
-        const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
-          acc[key] = value.getContent() as HTMLInputElement;
-          return acc;
-        }, {} as { [key: string]: HTMLInputElement });
-
-        const { messageRef } = refs;
-
-        const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
-
-        if (Object.keys(errors).length === 0) {
-          const chat = this.props.store.getState().selectedChat;
-
-          if (chat) {
-            sendMessage(messageRef.value, chat);
-          }
-
-          messageRef.value = '';
-        }
-      },
       navigateToProfile: async () => {
         this.props.router.go('/profile');
       },
@@ -83,6 +59,40 @@ class MainPage extends Block<MainPageProps, Refs> {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.store.getState().currentRoutePathname !== '/main') {
+      return false;
+    }
+
+    this.children = {};
+
+    return true;
+  }
+
+  onSubmit(event: SubmitEvent) {
+    // TODO: добавить обработку прикрепленных файлов
+    event.preventDefault();
+
+    const refs = Object.entries(this.refs).reduce((acc, [key, value]) => {
+      acc[key] = value.getContent() as HTMLInputElement;
+      return acc;
+    }, {} as { [key: string]: HTMLInputElement });
+
+    const { messageRef } = refs;
+
+    const errors = validateForm([{ name: ValidateType.Message, input: messageRef }]);
+
+    if (Object.keys(errors).length === 0) {
+      const chat = this.props.store.getState().selectedChat;
+
+      if (chat) {
+        sendMessage(messageRef.value, chat);
+      }
+
+      messageRef.value = '';
+    }
+  }
+
   render() {
     const { selectedChat } = this.props.store.getState();
     const { id, title, chatUsers = [] } = selectedChat || {};
@@ -90,7 +100,7 @@ class MainPage extends Block<MainPageProps, Refs> {
 
     // language=hbs
     return `
-        <main class="main">
+        <main class="main" data-testid="main">
           {{{Preloader}}}
          
           {{{CreateChatForm onCancel=toggleCreateChatForm}}}
@@ -136,7 +146,7 @@ class MainPage extends Block<MainPageProps, Refs> {
                 </div>
                     
                 <footer class='chat__footer'>
-                    <form class='message-form' action='#'>
+                    <form class='message-form'>
                       <div class="button-container">
                         {{{Label class='file-input' for='input-file'}}}
                         {{{Input ref='attach' id='input-file' name='attach' class="input_attach" type="file"}}}
@@ -145,7 +155,7 @@ class MainPage extends Block<MainPageProps, Refs> {
                       {{{MessageInput ref="messageRef" class='message'}}}
 
                       <div class="button-container">
-                        {{{ArrowRoundButton blockClass="arrow arrow_reverse" onClick=onSubmit}}}
+                        {{{ArrowRoundButton arrowClass="arrow arrow_reverse" type="submit"}}}
                       </div>
                     </form>
                 </footer>

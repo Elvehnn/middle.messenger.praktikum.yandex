@@ -7,11 +7,8 @@ interface ChatMenuProps {
 }
 
 export default class ChatMenu extends Block<ChatMenuProps> {
-  static componentName: string = 'ChatMenu';
+  static componentName = 'ChatMenu';
 
-  constructor(props: ChatMenuProps) {
-    super(props);
-  }
   protected render(): string {
     // language=hbs
     return `

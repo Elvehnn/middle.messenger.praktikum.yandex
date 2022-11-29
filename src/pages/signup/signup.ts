@@ -6,24 +6,19 @@ import { getErrorsObject } from 'utils/getErrorsObject';
 import { setChildErrorsProps } from 'utils/setChildErrorsProps';
 import { WithRouter } from 'utils/HOCS/WithRouter';
 import Router from 'core/Router';
-import { INPUTS } from 'constants/inputs';
 import { WithStore } from 'utils/HOCS/WithStore';
 import { Store } from 'store/Store';
 import { stringToCamelCase } from 'utils/transformers/stringToCamelCase';
 import { signup } from 'services/authorization';
 import { transformRefsToUser } from 'utils/transformers/transformRefsToUser';
 import { SignupData, UserKeys } from 'API/typesAPI';
+import { INPUTS } from '../../constants/inputs';
 
-type IncomingSignupProps = {
+type SignupProps = {
   router: Router;
   store: Store<AppState>;
-};
-
-type SignupProps = IncomingSignupProps & {
-  onSubmit: (event: SubmitEvent) => void;
+  events: Record<string, unknown>;
   inputs: Array<Record<string, string>>;
-  onInput: (event: FocusEvent) => void;
-  onFocus: (event: FocusEvent) => void;
   navigateToSignin?: () => void;
 };
 
@@ -34,30 +29,18 @@ interface SubmitEvent extends Event {
 }
 
 class SignupPage extends Block<SignupProps, SignupRefs> {
-  static componentName: string = 'SignupPage';
+  static componentName = 'SignupPage';
 
   constructor(props: SignupProps) {
-    super(props);
+    super({
+      ...props,
+      events: {
+        submit: (event: SubmitEvent) => this.onSubmit(event),
+      },
+    });
 
     this.setProps({
       inputs: INPUTS,
-      onSubmit: (event: SubmitEvent) => {
-        event.preventDefault();
-
-        const refs = getChildInputRefs(this.refs);
-        const errors = getErrorsObject(refs);
-
-        setChildErrorsProps(errors, this.refs);
-
-        if (Object.keys(errors).length === 0) {
-          const signupData = Object.entries(refs).reduce((acc, [key, input]) => {
-            acc[stringToCamelCase(key) as Partial<UserKeys>] = input.value;
-            return acc;
-          }, {} as Partial<SignupData>);
-
-          signup(this.props.store, transformRefsToUser(signupData));
-        }
-      },
 
       navigateToSignin: () => {
         this.props.store.setState({ errorMessage: '' });
@@ -65,6 +48,25 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
       },
     });
   }
+
+  async onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+
+    const refs = getChildInputRefs(this.refs);
+    const errors = getErrorsObject(refs);
+
+    setChildErrorsProps(errors, this.refs);
+
+    if (Object.keys(errors).length === 0) {
+      const signupData = Object.entries(refs).reduce((acc, [key, input]) => {
+        acc[stringToCamelCase(key) as Partial<UserKeys>] = input.value;
+        return acc;
+      }, {} as Partial<SignupData>);
+
+      signup(this.props.store, transformRefsToUser(signupData));
+    }
+  }
+
   render() {
     const { errorMessage } = this.props.store.getState();
 
@@ -75,7 +77,7 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
        
             <h1>Chatterbox</h1>
 
-            <form class="login-form" action='#'>
+            <form class="login-form" onSubmit={{onSubmit}}>
                   <div class="login-form__group">
                       <h2>Sign up</h2>
                       {{#each inputs}}
@@ -96,10 +98,10 @@ class SignupPage extends Block<SignupProps, SignupRefs> {
                   </div>
 
                   <div class="login-form__bottom">
-                    <p class='form-submit__warning'>${errorMessage}</p>
+                    <p class='form-submit-warning'>${errorMessage}</p>
                  
-                    {{{Button title="Sign up" onClick=onSubmit}}}
-                    {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin}}}
+                    {{{Button title="Sign up" type="submit"}}}
+                    {{{Button class="button button_redirect" title="Sign in" onClick=navigateToSignin type="button"}}}
                   </div>
             </form>
     

@@ -2,22 +2,25 @@
 
 Реализовать приложение, с похожим функционалом, как, например, Telegram, Yandex.Messenger или WhatsApp.
 
-Используемый образец UI: https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1.
+Используемый образец UI: <https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=0%3A1>.
 
+## Netlify - <https://chat-messanger-elvehnn.netlify.app/>
 
-## Текущий деплой - <https://chat-messanger-elvehnn.netlify.app/>
+## Heroku - <https://frozen-hamlet-15688.herokuapp.com/>
 
 ## Используемые технологии
 
 - JavaScript;
-- CSS, препроцессоры или PostCSS;
-- Netlify;
-- NodeJS. Версия ≥ 12;
-- Parcel;
+- CSS, препроцессор Sass;
+- NodeJS. версия ≥ 12;
+- Webpack;
 - TypeScript;
-- Eslint, Prettier, Stylelint;
-- шаблонизатор Handlebars;
-- HTTP, WebSockets.
+- Eslint, Prettier, Stylelint, Husky;
+- Handlebars;
+- HTTP, WebSockets;
+- Jest;
+- Docker;
+- Netlify, Heroku
 
 ## Функционал
 
@@ -25,17 +28,15 @@
 - регистрация нового пользователя;
 - вывод списка доступных чатов;
 - отображение количества непрочитанных сообщений;
-- поиск чата;
+- поиск чата; // TODO
 - действия с чатом:
   - просмотр;
   - отправка сообщения с фиксацией времени отправки;
-  - прикрепить файл к сообщению; // не реализовано пока
+  - прикрепить файл к сообщению; // TODO
   - добавить/удалить пользователей в чат;
 - просмотр/редактирование страницы профиля;
 - валидация и сбор данных из форм авторизации, регистрации, изменения данных пользователя;
 - при обновлении страницы данные сохраняются;
-- класс для работы с запросами - HttpTransport;
-- класс для обмена сообщениями - SocketController.
 
 ## Как установить
 
@@ -63,4 +64,17 @@ npm run start
 npm run build
 ```
 
-Parcel собирает проект в папку dist.
+Запускает тесты с флагом --coverage
+
+```bash
+npm run test
+```
+
+Сборка и запуск контейнера c помощью Docker:
+
+```bash
+docker build -t app-name .
+docker run -p 3000:3000 -d app-name
+```
+
+Также настроен precommit и линтинг

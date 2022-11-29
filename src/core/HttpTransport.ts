@@ -1,5 +1,5 @@
-import { PATH } from 'constants/pathsAPI';
 import queryStringify from 'utils/transformers/queryStringify';
+import { PATH } from '../constants/pathsAPI';
 
 enum Methods {
   Get = 'GET',
@@ -10,7 +10,7 @@ enum Methods {
 
 type Options = {
   timeout?: number;
-  data?: Record<string, any> | FormData;
+  data?: Record<string, unknown> | FormData;
   headers?: Record<string, string>;
   contentType?: string;
   responseType?: XMLHttpRequestResponseType;
@@ -36,7 +36,7 @@ export default class HTTPTransport {
     return this.request(PATH.BASE + url, Methods.Delete, options);
   };
 
-  request = <T extends any>(url: string, method: Methods, options?: Options): Promise<T> => {
+  request = <T>(url: string, method: Methods, options?: Options): Promise<T> => {
     const {
       timeout = 5000,
       responseType = 'json',
@@ -50,7 +50,9 @@ export default class HTTPTransport {
       xhr.open(method, url);
       xhr.responseType = responseType;
 
-      contentType && xhr.setRequestHeader('Content-Type', contentType);
+      if (contentType) {
+        xhr.setRequestHeader('Content-Type', contentType);
+      }
 
       xhr.timeout = timeout;
       xhr.withCredentials = true;
